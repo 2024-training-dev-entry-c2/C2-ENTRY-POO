@@ -23,6 +23,34 @@ public class Main {
     };
     static boolean[] incluyeAlmuerzo = {true, false, false, true, false};
     static boolean[] incluyeRefrigerio = {false, false, false, true, false};
+    static String[][] tiposDeHabitaciones = {
+            {"Individual", "Doble", "Doble plus", "Suite", "Presidencial"},
+            {"Apartaestudio", "Loft", "Duplex", "Triplex", "De lujo"},
+            {"Cabaña", "Urbana", "Rustica", "Ecologica", "Hacienda"},
+            {"Rubi", "Esmeralda", "Plata", "Oro", "Diamante"},
+            {"Pluton", "Venus", "Marte", "Saturno", "Jupiter"}
+    };
+    static String[][] caracteristicasHabitaciones = {
+            {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, vistas al mar",
+            "Cama King Size, baño privado con Jacuzzi, vistas al mar"},
+            {"Cocina, mini sala, un baño, cama doble", "Espacion abierto, cama doble, cocina, un baño, sala, barra-comedor",
+            "Dos habitaciones cama doble, cocina, sala, comedor, un baño", "Tres habitaciones cama doble, cocina, sala, comedor, dos baños",
+            "Tres habitaciones cama king, 3 baños privados, sala con chimenea, cocina, comedor, mini bar"},
+            {"Cama doble, baño privado, vistas al jardin", "Cama King Size, baño privado, cerca a la ciudad", "Cama King Size, baño privado, mini granja",
+            "Dos habitaciones cama doble, dos baños, granja, mini bosque", "Tres habitaciones cama doble, tres baños privados, bosque, salon de eventos"},
+            {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, sala de estar",
+                    "Cama King Size, baño privado con Jacuzzi, sala de estar"},
+            {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, vistas al mar",
+            "Cama King Size, baño privado con Jacuzzi, vistas al mar"}
+    };
+    // precios base 100.0, 120.0, 80.0, 150.0, 90.0
+    static double[][] precioPorNochePorTipoHabitacion = {
+            {100.0, 120.0, 150.0, 200.0, 250.0},
+            {120.0, 145.0, 170.0, 200.0, 230.0},
+            {80.0, 105.55, 120.0, 160.50, 190.0},
+            {150.0, 200.0, 250.0, 300.0, 350.0},
+            {90.0, 115.0, 135.60, 170.0, 210.50}
+    };
 
     public static void main(String[] args) {
 
@@ -84,6 +112,7 @@ public class Main {
     public static void buscarHotel(String ciudad, String tipo, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitaciones) {
 
         boolean hotelEncontrado = false;
+        int hotelSeleccionado = -1;
 
         // calculando los dias de estadia
         long diferenciaEnMilisegundos = finEstadia.getTime() - inicioEstadia.getTime();
@@ -104,6 +133,7 @@ public class Main {
                     maximoNinos[i] >= ninos &&
                     habitacionesDisponibles[i] >= habitaciones) {
                 hotelEncontrado = true;
+                hotelSeleccionado = i;
 
                 // usando el precio de la habitación más simple
                 double precioBase = precioPorNoche[i];
@@ -185,7 +215,17 @@ public class Main {
             }
         }
 
-        if (!hotelEncontrado) {
+        if (hotelEncontrado) {
+            // solicito al usuario seleccionar un alojamiento
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Seleccione el alojamiento que desea (ingrese el nombre del alojamiento):");
+            String hotelSeleccionadoPorUsuario = scanner.nextLine();
+//            System.out.println("Ingrese nuevamente la cantidad de habitaciones que desea:");
+//            int habitacionesSolicitadas = scanner.nextInt();
+
+            // confirmar las habitaciones para el alojamiento seleccionado
+            confirmarHabitaciones(hotelSeleccionadoPorUsuario, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
+        } else {
             System.out.println("No se encontraron alojamientos que coincidan con su busqueda.");
         }
     }
@@ -231,4 +271,66 @@ public class Main {
     }
 
     // METODO PARA CONFIRMAR HABITACIONES
+    public static void confirmarHabitaciones(String nombreHotel, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitacionesSolicitadas) {
+        boolean hotelEncontrado = false;
+
+        // busco el indice del hotel seleccionado por el usuario
+        int hotelIndex = -1;
+        for (int i = 0; i < nombreDelAlojamiento.length; i++) {
+            if (nombreDelAlojamiento[i].equalsIgnoreCase(nombreHotel)) {
+                hotelIndex = i;
+                hotelEncontrado = true;
+                break;
+            }
+        }
+
+        if (!hotelEncontrado) {
+            System.out.println("El hotel seleccionado no se encuentra disponible.");
+            return;
+        }
+
+        // Verificamos la disponibilidad de habitaciones para las fechas seleccionadas
+        long diferenciaEnMilisegundos = finEstadia.getTime() - inicioEstadia.getTime();
+        long diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
+
+        if (diferenciaEnDias <= 0) {
+            System.out.println("La estadia debe ser de al menos un día.");
+            return;
+        }
+
+        // Verificamos si hay suficientes habitaciones disponibles
+        if (habitacionesDisponibles[hotelIndex] < habitacionesSolicitadas) {
+            System.out.println("No hay suficientes habitaciones disponibles para la cantidad solicitada.");
+            return;
+        }
+
+        // Si hay habitaciones disponibles, mostramos los tipos de habitación, características y precios
+        System.out.println("Tipos de habitaciones disponibles en " + nombreDelAlojamiento[hotelIndex] + ":");
+        for (int i = 0; i < tiposDeHabitaciones[hotelIndex].length; i++) {
+            System.out.println("\nTipo de habitación: " + tiposDeHabitaciones[hotelIndex][i]);
+            System.out.println("Caracteristicas: " + caracteristicasHabitaciones[hotelIndex][i]);
+            double precioPorHabitacion = precioPorNochePorTipoHabitacion[hotelIndex][i] * diferenciaEnDias;
+            System.out.println("Precio por " + diferenciaEnDias + " dia(s): $" + precioPorHabitacion);
+        }
+
+        // Si el hotel tiene actividades, las mostramos
+        if (ofreceDiaDeSol[hotelIndex]) {
+            System.out.println("\nActividades disponibles:");
+            for (String actividad : actividades[hotelIndex]) {
+                System.out.println("- " + actividad);
+            }
+        }
+
+        // Imprimir un resumen
+        double precioTotal = precioPorNoche[hotelIndex] * habitacionesSolicitadas * diferenciaEnDias;
+        System.out.println("\nResumen de la reserva:");
+        System.out.println("Hotel: " + nombreDelAlojamiento[hotelIndex]);
+        System.out.println("Fecha de inicio: " + inicioEstadia);
+        System.out.println("Fecha de fin: " + finEstadia);
+        System.out.println("Número de habitaciones: " + habitacionesSolicitadas);
+        System.out.println("Número de adultos: " + adultos);
+        System.out.println("Número de niños: " + ninos);
+        System.out.println("Precio total por la estadía: $" + precioTotal);
+    }
+
 }
