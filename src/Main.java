@@ -152,12 +152,27 @@ public class Main {
                     }
                 }
 
-                // muestra si incluye almuerzo o refrigerio
+                // precios de almuerzo y refrigerio adicionales
+                double precioAlmuerzo = 20.0;
+                double precioRefrigerio = 10.0;
+
+                int totalPersonas = adultos + ninos;
+
+                double precioTotalAlmuerzo = precioAlmuerzo * totalPersonas;
+                double precioTotalRefrigerio = precioRefrigerio * totalPersonas;
+
                 if (incluyeAlmuerzo[i]) {
-                    System.out.println("Incluye almuerzo");
+                    System.out.println("Incluye almuerzo.");
+                    System.out.println("Si desea incluir el almuerzo, el valor por persona es: $" + precioAlmuerzo +
+                            "En total por " + totalPersonas + " persona(s) es $" + precioTotalAlmuerzo);
+                    System.out.println("** El valor por almuerzo NO esta incluido en el precio total. Debe pagarlo en el establecimiento. **");
                 }
-                if (incluyeRefrigerio[i]) {
-                    System.out.println("Incluye refrigerio");
+
+                if(incluyeRefrigerio[i]) {
+                    System.out.println("Incluye refrigerio.");
+                    System.out.println("Si desea incluir el refrigerio, el valor por persona es: $" + precioRefrigerio +
+                            "En total por " + totalPersonas + " persona(s) es $" + precioTotalRefrigerio);
+                    System.out.println("** El valor por refrigerio NO esta incluido en el precio total. Debe pagarlo en el establecimiento. **");
                 }
 
 //                if (descuentoPrecio > 0) {
