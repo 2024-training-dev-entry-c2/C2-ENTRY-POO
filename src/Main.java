@@ -25,7 +25,7 @@ public class Main {
     static boolean[] incluyeRefrigerio = {false, false, false, true, false};
     static String[][] tiposDeHabitaciones = {
             {"Individual", "Doble", "Doble plus", "Suite", "Presidencial"},
-            {"mini apartamento", "Loft", "Duplex", "Triplex", "De lujo"},
+            {"mini", "Loft", "Duplex", "Triplex", "De lujo"},
             {"Cabaña", "Urbana", "Rustica", "Ecologica", "Hacienda"},
             {"Rubi", "Esmeralda", "Plata", "Oro", "Diamante"},
             {"Pluton", "Venus", "Marte", "Saturno", "Jupiter"}
@@ -357,33 +357,43 @@ public class Main {
     public static void reservarAlojamiento(String nombreUsuario, String apellidoUsuario, String correoUsuario, String nacionalidadUsuario, int telefonoUsuario, String horaLlegadaUsuario) {
         Scanner scanner = new Scanner(System.in);
 
-        // Confirmar si el usuario desea continuar con la reserva
-        System.out.println("¿Desea continuar con la reserva? (S/N)");
+        // confirmo si el usuario desea continuar con la reserva
+        System.out.println("¿Desea continuar con la reserva? (Por favor digite Si o No)");
         String respuesta = scanner.nextLine();
 
-        if (respuesta.equalsIgnoreCase("S")) {
-            // Solicitar que el usuario elija las habitaciones
-            System.out.println("¿Cuántas habitaciones desea reservar?");
+        if (respuesta.equalsIgnoreCase("Si")) {
+            // pido al usuario ingresar nuevamente cuantas habitaciones quiere reservar
+            System.out.println("Ingrese nuevamente el número de habitaciones que desea reservar");
             int cantidadHabitaciones = scanner.nextInt();
             scanner.nextLine();
 
-            // Muestra los tipos de habitaciones disponibles
+            // muestro los tipos de habitaciones disponibles segun el alojamiento que habia escogido el usuario
             System.out.println("Tipos de habitaciones disponibles:");
             for (int i = 0; i < tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length; i++) {
                 System.out.println((i + 1) + ". " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][i]);
             }
 
-            // Solicitar al usuario que seleccione un tipo de habitación
-            System.out.println("Seleccione el número de la habitación que desea reservar:");
-            int habitacionSeleccionada = scanner.nextInt();
-            scanner.nextLine();
+            // almaceno la cantidad de habitaciones que el usuario ingreso
+            String[] habitacionesSeleccionadas = new String[cantidadHabitaciones];
 
-            if (habitacionSeleccionada < 1 || habitacionSeleccionada > tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length) {
-                System.out.println("Opción no válida.");
-                return;
+            // el usuario debe seleccionar el tipo de habitacion por cada habitacion que quiera
+            for (int i = 0; i < cantidadHabitaciones; i++) {
+                System.out.println("Seleccione el tipo de habitación #" + (i + 1) + ":");
+                int habitacionSeleccionada = scanner.nextInt();
+                scanner.nextLine();
+
+                // validando la seleccion. solo hay 5 tipos
+                if (habitacionSeleccionada < 1 || habitacionSeleccionada > tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length) {
+                    System.out.println("Opción no válida. Intente de nuevo.");
+                    i--;
+                    continue;
+                }
+
+                // almaceno la seleccion del usuario
+                habitacionesSeleccionadas[i] = tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][habitacionSeleccionada - 1];
             }
 
-            // Solicitar datos del usuario
+            // solicito los datos de usuario
             System.out.println("Ingrese su nombre:");
             nombreUsuario = scanner.nextLine();
 
@@ -403,7 +413,7 @@ public class Main {
             System.out.println("Ingrese la hora de llegada (HH:mm):");
             horaLlegadaUsuario = scanner.nextLine();
 
-            // Confirmar la reserva
+            // se confirma la reserva
             System.out.println("¡Se ha realizado la reserva con éxito!");
             System.out.println("Datos de la reserva:");
             System.out.println("Nombre: " + nombreUsuario + " " + apellidoUsuario);
@@ -411,18 +421,21 @@ public class Main {
             System.out.println("Nacionalidad: " + nacionalidadUsuario);
             System.out.println("Teléfono: " + telefonoUsuario);
             System.out.println("Hora de llegada: " + horaLlegadaUsuario);
-            System.out.println("Habitación seleccionada: " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][habitacionSeleccionada - 1]);
+            System.out.println("Habitaciones seleccionadas:");
+            for (int i = 0; i < habitacionesSeleccionadas.length; i++) {
+                System.out.println("Habitación #" + (i + 1) + ": " + habitacionesSeleccionadas[i]);
+            }
 
-            // Actualizar las habitaciones disponibles
-            int hotelIndex = hotelSeleccionadoPorUsuarioIndex; // Obtener el índice del hotel seleccionado
+            // actualizo las habitaciones que quedan disponibles
+            int hotelIndex = hotelSeleccionadoPorUsuarioIndex;
             if (hotelIndex != -1) {
-                habitacionesDisponibles[hotelIndex] -= cantidadHabitaciones;  // Restar la cantidad de habitaciones reservadas
+                habitacionesDisponibles[hotelIndex] -= cantidadHabitaciones;
                 System.out.println("Habitaciones disponibles actualizadas: " + habitacionesDisponibles[hotelIndex]);
             } else {
                 System.out.println("Hubo un problema al actualizar la disponibilidad de habitaciones.");
             }
         } else {
-            System.out.println("La reserva no se ha realizado.");
+            System.out.println("La reserva no se realizo.");
         }
     }
 }
