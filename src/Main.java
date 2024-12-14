@@ -101,12 +101,12 @@ public class Main {
 
         // recorro el arreglo de hoteles para relacionarlo con los demas arreglos por su posicion y comparo los datos con los proporcionados por el usuario
         for (int i = 0; i < nombreDelAlojamiento.length; i++) {
-            if (ciudadDestino[i].equalsIgnoreCase(ciudad) &&
-                    tipoDeAlojamiento[i].equalsIgnoreCase(tipo) &&
+            if (((tipo.equalsIgnoreCase("Dia de Sol") &&
+                    ofreceDiaDeSol[i]) || tipoDeAlojamiento[i].equalsIgnoreCase(tipo)) &&
+                    ciudadDestino[i].equalsIgnoreCase(ciudad) &&
                     maximoAdultos[i] >= adultos &&
                     maximoNinos[i] >= ninos &&
-                    habitacionesDisponibles[i] >= habitaciones &&
-                    (ofreceDiaDeSol[i] || tipo.equalsIgnoreCase("Dia de Sol"))) {
+                    habitacionesDisponibles[i] >= habitaciones) {
                 hotelEncontrado = true;
 
                 // usando el precio de la habitación más simple
