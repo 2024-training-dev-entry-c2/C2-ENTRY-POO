@@ -52,6 +52,10 @@ public class Main {
             {150.0, 200.0, 250.0, 300.0, 350.0},
             {90.0, 115.0, 135.60, 170.0, 210.50}
     };
+    static String[] correosReservas = new String[100];
+    static String[] nacimientosReservas = new String[100];
+    static String[][] reservas = new String[100][6];
+    static int reservaCount = 0;
 
     // declaro las variables de descuento o incremento del valor de la estadia
     static double descuentoPrecio = 0.0;
@@ -413,6 +417,17 @@ public class Main {
             System.out.println("Ingrese la hora de llegada (HH:mm):");
             horaLlegadaUsuario = scanner.nextLine();
 
+
+            // guardo la reserva
+            correosReservas[reservaCount] = correoUsuario;
+            nacimientosReservas[reservaCount] = "01/01/1990";  // Ejemplo de fecha de nacimiento, debería ser ingresada
+            reservas[reservaCount][0] = nombreUsuario + " " + apellidoUsuario;
+            reservas[reservaCount][1] = correoUsuario;
+            reservas[reservaCount][2] = nacionalidadUsuario;
+            reservas[reservaCount][3] = String.valueOf(telefonoUsuario);
+            reservas[reservaCount][4] = horaLlegadaUsuario;
+            reservas[reservaCount][5] = String.join(", ", habitacionesSeleccionadas);
+
             // se confirma la reserva
             System.out.println("¡Se ha realizado la reserva con éxito!");
             System.out.println("Datos de la reserva:");
@@ -425,6 +440,16 @@ public class Main {
             for (int i = 0; i < habitacionesSeleccionadas.length; i++) {
                 System.out.println("Habitación #" + (i + 1) + ": " + habitacionesSeleccionadas[i]);
             }
+            reservaCount++;
+
+            System.out.println("¿Desea actualizar su reserva? (Por favor digite Si o No)");
+            String respuestaActualizar = scanner.nextLine();
+
+            if (respuestaActualizar.equalsIgnoreCase("Si")) {
+                actualizarReserva();
+            } else {
+                System.out.println("¡Gracias por reservar con Starlight Booking!");
+            }
 
             // actualizo las habitaciones que quedan disponibles
             int hotelIndex = hotelSeleccionadoPorUsuarioIndex;
@@ -436,6 +461,77 @@ public class Main {
             }
         } else {
             System.out.println("La reserva no se realizo.");
+        }
+    }
+
+    // METODO PARA LA GESTION Y ACTUALIZACION DE LAS RESERVAS
+    public static void actualizarReserva() {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Ingrese su correo electrónico para autenticar su reserva:");
+        String correo = scanner.nextLine();
+//        System.out.println("Ingrese su fecha de nacimiento (DD/MM/YYYY):");
+//        String nacimiento = scanner.nextLine();
+
+        // Buscamos la reserva
+        boolean encontrada = false;
+        int indiceReserva = -1;
+
+//        && nacimientosReservas[i].equals(nacimiento)
+        for (int i = 0; i < reservaCount; i++) {
+            if (correosReservas[i].equals(correo) ) {
+                indiceReserva = i;
+                encontrada = true;
+                break;
+            }
+        }
+
+        if (encontrada) {
+            System.out.println("Reserva encontrada. Datos actuales de la reserva:");
+            System.out.println("Nombre: " + reservas[indiceReserva][0]);
+            System.out.println("Correo: " + reservas[indiceReserva][1]);
+            System.out.println("Habitaciones: " + reservas[indiceReserva][5]);
+
+            System.out.println("¿Desea cambiar de habitación o de alojamiento? (Escriba 'habitacion' o 'alojamiento')");
+            String eleccion = scanner.nextLine();
+
+            if (eleccion.equalsIgnoreCase("habitacion")) {
+                // Cambiar habitación
+                System.out.println("Habitaciones actuales: " + reservas[indiceReserva][5]);
+                System.out.println("Escriba el nombre de la habitación que desea cambiar:");
+                String habitacionActual = scanner.nextLine();
+
+                // Verificar si la habitación está en la reserva
+                if (!reservas[indiceReserva][5].contains(habitacionActual)) {
+                    System.out.println("Habitación no encontrada.");
+                    return;
+                }
+
+                // Mostrar habitaciones disponibles para el cambio
+                System.out.println("Habitaciones disponibles:");
+                for (int i = 0; i < tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length; i++) {
+                    System.out.println((i + 1) + ". " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][i]);
+                }
+
+                System.out.println("Seleccione de 1 a 5 la nueva habitación:");
+                int nuevaHabitacion = scanner.nextInt();
+                scanner.nextLine();
+
+                // actualizo la reserva con la nueva habitación
+                reservas[indiceReserva][5] = reservas[indiceReserva][5].replace(habitacionActual, tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][nuevaHabitacion - 1]);
+                System.out.println("La habitación ha sido cambiada exitosamente.");
+            } else if (eleccion.equalsIgnoreCase("alojamiento")) {
+                // elimino la reserva actual
+                System.out.println("Se ha eliminado la reserva.");
+                reservas[indiceReserva] = null;
+                correosReservas[indiceReserva] = null;
+                nacimientosReservas[indiceReserva] = null;
+
+                // Redirigir a crear una nueva reserva
+                System.out.println("Redirigiendo a la creación de una nueva reserva...");
+            }
+        } else {
+            System.out.println("No se encontró una reserva con ese correo o fecha de nacimiento.");
         }
     }
 }
