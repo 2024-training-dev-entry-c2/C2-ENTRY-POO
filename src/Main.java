@@ -365,20 +365,20 @@ public class Main {
             // Solicitar que el usuario elija las habitaciones
             System.out.println("¿Cuántas habitaciones desea reservar?");
             int cantidadHabitaciones = scanner.nextInt();
-            scanner.nextLine();  // Limpiar buffer
+            scanner.nextLine();
 
             // Muestra los tipos de habitaciones disponibles
             System.out.println("Tipos de habitaciones disponibles:");
-            for (int i = 0; i < tiposDeHabitaciones.length; i++) {
-                System.out.println((i + 1) + ". " + tiposDeHabitaciones[i]);
+            for (int i = 0; i < tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length; i++) {
+                System.out.println((i + 1) + ". " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][i]);
             }
 
             // Solicitar al usuario que seleccione un tipo de habitación
             System.out.println("Seleccione el número de la habitación que desea reservar:");
             int habitacionSeleccionada = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+            scanner.nextLine();
 
-            if (habitacionSeleccionada < 1 || habitacionSeleccionada > tiposDeHabitaciones.length) {
+            if (habitacionSeleccionada < 1 || habitacionSeleccionada > tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length) {
                 System.out.println("Opción no válida.");
                 return;
             }
@@ -398,20 +398,20 @@ public class Main {
 
             System.out.println("Ingrese su teléfono:");
             telefonoUsuario = scanner.nextInt();
-            scanner.nextLine();  // Limpiar buffer
+            scanner.nextLine();
 
             System.out.println("Ingrese la hora de llegada (HH:mm):");
             horaLlegadaUsuario = scanner.nextLine();
 
             // Confirmar la reserva
-            System.out.println("¡Reserva realizada con éxito!");
+            System.out.println("¡Se ha realizado la reserva con éxito!");
             System.out.println("Datos de la reserva:");
             System.out.println("Nombre: " + nombreUsuario + " " + apellidoUsuario);
             System.out.println("Correo: " + correoUsuario);
             System.out.println("Nacionalidad: " + nacionalidadUsuario);
             System.out.println("Teléfono: " + telefonoUsuario);
             System.out.println("Hora de llegada: " + horaLlegadaUsuario);
-            System.out.println("Habitación seleccionada: " + tiposDeHabitaciones[habitacionSeleccionada - 1]);
+            System.out.println("Habitación seleccionada: " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][habitacionSeleccionada - 1]);
 
             // Actualizar las habitaciones disponibles
             int hotelIndex = hotelSeleccionadoPorUsuarioIndex; // Obtener el índice del hotel seleccionado
