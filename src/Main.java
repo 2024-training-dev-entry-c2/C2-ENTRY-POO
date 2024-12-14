@@ -4,26 +4,27 @@ import java.util.Calendar;
 
 public class Main {
 
+    // declaracion global de los arreglos
+    static String[] nombreDelAlojamiento = {"Starlight Hotel", "Cosmos", "Blue Moon", "Dark Sun Hotel", "Andromeda Hotel"};
+    static String[] ciudadDestino = {"Cartagena", "Venecia", "Porto", "Munich", "Cartagena"};
+    static String[] tipoDeAlojamiento = {"Hotel", "Apartamento", "Finca", "Hotel", "Hotel"};
+    static boolean[] ofreceDiaDeSol = {true, false, false, true, false};
+    static int[] maximoAdultos = {4, 2, 2, 6, 4};
+    static int[] maximoNinos = {2, 2, 0, 1, 2};
+    static int[] habitacionesDisponibles = {3, 5, 1, 7, 3};
+    static double[] calificacionDelHotel = {5.0, 4.5, 3.5, 4.8, 4.7};
+    static double[] precioPorNoche = {100.0, 120.0, 80.0, 150.0, 90.0}; //precio de la habitacion mas simple
+    static String[][] actividades = {
+            {"Excursion", "Deportes acuaticos", "Caminatas"},
+            {},
+            {},
+            {"Excursion", "Deportes acuaticos"},
+            {}
+    };
+    static boolean[] incluyeAlmuerzo = {true, false, false, true, false};
+    static boolean[] incluyeRefrigerio = {false, false, false, true, false};
+
     public static void main(String[] args) {
-        // arreglos de los datos por alojamiento
-        String[] nombreDelAlojamiento = {"Starlight Hotel", "Cosmos", "Blue Moon", "Dark Sun Hotel", "Andromeda Hotel"};
-        String[] ciudadDestino = {"Cartagena", "Venecia", "Porto", "Munich", "Cartagena"};
-        String[] tipoDeAlojamiento = {"Hotel", "Apartamento", "Finca", "Hotel", "Hotel"};
-        boolean[] ofreceDiaDeSol = {true, false, false, true, false};
-        int[] maximoAdultos = {4, 2, 2, 6, 4};
-        int[] maximoNinos = {2, 2, 0, 1, 2};
-        int[] habitacionesDisponibles = {3, 5, 1, 7, 3};
-        double[] calificacionDelHotel = {5.0, 4.5, 3.5, 4.8, 4.7};
-        double[] precioPorNoche = {100.0, 120.0, 80.0, 150.0, 90.0}; //precio de la habitacion mas simple
-        String[][] actividades = {
-                {"Excursion", "Deportes acuaticos", "Caminatas"},
-                {},
-                {},
-                {"Excursion", "Deportes acuaticos"},
-                {}
-        };
-        boolean[] incluyeAlmuerzo = {true, false, false, true, false};
-        boolean[] incluyeRefrigerio = {false, false, false, true, false};
 
         // Crear un objeto Scanner para leer la entrada del usuario
         Scanner scanner = new Scanner(System.in);
@@ -55,9 +56,7 @@ public class Main {
         int habitaciones = scanner.nextInt();
 
         // llamo la func de bucarHotel con los parametros dados por el usuario
-        buscarHotel(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones, nombreDelAlojamiento, ciudadDestino,
-                tipoDeAlojamiento, ofreceDiaDeSol, maximoAdultos, maximoNinos, habitacionesDisponibles, calificacionDelHotel,
-                precioPorNoche, actividades, incluyeAlmuerzo, incluyeRefrigerio);
+        buscarHotel(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
 
         // se cierra el scanner para evitar problemas con la gestion de los recursos
         scanner.close();
@@ -81,11 +80,8 @@ public class Main {
         }
     }
 
-
-    public static void buscarHotel(String ciudad, String tipo, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitaciones,
-                                   String[] nombreDelAlojamiento, String[] ciudadDestino, String[] tipoDeAlojamiento, boolean[] ofreceDiaDeSol, int[] maximoAdultos,
-                                   int[] maximoNinos, int[] habitacionesDisponibles, double[] calificacionDelHotel, double[] precioPorNoche, String[][] actividades,
-                                   boolean[] incluyeAlmuerzo, boolean[] incluyeRefrigerio) {
+    // METODO PARA BUSCAR HOTEL SEGUN REQUERIMIENTOS DEL USUARIO
+    public static void buscarHotel(String ciudad, String tipo, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitaciones) {
 
         boolean hotelEncontrado = false;
 
@@ -233,4 +229,6 @@ public class Main {
         // verificando si alguna de las fechas cae entre el 5 y el 10 del mes
         return (empezarCalendario.get(Calendar.DAY_OF_MONTH) <= 10 && finalizarCalendario.get(Calendar.DAY_OF_MONTH) >= 5);
     }
+
+    // METODO PARA CONFIRMAR HABITACIONES
 }
