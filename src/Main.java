@@ -1,30 +1,91 @@
 import java.util.Date;
+import java.util.Scanner;
 import java.util.Calendar;
 
 public class Main {
 
     public static void main(String[] args) {
-        // definicion de los datos por hotel dependiendo de la posicione en el arreglo
-        String[] nombreDelHotel = {"Starlight Hotel", "Cosmos Hotel", "Blue Moon Hotel", "Dark Sun Hotel", "Andromeda Hotel"};
+        // arreglos de los datos por alojamiento
+        String[] nombreDelAlojamiento = {"Starlight Hotel", "Cosmos", "Blue Moon", "Dark Sun Hotel", "Andromeda Hotel"};
         String[] ciudadDestino = {"Cartagena", "Venecia", "Porto", "Munich", "Cartagena"};
-        String[] tipoDeHotel = {"Hotel", "Apartamento", "Finca", "Dia de sol", "Hotel"};
+        String[] tipoDeAlojamiento = {"Hotel", "Apartamento", "Finca", "Hotel", "Hotel"};
+        boolean[] ofreceDiaDeSol = {true, false, false, true, false};
         int[] maximoAdultos = {4, 2, 2, 6, 4};
         int[] maximoNinos = {2, 2, 0, 1, 2};
         int[] habitacionesDisponibles = {3, 5, 1, 7, 3};
         double[] calificacionDelHotel = {5.0, 4.5, 3.5, 4.8, 4.7};
         double[] precioPorNoche = {100.0, 120.0, 80.0, 150.0, 90.0}; //precio de la habitacion mas simple
+        String[][] actividades = {
+                {"Excursion", "Deportes acuaticos", "Caminatas"},
+                {},
+                {},
+                {"Excursion", "Deportes acuaticos"},
+                {}
+        };
+        boolean[] incluyeAlmuerzo = {true, false, false, true, false};
+        boolean[] incluyeRefrigerio = {false, false, false, true, false};
 
-        // busqueda con fechas de inicio estadia y fin estadia
-        Date inicioEstadia = new Date(); // fecha de inicio de estadia (hoy)
-        Date finEstadia = new Date(inicioEstadia.getTime() + (7L * 24 * 60 * 60 * 1000)); // fecha de fin de estadia (7 días despues)
+        // Crear un objeto Scanner para leer la entrada del usuario
+        Scanner scanner = new Scanner(System.in);
 
-        buscarHotel("Cartagena", "Hotel", inicioEstadia, finEstadia, 2, 1, 1, nombreDelHotel, ciudadDestino,
-                tipoDeHotel, maximoAdultos, maximoNinos, habitacionesDisponibles, calificacionDelHotel, precioPorNoche);
+        // solicito datos al usuario
+        System.out.println("Ingrese la ciudad destino:");
+        String ciudad = scanner.nextLine();
+
+        System.out.println("Ingrese el tipo de alojamiento que desea (Ejemplo: Hotel, Apartamento, Finca, Dia de Sol):");
+        String tipo = scanner.nextLine();
+
+        // solicito las fechas de inicio y fin de la estadia
+        System.out.println("Ingrese la fecha de inicio de la estadia (en formato AAAA-MM-DD):");
+        String fechaInicioString = scanner.nextLine();
+        Date inicioEstadia = convertirStringADate(fechaInicioString);
+
+        System.out.println("Ingrese la fecha de fin de la estadia (en formato AAAA-MM-DD):");
+        String fechaFinString = scanner.nextLine();
+        Date finEstadia = convertirStringADate(fechaFinString);
+
+        // solicito la cantidad de adultos, ninos y habitaciones
+        System.out.println("Ingrese la cantidad de adultos que se van a hospedar:");
+        int adultos = scanner.nextInt();
+
+        System.out.println("Ingrese la cantidad de ninos que se van a hospedar:");
+        int ninos = scanner.nextInt();
+
+        System.out.println("Ingrese la cantidad de habitaciones que desea:");
+        int habitaciones = scanner.nextInt();
+
+        // llamo la func de bucarHotel con los parametros dados por el usuario
+        buscarHotel(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones, nombreDelAlojamiento, ciudadDestino,
+                tipoDeAlojamiento, ofreceDiaDeSol, maximoAdultos, maximoNinos, habitacionesDisponibles, calificacionDelHotel,
+                precioPorNoche, actividades, incluyeAlmuerzo, incluyeRefrigerio);
+
+        // se cierra el scanner para evitar problemas con la gestion de los recursos
+        scanner.close();
     }
 
+    // func para convertir la fecha de String a Date
+    private static Date convertirStringADate(String fechaString) {
+        try {
+            // formato esperado: "AAAA-MM-DD" "YYYY-MM-DD"
+            String[] fechaPartes = fechaString.split("-");
+            int anio = Integer.parseInt(fechaPartes[0]);
+            int mes = Integer.parseInt(fechaPartes[1]) - 1; // los meses en Java son 0=Enero 11=Diciembre
+            int dia = Integer.parseInt(fechaPartes[2]);
+
+            Calendar calendario = Calendar.getInstance();
+            calendario.set(anio, mes, dia);
+            return calendario.getTime();
+        } catch (Exception e) {
+            System.out.println("Error al ingresar la fecha. El formato debe ser YYYY-MM-DD.");
+            return null;
+        }
+    }
+
+
     public static void buscarHotel(String ciudad, String tipo, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitaciones,
-                                   String[] nombreDelHotel, String[] ciudadDestino, String[] tipoDeHotel, int[] maximoAdultos,
-                                   int[] maximoNinos, int[] habitacionesDisponibles, double[] calificacionDelHotel, double[] precioPorNoche) {
+                                   String[] nombreDelAlojamiento, String[] ciudadDestino, String[] tipoDeAlojamiento, boolean[] ofreceDiaDeSol, int[] maximoAdultos,
+                                   int[] maximoNinos, int[] habitacionesDisponibles, double[] calificacionDelHotel, double[] precioPorNoche, String[][] actividades,
+                                   boolean[] incluyeAlmuerzo, boolean[] incluyeRefrigerio) {
 
         boolean hotelEncontrado = false;
 
@@ -39,12 +100,13 @@ public class Main {
         }
 
         // recorro el arreglo de hoteles para relacionarlo con los demas arreglos por su posicion y comparo los datos con los proporcionados por el usuario
-        for (int i = 0; i < nombreDelHotel.length; i++) {
+        for (int i = 0; i < nombreDelAlojamiento.length; i++) {
             if (ciudadDestino[i].equalsIgnoreCase(ciudad) &&
-                    tipoDeHotel[i].equalsIgnoreCase(tipo) &&
+                    tipoDeAlojamiento[i].equalsIgnoreCase(tipo) &&
                     maximoAdultos[i] >= adultos &&
                     maximoNinos[i] >= ninos &&
-                    habitacionesDisponibles[i] >= habitaciones) {
+                    habitacionesDisponibles[i] >= habitaciones &&
+                    (ofreceDiaDeSol[i] || tipo.equalsIgnoreCase("Dia de Sol"))) {
                 hotelEncontrado = true;
 
                 // usando el precio de la habitación más simple
@@ -67,20 +129,36 @@ public class Main {
                     totalPrecioBase *= 1.10;
                 }
 
-                // verifico si los días de la estadía comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
+                // verifico si los dias de la estadia comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
                 if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
                     descuentoPrecio = totalPrecioBase * 0.08; // descuento del 8% del valor total
                     totalPrecioBase *= 0.92;
                 }
 
                 // muestro en consola la info para el usuario
-                System.out.println("Hotel encontrado:");
-                System.out.println("Hotel: " + nombreDelHotel[i]);
+                System.out.println("Alojamiento encontrado:");
+                System.out.println("Alojamiento: " + nombreDelAlojamiento[i]);
 //                 System.out.println("Ciudad: " + ciudadDestino[i]);
-//                 System.out.println("Tipo: " + tipoDeHotel[i]);
+//                 System.out.println("Tipo: " + tipoDeAlojamiento[i]);
                 System.out.println("Calificacion de: " + calificacionDelHotel[i] + " estrellas");
                 System.out.println("Precio base por noche: $" + precioBase);
                 System.out.println("Precio total base por " + diferenciaEnDias + " dia(s) y " + habitaciones + " habitacion(es): $" + totalPrecioBase);
+
+                // muestra actividades disponibles si ofrece Dia de Sol
+                if (ofreceDiaDeSol[i]) {
+                    System.out.println("Actividades disponibles:");
+                    for (String actividad : actividades[i]) {
+                        System.out.println("- " + actividad);
+                    }
+                }
+
+                // muestra si incluye almuerzo o refrigerio
+                if (incluyeAlmuerzo[i]) {
+                    System.out.println("Incluye almuerzo");
+                }
+                if (incluyeRefrigerio[i]) {
+                    System.out.println("Incluye refrigerio");
+                }
 
 //                if (descuentoPrecio > 0) {
 //                    System.out.println("Descuento aplicado (8%): -$" + descuentoPrecio);
@@ -97,7 +175,7 @@ public class Main {
         }
 
         if (!hotelEncontrado) {
-            System.out.println("No se encontraron hoteles que coincidan con su busqueda.");
+            System.out.println("No se encontraron alojamientos que coincidan con su busqueda.");
         }
     }
 
