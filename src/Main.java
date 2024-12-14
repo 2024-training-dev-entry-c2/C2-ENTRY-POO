@@ -25,7 +25,7 @@ public class Main {
     static boolean[] incluyeRefrigerio = {false, false, false, true, false};
     static String[][] tiposDeHabitaciones = {
             {"Individual", "Doble", "Doble plus", "Suite", "Presidencial"},
-            {"Apartaestudio", "Loft", "Duplex", "Triplex", "De lujo"},
+            {"mini apartamento", "Loft", "Duplex", "Triplex", "De lujo"},
             {"Cabaña", "Urbana", "Rustica", "Ecologica", "Hacienda"},
             {"Rubi", "Esmeralda", "Plata", "Oro", "Diamante"},
             {"Pluton", "Venus", "Marte", "Saturno", "Jupiter"}
@@ -33,11 +33,12 @@ public class Main {
     static String[][] caracteristicasHabitaciones = {
             {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, vistas al mar",
             "Cama King Size, baño privado con Jacuzzi, vistas al mar"},
-            {"Cocina, mini sala, un baño, cama doble", "Espacion abierto, cama doble, cocina, un baño, sala, barra-comedor",
-            "Dos habitaciones cama doble, cocina, sala, comedor, un baño", "Tres habitaciones cama doble, cocina, sala, comedor, dos baños",
-            "Tres habitaciones cama king, 3 baños privados, sala con chimenea, cocina, comedor, mini bar"},
-            {"Cama doble, baño privado, vistas al jardin", "Cama King Size, baño privado, cerca a la ciudad", "Cama King Size, baño privado, mini granja",
-            "Dos habitaciones cama doble, dos baños, granja, mini bosque", "Tres habitaciones cama doble, tres baños privados, bosque, salon de eventos"},
+            {"Cama doble, cocina + mini sala + un baño compartidos", "Cama doble, espacio abierto + cocina + un baño + sala + barra-comedor compaprtidos",
+            "Cama doble, cocina + sala + comedor + un baño compartidos", "Cama doble, baño privado, cocina + sala + comedor compartidos",
+            "Cama king, baño privado, sala con chimenea + cocina + comedor + mini bar compartidos"},
+            {"Cama doble, baño privado, cocina + sala + comedor + jardin compartidos", "Cama King Size, baño privado, cerca a la ciudad, cocina + sala + comedor compartidos",
+                    "Cama King Size, baño privado, cocina + sala + comedor + mini granja compartido", "Cama doble, baño privado, cocina + sala + comedor + granja + mini bosque compartidos",
+                    "Cama doble, baño privado, cocina + sala + comedor + bosque, salon de eventos compartidos"},
             {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, sala de estar",
                     "Cama King Size, baño privado con Jacuzzi, sala de estar"},
             {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, vistas al mar",
@@ -51,6 +52,10 @@ public class Main {
             {150.0, 200.0, 250.0, 300.0, 350.0},
             {90.0, 115.0, 135.60, 170.0, 210.50}
     };
+
+    // declaro las variables de descuento o incremento del valor de la estadia
+    static double descuentoPrecio = 0.0;
+    static double incrementoPrecio = 0.0;
 
     public static void main(String[] args) {
 
@@ -138,10 +143,6 @@ public class Main {
                 // usando el precio de la habitación más simple
                 double precioBase = precioPorNoche[i];
                 double totalPrecioBase = precioBase * habitaciones * diferenciaEnDias;  // calculo del valor total de la estadia
-
-                // declaro las variables de descuento o incremento del valor de la estadia
-                double descuentoPrecio = 0.0;
-                double incrementoPrecio = 0.0;
 
                 // verifico si los dias de estadia estan dentro de los ultimos 5 dias del mes llamando la func ultimosCincoDiasDelMes
                 if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
@@ -307,18 +308,36 @@ public class Main {
         // Si hay habitaciones disponibles, mostramos los tipos de habitación, características y precios
         System.out.println("Tipos de habitaciones disponibles en " + nombreDelAlojamiento[hotelIndex] + ":");
         for (int i = 0; i < tiposDeHabitaciones[hotelIndex].length; i++) {
+
+            // usando el precio de la habitacion dependiendo del tipo
+            double precioBasePorHabitacion = precioPorNochePorTipoHabitacion[hotelIndex][i] * diferenciaEnDias; // calculo del valor total de la estadia
+
+            // verifico si los dias de estadia estan dentro de los ultimos 5 dias del mes llamando la func ultimosCincoDiasDelMes
+            if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
+                incrementoPrecio = precioBasePorHabitacion * 0.15; // aumento del 15% del valor total
+                precioBasePorHabitacion *= 1.15;
+            }
+
+            // verifico si los dias de estadia comprenden el 10 al 15 del mes llamando la func diasEntreElDiezYQuince
+            if (diasEntreElDiezYQuince(inicioEstadia, finEstadia)) {
+                incrementoPrecio = precioBasePorHabitacion * 0.10; // aumento del 10% del valor total
+                precioBasePorHabitacion *= 1.10;
+            }
+
+            // verifico si los dias de la estadia comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
+            if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
+                descuentoPrecio = precioBasePorHabitacion * 0.08; // descuento del 8% del valor total
+                precioBasePorHabitacion *= 0.92;
+            }
+
             System.out.println("\nTipo de habitación: " + tiposDeHabitaciones[hotelIndex][i]);
             System.out.println("Caracteristicas: " + caracteristicasHabitaciones[hotelIndex][i]);
-            double precioPorHabitacion = precioPorNochePorTipoHabitacion[hotelIndex][i] * diferenciaEnDias;
-            System.out.println("Precio por " + diferenciaEnDias + " dia(s): $" + precioPorHabitacion);
-        }
-
-        // Si el hotel tiene actividades, las mostramos
-        if (ofreceDiaDeSol[hotelIndex]) {
-            System.out.println("\nActividades disponibles:");
-            for (String actividad : actividades[hotelIndex]) {
-                System.out.println("- " + actividad);
+            if (habitacionesSolicitadas > 1) {
+                System.out.println("Precio de " + habitacionesSolicitadas +" habitaciones por " + diferenciaEnDias + " dia(s): $" + precioBasePorHabitacion * habitacionesSolicitadas);
+            } else {
+                System.out.println("Precio de una habitacion por " + diferenciaEnDias + " dia(s): $" + precioBasePorHabitacion);
             }
+
         }
 
         // Imprimir un resumen
