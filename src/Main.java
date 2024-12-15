@@ -1,6 +1,5 @@
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Scanner;
-import java.util.Calendar;
 
 public class Main {
 
@@ -32,17 +31,17 @@ public class Main {
     };
     static String[][] caracteristicasHabitaciones = {
             {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, vistas al mar",
-            "Cama King Size, baño privado con Jacuzzi, vistas al mar"},
+                    "Cama King Size, baño privado con Jacuzzi, vistas al mar"},
             {"Cama doble, cocina + mini sala + un baño compartidos", "Cama doble, espacio abierto + cocina + un baño + sala + barra-comedor compaprtidos",
-            "Cama doble, cocina + sala + comedor + un baño compartidos", "Cama doble, baño privado, cocina + sala + comedor compartidos",
-            "Cama king, baño privado, sala con chimenea + cocina + comedor + mini bar compartidos"},
+                    "Cama doble, cocina + sala + comedor + un baño compartidos", "Cama doble, baño privado, cocina + sala + comedor compartidos",
+                    "Cama king, baño privado, sala con chimenea + cocina + comedor + mini bar compartidos"},
             {"Cama doble, baño privado, cocina + sala + comedor + jardin compartidos", "Cama King Size, baño privado, cerca a la ciudad, cocina + sala + comedor compartidos",
                     "Cama King Size, baño privado, cocina + sala + comedor + mini granja compartido", "Cama doble, baño privado, cocina + sala + comedor + granja + mini bosque compartidos",
                     "Cama doble, baño privado, cocina + sala + comedor + bosque, salon de eventos compartidos"},
             {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, sala de estar",
                     "Cama King Size, baño privado con Jacuzzi, sala de estar"},
             {"Cama individual", "Cama doble", "Cama King Size, baño privado", "Cama King Size, baño privado, vistas al mar",
-            "Cama King Size, baño privado con Jacuzzi, vistas al mar"}
+                    "Cama King Size, baño privado con Jacuzzi, vistas al mar"}
     };
     // precios base 100.0, 120.0, 80.0, 150.0, 90.0
     static double[][] precioPorNochePorTipoHabitacion = {
@@ -81,11 +80,11 @@ public class Main {
             // solicito las fechas de inicio y fin de la estadia
             System.out.println("Ingrese la fecha de inicio de la estadia (en formato AAAA-MM-DD):");
             String fechaInicioString = scanner.nextLine();
-            Date inicioEstadia = convertirStringADate(fechaInicioString);
+            LocalDate inicioEstadia = convertirStringADate(fechaInicioString);
 
             System.out.println("Ingrese la fecha de fin de la estadia (en formato AAAA-MM-DD):");
             String fechaFinString = scanner.nextLine();
-            Date finEstadia = convertirStringADate(fechaFinString);
+            LocalDate finEstadia = convertirStringADate(fechaFinString);
 
             // solicito la cantidad de adultos, ninos y habitaciones
             System.out.println("Ingrese la cantidad de adultos que se van a hospedar:");
@@ -109,7 +108,7 @@ public class Main {
     }
 
     // func para convertir la fecha de String a Date
-    private static Date convertirStringADate(String fechaString) {
+    private static LocalDate convertirStringADate(String fechaString) {
         try {
             // formato esperado: "AAAA-MM-DD" "YYYY-MM-DD"
             String[] fechaPartes = fechaString.split("-");
@@ -117,9 +116,8 @@ public class Main {
             int mes = Integer.parseInt(fechaPartes[1]) - 1; // los meses en Java son 0=Enero 11=Diciembre
             int dia = Integer.parseInt(fechaPartes[2]);
 
-            Calendar calendario = Calendar.getInstance();
-            calendario.set(anio, mes, dia);
-            return calendario.getTime();
+            LocalDate fecha = LocalDate.of(anio, mes, dia);
+            return fecha;
         } catch (Exception e) {
             System.out.println("Error al ingresar la fecha. El formato debe ser YYYY-MM-DD.");
             return null;
@@ -127,14 +125,13 @@ public class Main {
     }
 
     // METODO PARA BUSCAR HOTEL SEGUN REQUERIMIENTOS DEL USUARIO
-    public static void buscarHotel(String ciudad, String tipo, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitaciones) {
+    public static void buscarHotel(String ciudad, String tipo, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitaciones) {
 
         boolean hotelEncontrado = false;
         int hotelSeleccionado = -1;
 
         // calculando los dias de estadia
-        long diferenciaEnMilisegundos = finEstadia.getTime() - inicioEstadia.getTime();
-        long diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24); // conversion de milisegundos a días
+        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
 
         // el alojamiento debe ser de un dia o mas
         if (diferenciaEnDias <= 0) {
@@ -159,20 +156,20 @@ public class Main {
 
                 // verifico si los dias de estadia estan dentro de los ultimos 5 dias del mes llamando la func ultimosCincoDiasDelMes
                 if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
-                    incrementoPrecio = totalPrecioBase * 0.15; // aumento del 15% del valor total
-                    totalPrecioBase *= 1.15;
+                    incrementoPrecio = totalPrecioBase * 0.15;
+                    totalPrecioBase += incrementoPrecio;
                 }
 
                 // verifico si los dias de estadia comprenden el 10 al 15 del mes llamando la func diasEntreElDiezYQuince
                 if (diasEntreElDiezYQuince(inicioEstadia, finEstadia)) {
-                    incrementoPrecio = totalPrecioBase * 0.10; // aumento del 10% del valor total
-                    totalPrecioBase *= 1.10;
+                    incrementoPrecio = totalPrecioBase * 0.10;
+                    totalPrecioBase += incrementoPrecio;
                 }
 
                 // verifico si los dias de la estadia comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
                 if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
-                    descuentoPrecio = totalPrecioBase * 0.08; // descuento del 8% del valor total
-                    totalPrecioBase *= 0.92;
+                    descuentoPrecio = totalPrecioBase * 0.08;
+                    totalPrecioBase -= descuentoPrecio;
                 }
 
                 // muestro en consola la info para el usuario
@@ -248,46 +245,33 @@ public class Main {
 
     // Calendar es una clase que da los metodos para convertir, manipular y analizar fechas y horas
     // func para verificar si los ultimos 5 dias de la estadia caen dentro de un mes
-    private static boolean ultimosCincoDiasDelMes(Date inicioEstadia, Date finEstadia) {
-        Calendar empezarCalendario = Calendar.getInstance();
-        empezarCalendario.setTime(inicioEstadia);
-
-        Calendar finalizarCalendario = Calendar.getInstance();
-        finalizarCalendario.setTime(finEstadia);
+    private static boolean ultimosCincoDiasDelMes(LocalDate inicioEstadia, LocalDate finEstadia) {
 
         // obteniendo el ultimo dia del mes para la fecha de fin estadia
-        int lastDayOfMonth = finalizarCalendario.getActualMaximum(Calendar.DAY_OF_MONTH);
+        int lastDayOfMonth = finEstadia.lengthOfMonth();
 
         // verificando si los ultimos 5 dias del mes estan dentro del rango de fechas
-        return (finalizarCalendario.get(Calendar.DAY_OF_MONTH) >= lastDayOfMonth - 4);
+        return (finEstadia.getDayOfMonth() >= lastDayOfMonth - 4 || inicioEstadia.getDayOfMonth() >= lastDayOfMonth - 4 );
     }
 
     // func para verificar si los dias de estadia estan entre el 10 al 15 del mes
-    private static boolean diasEntreElDiezYQuince(Date inicioEstadia, Date finEstadia) {
-        Calendar empezarCalendario = Calendar.getInstance();
-        empezarCalendario.setTime(inicioEstadia);
-
-        Calendar finalizarCalendario = Calendar.getInstance();
-        finalizarCalendario.setTime(finEstadia);
+    private static boolean diasEntreElDiezYQuince(LocalDate inicioEstadia, LocalDate finEstadia) {
 
         // verificando si alguna de las fechas cae entre el 10 y el 15 del mes
-        return (empezarCalendario.get(Calendar.DAY_OF_MONTH) <= 15 && finalizarCalendario.get(Calendar.DAY_OF_MONTH) >= 10);
+        return ((inicioEstadia.getDayOfMonth() <= 15 && inicioEstadia.getDayOfMonth() >= 10) ||
+                (finEstadia.getDayOfMonth() <= 15 && finEstadia.getDayOfMonth() >= 10));
     }
 
     // func para verificar si los dias de estadia estan entre del 5 al 10 del mes
-    private static boolean diasEntreElCincoYDiez(Date inicioEstadia, Date finEstadia) {
-        Calendar empezarCalendario = Calendar.getInstance();
-        empezarCalendario.setTime(inicioEstadia);
-
-        Calendar finalizarCalendario = Calendar.getInstance();
-        finalizarCalendario.setTime(finEstadia);
+    private static boolean diasEntreElCincoYDiez(LocalDate inicioEstadia, LocalDate finEstadia) {
 
         // verificando si alguna de las fechas cae entre el 5 y el 10 del mes
-        return (empezarCalendario.get(Calendar.DAY_OF_MONTH) <= 10 && finalizarCalendario.get(Calendar.DAY_OF_MONTH) >= 5);
+        return ((inicioEstadia.getDayOfMonth() <= 10 && inicioEstadia.getDayOfMonth() >= 5) ||
+                (finEstadia.getDayOfMonth() <= 10 && finEstadia.getDayOfMonth() >= 5));
     }
 
     // METODO PARA CONFIRMAR HABITACIONES
-    public static void confirmarHabitaciones(String nombreHotel, Date inicioEstadia, Date finEstadia, int adultos, int ninos, int habitacionesSolicitadas) {
+    public static void confirmarHabitaciones(String nombreHotel, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitacionesSolicitadas) {
         boolean hotelEncontrado = false;
 
         // busco el indice del hotel seleccionado por el usuario
@@ -307,8 +291,7 @@ public class Main {
         }
 
         // verifico la disponibilidad de habitaciones para las fechas seleccionadas
-        long diferenciaEnMilisegundos = finEstadia.getTime() - inicioEstadia.getTime();
-        long diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
+        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
 
         if (diferenciaEnDias <= 0) {
             System.out.println("La estadia debe ser de al menos un día.");
@@ -330,20 +313,20 @@ public class Main {
 
             // verifico si los dias de estadia estan dentro de los ultimos 5 dias del mes llamando la func ultimosCincoDiasDelMes
             if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
-                incrementoPrecio = precioBasePorHabitacion * 0.15; // aumento del 15% del valor total
-                precioBasePorHabitacion *= 1.15;
+                incrementoPrecio = precioBasePorHabitacion * 0.15;
+                precioBasePorHabitacion += incrementoPrecio;
             }
 
             // verifico si los dias de estadia comprenden el 10 al 15 del mes llamando la func diasEntreElDiezYQuince
             if (diasEntreElDiezYQuince(inicioEstadia, finEstadia)) {
-                incrementoPrecio = precioBasePorHabitacion * 0.10; // aumento del 10% del valor total
-                precioBasePorHabitacion *= 1.10;
+                incrementoPrecio = precioBasePorHabitacion * 0.10;
+                precioBasePorHabitacion += incrementoPrecio;
             }
 
             // verifico si los dias de la estadia comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
             if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
-                descuentoPrecio = precioBasePorHabitacion * 0.08; // descuento del 8% del valor total
-                precioBasePorHabitacion *= 0.92;
+                descuentoPrecio = precioBasePorHabitacion * 0.08;
+                precioBasePorHabitacion -= descuentoPrecio;
             }
 
             System.out.println("\nTipo de habitación: " + tiposDeHabitaciones[hotelIndex][i]);
