@@ -5,6 +5,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     // Global variables
@@ -12,6 +13,7 @@ public class Main {
 
     public static void main(String[] args) {
         initializeData();
+        showMenu();
     }
 
     /* ############################### INITIALIZE DATA ############################### */
@@ -116,6 +118,84 @@ public class Main {
 
     public static void addLodging(String name, String city, String category, String rating, String price, String description, String maxPeople, String rooms, String activities, String meals, String reservationData) {
         lodgings.add(Arrays.asList(name, city, category, rating, price, description, maxPeople, rooms, activities, meals, reservationData));
+    }
+
+    /* ################################# PRINT MENU ################################# */
+    public static void showMenu(){
+
+        System.out.println("\n         ___|_|_|_|_|_|_|_|_|_|_|_|_|_|_|_|___    ");
+        System.out.println("        |                                     |    ");
+        System.out.println("        |      Bienvenido(a) a Book Stay      |    ");
+        System.out.println("        |_____________________________________|    ");
+        System.out.println("               |     |     |     |     |          \n");
+
+        Scanner input = new Scanner(System.in);
+
+        while(true){
+            System.out.println("*----------------------- Menú -----------------------*");
+            System.out.println("| 1. Buscar alojamiento.                             | ");
+            System.out.println("| 2. Confirmar datos del alojamiento.                | ");
+            System.out.println("| 3. Hacer una reservación.                          | ");
+            System.out.println("| 4. Modificar una reservación.                      | ");
+            System.out.println("| 0. Salir.                                          | ");
+            System.out.println("*----------------------------------------------------*\n");
+
+            System.out.println("Ingresa el número de la opción que deseas realizar: ");
+            int option = input.nextInt();
+            input.nextLine();
+
+            switch (option){
+                case 1:
+                    System.out.println("\n*------------------ Buscar Alojamiento --------------*");
+                    System.out.println("¿A cuál ciudad deseas ir?: ");
+                    String city = input.nextLine();
+                    System.out.println("¿Qué tipo de alojamiento buscas?: ");
+                    String category = input.nextLine();
+                    System.out.println("Escribe el día inicial de la estadía (YYYY-MM-dd): ");
+                    String startDay = input.nextLine();
+                    System.out.println("Escribe el día final de la estadía (YYYY-MM-dd): ");
+                    String endDay = input.nextLine();
+                    System.out.println("Cantidad de adultos: ");
+                    int adults = input.nextInt();
+                    input.nextLine();
+                    System.out.println("Cantidad de niños: ");
+                    int children = input.nextInt();
+                    input.nextLine();
+
+                    int roomsRequired;
+                    if(category.equalsIgnoreCase("Hotel")){
+                        System.out.println("Cantidad de habitaciones: ");
+                        roomsRequired = input.nextInt();
+                        input.nextLine();
+                    }else {
+                        roomsRequired = 0;
+                    }
+
+                    List<List<String>> results = searchLodgings(city, category, startDay, endDay, adults, children, roomsRequired);
+                    System.out.println("\nLos resultados obtenidos en la búsqueda son: \n");
+                    for(List<String> result : results){
+                        printLodgingInformation(result, startDay, endDay, roomsRequired);
+                    }
+                    break;
+                case 2:
+                    System.out.println("Confirmar datos para reservación");
+                    break;
+                case 3:
+                    System.out.println("Hacer una reservación");
+                    break;
+                case 5:
+                    System.out.println("Modificar una reservación");
+                    break;
+                case 0:
+                    System.out.println("¡Gracias por usar nuestros servicios!");
+                    return;
+                default:
+                    System.out.println("Opción no válida, rectifica el menú.");
+                    break;
+            }
+        }
+
+
     }
 
     /* ################################# SEARCH DATA ################################# */
@@ -247,7 +327,7 @@ public class Main {
         System.out.println("Precio por noche: " + pricePerNight);
         System.out.println("Precio base total: " + baseTotalPrice);
         System.out.println("Precio total ajustado: " + adjustedTotalPrice);
-        System.out.println("+----------------------------------+");
+        System.out.println("+----------------------------------+\n");
     }
 
     // Method for calculating increase or discount in price of lodging
