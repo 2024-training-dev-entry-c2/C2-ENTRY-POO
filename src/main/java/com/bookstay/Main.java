@@ -9,7 +9,7 @@ public class Main {
     static List<List<String>> lodgings = new ArrayList<>();
 
     public static void main(String[] args) {
-
+        initializeData();
     }
 
     /* ############################### INITIALIZE DATA ############################### */
@@ -17,40 +17,50 @@ public class Main {
         // Lodging structure: [Name, City, Category, Rating, Price, Description, MaxPeople, Rooms, Activities, Meals, ReservationData]
         // Room structure: " Name | Description | Price | MaxAdults | MaxChildren | Quantily "
 
-        // Hotels
+        // Hoteles
         addLodging("Hotel Mar Azul", "Cartagena", "Hotel", "4.9", "",
                 "Hotel frente al mar con excelentes comodidades", "",
                 "Habitación Estándar|La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.|200000|2|1|10;" +
                         "Habitación Deluxe|La habitación deluxe tiene cama king, balcón con vista al mar, cafetera, y servicio de habitaciones las 24 horas.|400000|2|2|5;" +
-                        "Suite|La suite incluye una sala de estar separada, jacuzzi, minibar surtido, y vistas panorámicas al océano.|800000|2|2|3",
+                        "Suite|La suite incluye una sala de estar separada, jacuzzi, minibar surtido, y vistas panorámicas al océano.|800000|2|2|3;" +
+                        "Junior Suite|Habitación amplia con sofá cama, jacuzzi, minibar y vistas al mar.|600000|2|2|4;" +
+                        "Presidential Suite|Suite de lujo con varias habitaciones, jacuzzi privado, y vistas completas al océano.|1200000|4|2|2",
                 "", "", "");
 
         addLodging("Hotel Los Andes", "Bogotá", "Hotel", "4.6", "",
                 "Hotel moderno con vistas a la ciudad", "",
                 "Habitación Estándar|Una opción económica y cómoda con una cama queen, baño privado y TV por cable.|200000|2|1|10;" +
                         "Habitación Deluxe|Amplia habitación con cama king, vistas a la ciudad y minibar incluido.|400000|2|2|5;" +
-                        "Suite|La suite cuenta con una sala de estar privada, jacuzzi, y escritorio para trabajo.|800000|2|2|3",
+                        "Suite|La suite cuenta con una sala de estar privada, jacuzzi, y escritorio para trabajo.|800000|2|2|3;" +
+                        "Habitación Familiar|Habitación grande con cama queen, sofá cama, baño privado y área de estar.|500000|4|2|6;" +
+                        "Presidential Suite|Gran suite con varias habitaciones, jacuzzi privado y vistas panorámicas.|1200000|4|3|2",
                 "", "", "");
 
         addLodging("Hotel Bahia Blanca", "Santa Marta", "Hotel", "4.7", "",
                 "Hotel cerca de la playa con piscina y spa", "",
                 "Habitación Estándar|Habitación con cama king, TV por cable, aire acondicionado y baño privado.|250000|2|1|12;" +
                         "Habitación Deluxe|Habitación con vistas al mar, minibar y jacuzzi privado.|500000|2|2|6;" +
-                        "Suite Presidencial|Suite amplia con sala de estar, jacuzzi, y vistas al océano.|1000000|2|2|2",
+                        "Suite Presidencial|Suite amplia con sala de estar, jacuzzi, y vistas al océano.|1000000|2|2|2;" +
+                        "Habitación Superior|Con cama queen, minibar y baño privado, ideal para estancias largas.|300000|2|1|8;" +
+                        "Habitación Conectada|Habitaciones comunicadas para familias grandes, con 2 camas queen y 2 baños privados.|550000|4|2|5",
                 "", "", "");
 
         addLodging("Hotel Mirador del Valle", "Medellín", "Hotel", "4.8", "",
                 "Hotel con una vista espectacular de la ciudad", "",
                 "Habitación Estándar|Habitación con cama queen, escritorio y baño privado.|220000|2|1|8;" +
                         "Habitación Deluxe|Habitación con vistas a las montañas, minibar y cafetera.|400000|2|2|4;" +
-                        "Suite|Suite con salón independiente, jacuzzi y minibar.|850000|2|2|3",
+                        "Suite|Suite con salón independiente, jacuzzi y minibar.|850000|2|2|3;" +
+                        "Junior Suite|Habitación más espaciosa con sofá cama, jacuzzi, y minibar.|600000|2|2|4;" +
+                        "Suite Presidencial|Suite con varias habitaciones, jacuzzi privado y vistas panorámicas de la ciudad.|1500000|4|3|2",
                 "", "", "");
 
         addLodging("Hotel Costa Dorada", "Cartagena", "Hotel", "4.5", "",
                 "Hotel frente a la playa con restaurante y gimnasio", "",
                 "Habitación Estándar|Habitación con cama queen, aire acondicionado, TV por cable y baño privado.|200000|2|1|10;" +
                         "Habitación Deluxe|Habitación con vistas al mar, minibar y escritorio.|400000|2|2|6;" +
-                        "Suite Familiar|Suite con 2 habitaciones, sala de estar y vista al océano.|600000|4|2|4",
+                        "Suite Familiar|Suite con 2 habitaciones, sala de estar y vista al océano.|600000|4|2|4;" +
+                        "Habitación Ejecutiva|Con cama king, escritorio de trabajo y minibar.|450000|2|2|5;" +
+                        "Suite Presidencial|Gran suite con sala de estar, jacuzzi y vistas completas al mar.|1200000|4|3|2",
                 "", "", "");
 
         // Apartaments
@@ -105,6 +115,8 @@ public class Main {
     public static void addLodging(String name, String city, String category, String rating, String price, String description, String maxPeople, String rooms, String activities, String meals, String reservationData) {
         lodgings.add(Arrays.asList(name, city, category, rating, price, description, maxPeople, rooms, activities, meals, reservationData));
     }
+
+
 
 
 }
