@@ -176,14 +176,17 @@ public class Main {
                         printLodgingInformation(result, startDay, endDay, roomsRequired);
                     }
 
-                    System.out.println("\n¿Desea hacer una reservación? (Si - No)");
+                    System.out.println("\n¿Deseas hacer una reservación? (Si - No)");
                     String response = input.nextLine();
 
                     if(response.equalsIgnoreCase("Si")){
                         System.out.println("\n*------------------ Iniciar la Reservación --------------*");
-                        System.out.println("*-- Confirmación de datos");
+                        System.out.println("*-- Confirmación de datos de estadia");
+                        System.out.println("Escribe el nombre del alojamiento en que deseas realizar la reserva: ");
+                        String lodgingName = input.nextLine();
+                        confirmLodging(lodgingName, startDay, endDay, adults, children, roomsRequired);
                     }else{
-                        System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
+                        System.out.println("\nSerás redirigido(a) al menú principal. Espera un momento...");
                     }
                     break;
                 case 3:
@@ -365,4 +368,85 @@ public class Main {
         return ChronoUnit.DAYS.between(start, end);
     }
 
+    /* ################################# CONFIRM DATA ################################# */
+    public static String confirmLodging(String lodgingName, String startDate, String endDate, int adults, int children, int roomsNeeded) {
+        Scanner scanner = new Scanner(System.in);
+
+        for (List<String> lodging : lodgings) {
+            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
+                System.out.println("+----------------"+ lodging.get(0)+ "----------------+");
+
+                if (lodging.get(2).equalsIgnoreCase("Hotel")) {
+                    String roomsInfo = lodging.get(7);
+                    String[] roomTypes = roomsInfo.split(";");
+
+                    System.out.println("Tipos de habitaciones disponibles:");
+                    for (String roomType : roomTypes) {
+                        String[] roomDetails = roomType.split("\\|");
+                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
+                        int availableRooms = Integer.parseInt(roomDetails[5]) - reservedRooms;
+
+                        if (availableRooms > 0) {
+                            System.out.println("- Nombre: " + roomDetails[0]);
+                            System.out.println("  Descripción: " + roomDetails[1]);
+                            System.out.println("  Precio por noche: " + roomDetails[2]);
+                            System.out.println("  Habitaciones disponibles: " + availableRooms);
+                        }
+                    }
+
+                    int totalRoomsSelected = 0;
+                    StringBuilder selectedRooms = new StringBuilder();
+
+                    System.out.println("\nIndica cuántas habitaciones deseas de cada tipo:");
+                    for (String roomType : roomTypes) {
+                        String[] roomDetails = roomType.split("\\|");
+                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
+                        int availableRooms = Integer.parseInt(roomDetails[5]) - reservedRooms;
+
+                        if (availableRooms > 0) {
+                            System.out.print("¿Cuántas '" + roomDetails[0] + "' deseas reservar? (0 para ninguna): ");
+                            int roomsToReserve = scanner.nextInt();
+
+                            if (roomsToReserve > 0 && roomsToReserve <= availableRooms) {
+                                totalRoomsSelected += roomsToReserve;
+                                selectedRooms.append(roomDetails[0]).append(",");
+                            }
+
+                            if (totalRoomsSelected >= roomsNeeded) {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (totalRoomsSelected < roomsNeeded) {
+                        System.out.println("No se seleccionaron suficientes habitaciones para la reserva.");
+                        return "Confirmación fallida para: " + lodgingName;
+                    } else {
+                        System.out.println("Habitaciones seleccionadas con éxito: " + selectedRooms.toString());
+                        System.out.println("+--------------------------------+");
+                        return "Confirmación exitosa para: " + lodgingName;
+                    }
+                } else if (lodging.get(2).equalsIgnoreCase("Dia de Sol")) {
+                    System.out.println("Descripción: " + lodging.get(5));
+                    System.out.println("Actividades: " + lodging.get(8));
+                    System.out.println("Comidas: " + lodging.get(9));
+                    System.out.println("+--------------------------------+");
+                    return "Confirmación exitosa para: " + lodgingName;
+                } else {
+                    int reservedCapacity = countReservedCapacity(lodging.get(10), startDate, endDate);
+                    int maxCapacity = Integer.parseInt(lodging.get(6));
+
+                    if ((adults + children + reservedCapacity) > maxCapacity) {
+                        System.out.println("No hay suficiente capacidad en este alojamiento.");
+                        return "Confirmación fallida para: " + lodgingName;
+                    }
+
+                    System.out.println("Descripción: " + lodging.get(5));
+                    System.out.println("+--------------------------------+");
+                    return "Confirmación exitosa para: " + lodgingName;
+                }
+            }
+        }
+        return "El alojamiento solicitado no tiene disponibilidad.";
+    }
 }
