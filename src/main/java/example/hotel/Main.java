@@ -1,5 +1,7 @@
 package example.hotel;
 
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         // Hoteles
@@ -10,7 +12,6 @@ public class Main {
         double[] precios = new double[100];
         String[][] hotelFechasDisponibles = new String[100][2];
 
-        // Inicializar los 6 hoteles
         hotelNombres[0] = "Hotel Buenos Aires";
         tipoAlojamiento[0] = "Hotel";
         ciudades[0] = "Buenos Aires";
@@ -53,6 +54,10 @@ public class Main {
         precios[5] = 100;
         hotelFechasDisponibles[5] = new String[]{"2024-12-20", "2024-12-30"};
 
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Bienvenido a HotelApp!");
+        showMenu(scanner);
 
         // Habitaciones
         int[] habitacionHotelID = new int[500];
@@ -60,7 +65,6 @@ public class Main {
         String[] habitacionCaracteristicas = new String[500];
         double[] habitacionPrecios = new double[500];
 
-        // Inicializar las 6 habitaciones
         habitacionHotelID[0] = 0;
         habitacionTipos[0] = "Single";
         habitacionCaracteristicas[0] = "2 camas simples, aire acondicionado, WiFi";
@@ -91,12 +95,39 @@ public class Main {
         habitacionCaracteristicas[5] = "Juegos, spa, refrigerio incluido";
         habitacionPrecios[5] = 100.0;
 
-
-        // Reservas (se mantienen vacíos inicialmente)
+        // Reservas
         int[] reservaID = new int[100];
         int[] reservaHotelID = new int[100];
         int[] reservaHabitacionID = new int[100];
         String[] reservaUsuario = new String[100];
         String[][] reservaFechas = new String[100][2];
     }
+
+
+    public static void showMenu(Scanner scanner) {
+        int option = 0;
+        do {
+            System.out.println("\nSeleccione una opción:");
+            System.out.println("1. Realizar una reserva");
+            System.out.println("2. Actualizar una reserva");
+            System.out.println("3. Cancelar una reserva");
+            System.out.println("4. Salir");
+
+            option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1 -> System.out.println("Realizar una reserva");
+                case 2 -> System.out.println("Actualizar una reserva");
+                case 3 -> System.out.println("Cancelar una reserva");
+                case 4 -> System.out.println("Salir");
+                default -> {
+                    System.out.println("Opción inválida");
+                }
+
+            }
+        } while (option != 4);
+    }
+
+
 }
