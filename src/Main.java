@@ -457,19 +457,7 @@ public class Main {
                 System.out.println("Hubo un problema al actualizar la disponibilidad de habitaciones.");
             }
 
-            // opciones para crear nueva, actualizar o salir del programa
-            System.out.println("Elija una de las siguientes opciones: \n1. Crear una nueva reservar" +
-                    "\n2. Actualizar reserva \n3. salir de Starlight Booking");
-            String respuestaActualizar = scanner.nextLine();
-
-            if (respuestaActualizar.equalsIgnoreCase("1")) {
-                continuarBuscandoAlojamiento = true;
-            } else if (respuestaActualizar.equalsIgnoreCase("2")){
-                actualizarReserva();
-            } else {
-                System.out.println("¡Gracias por reservar con Starlight Booking!");
-                continuarBuscandoAlojamiento = false;
-            }
+            menuBooking();
 
         } else {
             System.out.println("La reserva no se realizó.");
@@ -532,18 +520,38 @@ public class Main {
                 // actualizo la reserva con la nueva habitación
                 reservas[indiceReserva][5] = reservas[indiceReserva][5].replace(habitacionActual, tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][nuevaHabitacion - 1]);
                 System.out.println("La habitación ha sido cambiada exitosamente.");
+                menuBooking();
             } else if (eleccion.equalsIgnoreCase("alojamiento")) {
                 // elimino la reserva actual
-                System.out.println("Se ha eliminado la reserva.");
+                System.out.println("Se ha eliminado la reserva actual.");
                 reservas[indiceReserva] = null;
                 correosReservas[indiceReserva] = null;
                 nacimientosReservas[indiceReserva] = null;
 
                 // Redirigir a crear una nueva reserva
                 System.out.println("Redirigiendo a la creación de una nueva reserva...");
+                continuarBuscandoAlojamiento = true;
             }
         } else {
             System.out.println("No se encontró una reserva con ese correo o fecha de nacimiento.");
+        }
+    }
+
+    // METODO MENU
+    public static void menuBooking() {
+        Scanner scanner = new Scanner(System.in);
+        // opciones para crear nueva, actualizar o salir del programa
+        System.out.println("Elija una de las siguientes opciones: \n1. Crear una nueva reservar" +
+                "\n2. Actualizar reserva \n3. salir de Starlight Booking");
+        String respuestaActualizar = scanner.nextLine();
+
+        if (respuestaActualizar.equalsIgnoreCase("1")) {
+            continuarBuscandoAlojamiento = true;
+        } else if (respuestaActualizar.equalsIgnoreCase("2")){
+            actualizarReserva();
+        } else {
+            System.out.println("¡Gracias por reservar con Starlight Booking!");
+            continuarBuscandoAlojamiento = false;
         }
     }
 }
