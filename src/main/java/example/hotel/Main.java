@@ -3,21 +3,20 @@ package example.hotel;
 import java.util.Scanner;
 
 public class Main {
-    // Hoteles
+
     static String[] hotelNombres = new String[100];
     static String[] tipoAlojamiento = new String[100];
     static String[] ciudades = new String[100];
     static int[] calificaciones = new int[100];
     static double[] precios = new double[100];
-    static String[][] hotelFechasDisponibles = new String[100][2];
 
-    // Habitaciones
+
     static int[] habitacionHotelID = new int[500];
     static String[] habitacionTipos = new String[500];
     static String[] habitacionCaracteristicas = new String[500];
     static double[] habitacionPrecios = new double[500];
 
-    // Reservas
+
     static int[] reservaID = new int[100];
     static int[] reservaHotelID = new int[100];
     static int[] reservaHabitacionID = new int[100];
@@ -25,47 +24,43 @@ public class Main {
     static String[][] reservaFechas = new String[100][2];
 
     public static void main(String[] args) {
+
         hotelNombres[0] = "Hotel Buenos Aires";
         tipoAlojamiento[0] = "Hotel";
         ciudades[0] = "Buenos Aires";
         calificaciones[0] = 4;
         precios[0] = 100;
-        hotelFechasDisponibles[0] = new String[]{"2024-12-01", "2024-12-10"};
 
         hotelNombres[1] = "Hotel Mar del Plata";
         tipoAlojamiento[1] = "Hotel";
         ciudades[1] = "Mar del Plata";
         calificaciones[1] = 3;
         precios[1] = 80;
-        hotelFechasDisponibles[1] = new String[]{"2024-12-05", "2024-12-15"};
 
         hotelNombres[2] = "Apartamento Cordoba";
         tipoAlojamiento[2] = "Apartamento";
         ciudades[2] = "Cordoba";
         calificaciones[2] = 2;
         precios[2] = 50;
-        hotelFechasDisponibles[2] = new String[]{"2024-12-20", "2024-12-30"};
 
         hotelNombres[3] = "Finca Rosario";
         tipoAlojamiento[3] = "Finca";
         ciudades[3] = "Rosario";
         calificaciones[3] = 5;
         precios[3] = 150;
-        hotelFechasDisponibles[3] = new String[]{"2024-12-01", "2024-12-10"};
 
         hotelNombres[4] = "Dia de Sol Buenos Aires";
         tipoAlojamiento[4] = "Dia de Sol";
         ciudades[4] = "Buenos Aires";
         calificaciones[4] = 4;
         precios[4] = 120;
-        hotelFechasDisponibles[4] = new String[]{"2024-12-05", "2024-12-15"};
 
         hotelNombres[5] = "Dia de Sol Mar del Plata";
         tipoAlojamiento[5] = "Dia de Sol";
         ciudades[5] = "Mar del Plata";
         calificaciones[5] = 3;
         precios[5] = 100;
-        hotelFechasDisponibles[5] = new String[]{"2024-12-20", "2024-12-30"};
+
 
         habitacionHotelID[0] = 0;
         habitacionTipos[0] = "Single";
@@ -116,21 +111,19 @@ public class Main {
             scanner.nextLine();
 
             switch (option) {
-                case 1 -> buscarHoteles(scanner, hotelNombres, tipoAlojamiento, ciudades, hotelFechasDisponibles);
+                case 1 -> buscarHoteles(scanner, hotelNombres, tipoAlojamiento, ciudades, habitacionHotelID, habitacionTipos, habitacionCaracteristicas, habitacionPrecios);
                 case 2 -> System.out.println("Actualizar una reserva");
                 case 3 -> System.out.println("Cancelar una reserva");
                 case 4 -> System.out.println("Salir");
-                default -> {
-                    System.out.println("Opción inválida");
-                }
+                default -> System.out.println("Opción inválida");
             }
         } while (option != 4);
     }
 
-    public static void buscarHoteles(Scanner scanner, String[] hotelNombres, String[] tipoAlojamiento, String[]
-            ciudades, String[][] hotelFechasDisponibles) {
+    public static void buscarHoteles(Scanner scanner, String[] hotelNombres, String[] tipoAlojamiento, String[] ciudades, int[] habitacionHotelID, String[] habitacionTipos, String[] habitacionCaracteristicas, double[] habitacionPrecios) {
         System.out.println("\n--- Búsqueda de Hoteles ---");
 
+        // Obtener ciudades disponibles
         String[] ciudadesDisponibles = obtenerValoresUnicos(ciudades);
         System.out.println("\nCiudades disponibles:");
         for (int i = 0; i < ciudadesDisponibles.length; i++) {
@@ -150,28 +143,54 @@ public class Main {
         int tipoSeleccionado = scanner.nextInt() - 1;
         scanner.nextLine(); // Consumir la nueva línea
 
-        System.out.print("Ingrese la fecha de inicio (YYYY-MM-DD): ");
+        // Ingresar datos de la reserva
+        System.out.print("Ingrese la cantidad de adultos: ");
+        int cantidadAdultos = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea
+        System.out.print("Ingrese la cantidad de niños: ");
+        int cantidadNinos = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea
+        System.out.print("Ingrese la cantidad de habitaciones: ");
+        int cantidadHabitaciones = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea
+        System.out.print("Ingrese la fecha de inicio (DD/MM/YYYY): ");
         String fechaInicio = scanner.nextLine();
-        System.out.print("Ingrese la fecha de fin (YYYY-MM-DD): ");
+        System.out.print("Ingrese la fecha de fin (DD/MM/YYYY): ");
         String fechaFin = scanner.nextLine();
 
-        System.out.println("\n--- Resultados de la búsqueda ---");
+        // Mostrar hoteles disponibles
+        System.out.println("\n--- Hoteles disponibles ---");
         for (int i = 0; i < hotelNombres.length && hotelNombres[i] != null; i++) {
-            if (ciudades[i].equals(ciudadesDisponibles[ciudadSeleccionada]) &&
-                    tipoAlojamiento[i].equals(tiposDisponibles[tipoSeleccionado]) &&
-                    hotelFechasDisponibles[i][0].compareTo(fechaInicio) <= 0 &&
-                    hotelFechasDisponibles[i][1].compareTo(fechaFin) >= 0) {
+            if (ciudades[i].equals(ciudadesDisponibles[ciudadSeleccionada]) && tipoAlojamiento[i].equals(tiposDisponibles[tipoSeleccionado])) {
+                // Calcular precio total de la estadía
+                double precioBase = precios[i];
+                int diasEstadia = calcularDiasEstadia(fechaInicio, fechaFin);
+                double precioTotal = precioBase * cantidadHabitaciones * diasEstadia;
 
-                System.out.println("Hotel encontrado:");
-                System.out.println("  Nombre: " + hotelNombres[i]);
-                System.out.println("  Tipo: " + tipoAlojamiento[i]);
-                System.out.println("  Ciudad: " + ciudades[i]);
-                System.out.println("  Fechas disponibles: " + hotelFechasDisponibles[i][0] + " - " + hotelFechasDisponibles[i][1]);
+                // Aplicar aumentos y descuentos
+                precioTotal = aplicarAumentosYDescuentos(precioTotal, fechaInicio, fechaFin);
+
+                System.out.println("Hotel: " + hotelNombres[i]);
+                System.out.println("  Calificación: " + calificaciones[i]);
+                System.out.println("  Precio por noche: " + precios[i]);
+                System.out.println("  Precio total: " + precioTotal);
                 System.out.println("--------------------");
             }
         }
     }
 
+    // Función para calcular la cantidad de días de estadía
+    public static int calcularDiasEstadia(String fechaInicio, String fechaFin) {
+        // Implementar lógica para calcular la diferencia en días entre fechaInicio y fechaFin
+        // ...
+        return 0; // Devolver la cantidad de días
+    }
+
+    // Función para aplicar aumentos y descuentos según las fechas
+    public static double aplicarAumentosYDescuentos(double precioTotal, String fechaInicio, String fechaFin) {
+        // Si la
+        return precioTotal; // Devolver el precio total con los aumentos/descuentos aplicados
+    }
     public static String[] obtenerValoresUnicos(String[] arr) {
         String[] unicos = new String[arr.length];
         int contador = 0;
@@ -191,6 +210,33 @@ public class Main {
                 return true;
             }
         }
+        return false;
+    }
+
+    public static int compararFechas(String fecha1, String fecha2) {
+        String[] partesFecha1 = fecha1.split("/");
+        int dia1 = Integer.parseInt(partesFecha1[0]);
+        int mes1 = Integer.parseInt(partesFecha1[1]);
+        int anio1 = Integer.parseInt(partesFecha1[2]);
+
+        String[] partesFecha2 = fecha2.split("/");
+        int dia2 = Integer.parseInt(partesFecha2[0]);
+        int mes2 = Integer.parseInt(partesFecha2[1]);
+        int anio2 = Integer.parseInt(partesFecha2[2]);
+
+        if (anio1 != anio2) {
+            return anio1 - anio2;
+        }
+        if (mes1 != mes2) {
+            return mes1 - mes2;
+        }
+        return dia1 - dia2;
+    }
+
+    public static boolean habitacionDisponible(int habitacionId, String fechaInicio, String fechaFin) {
+
+
+
         return false;
     }
 }
