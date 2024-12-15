@@ -29,5 +29,13 @@ public class Main {
                 "Juegos, spa, refrigerio incluido"
         };
         double[] habitacionPrecios = {50.0, 75.0, 120.0, 55.0, 150.0, 100.0};
+
+        // reservas
+        int[] reservaID = new int[100];
+        int[] reservaHotelID = new int[100];
+        int[] reservaHabitacionID = new int[100];
+        String[] reservaUsuario = new String[100];
+        String[][] reservaFechas = new String[100][2];
+
     }
 }
