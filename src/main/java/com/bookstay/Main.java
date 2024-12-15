@@ -134,9 +134,8 @@ public class Main {
         while(true){
             System.out.println("*----------------------- Menú -----------------------*");
             System.out.println("| 1. Buscar alojamiento.                             | ");
-            System.out.println("| 2. Confirmar datos del alojamiento.                | ");
-            System.out.println("| 3. Hacer una reservación.                          | ");
-            System.out.println("| 4. Modificar una reservación.                      | ");
+            System.out.println("| 2. Hacer una reservación.                          | ");
+            System.out.println("| 3. Modificar una reservación.                      | ");
             System.out.println("| 0. Salir.                                          | ");
             System.out.println("*----------------------------------------------------*\n");
 
@@ -176,9 +175,16 @@ public class Main {
                     for(List<String> result : results){
                         printLodgingInformation(result, startDay, endDay, roomsRequired);
                     }
-                    break;
-                case 2:
-                    System.out.println("Confirmar datos para reservación");
+
+                    System.out.println("\n¿Desea hacer una reservación? (Si - No)");
+                    String response = input.nextLine();
+
+                    if(response.equalsIgnoreCase("Si")){
+                        System.out.println("\n*------------------ Iniciar la Reservación --------------*");
+                        System.out.println("*-- Confirmación de datos");
+                    }else{
+                        System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
+                    }
                     break;
                 case 3:
                     System.out.println("Hacer una reservación");
