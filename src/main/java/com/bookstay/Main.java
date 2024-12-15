@@ -1,5 +1,6 @@
 package com.bookstay;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -116,6 +117,99 @@ public class Main {
         lodgings.add(Arrays.asList(name, city, category, rating, price, description, maxPeople, rooms, activities, meals, reservationData));
     }
 
+    /* ################################# SEARCH DATA ################################# */
+    public static List<List<String>> searchLodgings(String city, String category, String startDate, String endDate, int adults, int children, int roomsNeeded) {
+        List<List<String>> results = new ArrayList<>();
+        for (List<String> lodging : lodgings) {  // Check each lodging on the list
+            String lodgingCity = lodging.get(1);
+            String lodgingCategory = lodging.get(2);
+
+            if (lodgingCity.equalsIgnoreCase(city) && lodgingCategory.equalsIgnoreCase(category)) {
+                int totalPeople = adults + children;
+
+                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
+                    String roomsInfo = lodging.get(7);
+                    String[] roomTypes = roomsInfo.split(";");
+                    int roomsAvailable = 0;
+
+                    for (String roomType : roomTypes) { // Validate which room types are valid and how many are available
+                        String[] roomDetails = roomType.split("\\|");
+                        int maxAdults = Integer.parseInt(roomDetails[3]);
+                        int maxChildren = Integer.parseInt(roomDetails[4]);
+                        int roomCount = Integer.parseInt(roomDetails[5]);
+
+                        // Calculate currently reserved rooms for this room type
+                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
+
+                        if (totalPeople <= (maxAdults + maxChildren) && (roomCount - reservedRooms) > 0) {
+                            roomsAvailable += (roomCount - reservedRooms);
+                        }
+                    }
+
+                    if (roomsAvailable >= roomsNeeded) {
+                        results.add(lodging);
+                    }
+                } else {
+                    int maxPeople = Integer.parseInt(lodging.get(6));
+                    int reservedCapacity = countReservedCapacity(lodging.get(10), startDate, endDate);
+
+                    if ((totalPeople + reservedCapacity) <= maxPeople) {
+                        results.add(lodging);
+                    }
+                }
+            }
+        }
+        return results;
+    }
+
+    // Auxiliary method to count how many reserved rooms there are of that type in the hotel
+    private static int countReservedRooms(String reservationData, String roomType, String startDate, String endDate) {
+        if (reservationData.isEmpty()) return 0;
+        int reservedCount = 0;
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        String[] reservations = reservationData.split(";");
+
+        for (String reservation : reservations) {
+            String[] details = reservation.split(",");
+            if (details.length > 8 && details[7].equalsIgnoreCase(roomType)) {
+                LocalDate reservationStart = LocalDate.parse(details[3]);
+                LocalDate reservationEnd = LocalDate.parse(details[4]);
+
+                if (datesOverlap(start, end, reservationStart, reservationEnd)) {
+                    reservedCount++;
+                }
+            }
+        }
+        return reservedCount;
+    }
+
+    // Auxiliary method to count how many spaces are reserved in the other types of accommodation: Farm Stay, Apartment and Day Resort.
+    private static int countReservedCapacity(String reservationData, String startDate, String endDate) {
+        if (reservationData.isEmpty()) return 0;
+        int totalReserved = 0;
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        String[] reservations = reservationData.split(";");
+
+        for (String reservation : reservations) {
+            String[] details = reservation.split(",");
+            if (details.length > 6) {
+                LocalDate reservationStart = LocalDate.parse(details[3]);
+                LocalDate reservationEnd = LocalDate.parse(details[4]);
+
+                if (datesOverlap(start, end, reservationStart, reservationEnd)) {
+                    totalReserved += Integer.parseInt(details[5]) + Integer.parseInt(details[6]);
+                }
+            }
+        }
+        return totalReserved;
+    }
+
+    // Auxiliary method to check if dates cross between reservations
+    private static boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
+        return (start1.isBefore(end2) || start1.equals(end2)) && (end1.isAfter(start2) || end1.equals(start2));
+    }
 
 
 
