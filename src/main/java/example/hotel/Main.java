@@ -16,5 +16,18 @@ public class Main {
                 {"2024-12-05", "2024-12-15"},
                 {"2024-12-20", "2024-12-30"}
         };
+
+        // habitaciones
+        int[] habitacionHotelID = {0, 0, 1, 2, 2, 3, 4, 5};
+        String[] habitacionTipos = {"Single", "Double", "Suite", "Single", "Activities", "Activities"};
+        String[] habitacionCaracteristicas = {
+                "2 camas simples, aire acondicionado, WiFi",
+                "1 cama doble, aire acondicionado, TV",
+                "1 cama king size, jacuzzi, TV de pantalla plana",
+                "2 camas simples, desayuno incluido, WiFi",
+                "Piscina, parque, almuerzo incluido",
+                "Juegos, spa, refrigerio incluido"
+        };
+        double[] habitacionPrecios = {50.0, 75.0, 120.0, 55.0, 150.0, 100.0};
     }
 }
