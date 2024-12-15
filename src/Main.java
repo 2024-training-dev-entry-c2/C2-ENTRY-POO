@@ -65,6 +65,8 @@ public class Main {
 
     public static void main(String[] args) {
 
+        System.out.println("¡Bienvenido a Starlight Booking!");
+        System.out.println("--- * --- * --- * --- * --- * ---");
         // Crear un objeto Scanner para leer la entrada del usuario
         Scanner scanner = new Scanner(System.in);
 
@@ -176,8 +178,6 @@ public class Main {
                 // muestro en consola la info para el usuario
                 System.out.println("Alojamiento encontrado:");
                 System.out.println("Alojamiento: " + nombreDelAlojamiento[i]);
-//                 System.out.println("Ciudad: " + ciudadDestino[i]);
-//                 System.out.println("Tipo: " + tipoDeAlojamiento[i]);
                 System.out.println("Calificacion de: " + calificacionDelHotel[i] + " estrellas");
                 System.out.println("Precio base por noche: $" + precioBase);
                 System.out.println("Precio total base por " + diferenciaEnDias + " dia(s) y " + habitaciones + " habitacion(es): $" + totalPrecioBase);
@@ -219,9 +219,6 @@ public class Main {
 //                if (incrementoPrecio > 0) {
 //                    System.out.println("Aumento aplicado: +$" + incrementoPrecio);
 //                }
-//
-//                 System.out.println("Max Adultos: " + maximoAdultos[i]);
-//                 System.out.println("Max Niños: " + maximoNinos[i]);
 //                 System.out.println("Habitaciones disponibles: " + habitacionesDisponibles[i]);
                 System.out.println("--------------------------");
             }
@@ -232,8 +229,6 @@ public class Main {
             Scanner scanner = new Scanner(System.in);
             System.out.println("Seleccione el alojamiento que desea (ingrese el nombre del alojamiento):");
             String hotelSeleccionadoPorUsuario = scanner.nextLine();
-//            System.out.println("Ingrese nuevamente la cantidad de habitaciones que desea:");
-//            int habitacionesSolicitadas = scanner.nextInt();
 
             // confirmar las habitaciones para el alojamiento seleccionado
             confirmarHabitaciones(hotelSeleccionadoPorUsuario, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
@@ -311,7 +306,7 @@ public class Main {
             return;
         }
 
-        // Verificamos la disponibilidad de habitaciones para las fechas seleccionadas
+        // verifico la disponibilidad de habitaciones para las fechas seleccionadas
         long diferenciaEnMilisegundos = finEstadia.getTime() - inicioEstadia.getTime();
         long diferenciaEnDias = diferenciaEnMilisegundos / (1000 * 60 * 60 * 24);
 
@@ -423,7 +418,6 @@ public class Main {
             System.out.println("Ingrese la hora de llegada (HH:mm):");
             horaLlegadaUsuario = scanner.nextLine();
 
-
             // guardo la reserva
             correosReservas[reservaCount] = correoUsuario;
             nacimientosReservas[reservaCount] = "01/01/1990";  // Ejemplo de fecha de nacimiento, debería ser ingresada
@@ -473,7 +467,7 @@ public class Main {
 //        System.out.println("Ingrese su fecha de nacimiento (DD/MM/YYYY):");
 //        String nacimiento = scanner.nextLine();
 
-        // Buscamos la reserva
+        // busco la reserva
         boolean encontrada = false;
         int indiceReserva = -1;
 
@@ -507,7 +501,7 @@ public class Main {
                     return;
                 }
 
-                // Mostrar habitaciones disponibles para el cambio
+                // mostrar habitaciones disponibles para el cambio
                 System.out.println("Habitaciones disponibles:");
                 for (int i = 0; i < tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length; i++) {
                     System.out.println((i + 1) + ". " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][i]);
