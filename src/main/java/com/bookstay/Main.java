@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class Main {
     // Global variables
     static List<List<String>> lodgings = new ArrayList<>();
+    static List<List<String>> reservations = new ArrayList<>();
 
     public static void main(String[] args) {
         initializeData();
@@ -133,8 +134,8 @@ public class Main {
 
         while(true){
             System.out.println("*----------------------- Menú -----------------------*");
-            System.out.println("| 1. Buscar alojamiento.                             | ");
-            System.out.println("| 2. Hacer una reservación.                          | ");
+            System.out.println("| 1. Buscar y reservar alojamiento.                  | ");
+            System.out.println("| 2. Consultar reservaciones realizadas.             | ");
             System.out.println("| 3. Modificar una reservación.                      | ");
             System.out.println("| 0. Salir.                                          | ");
             System.out.println("*----------------------------------------------------*\n");
@@ -184,10 +185,10 @@ public class Main {
                         System.out.println("Escribe el nombre del alojamiento en que deseas realizar la reserva: ");
                         String lodgingName = input.nextLine();
                         List<String> availableRooms = confirmLodging(lodgingName, startDay, endDay, adults , children, roomsRequired);
+                        List<String> selectedRooms = new ArrayList<>();
 
                         if (!availableRooms.isEmpty()) {
                             System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:");
-                            List<String> selectedRooms = new ArrayList<>();
                             int countSelectedRooms = 0;
                             for (String room : availableRooms) {
                                 if(countSelectedRooms < roomsRequired){
@@ -218,7 +219,23 @@ public class Main {
                         String selection = input.nextLine();
                         if(selection.equalsIgnoreCase("Si")){
                             System.out.println("\n*----- Datos personales de la Reservación -----*");
+                            System.out.println("Nombre: ");
+                            String firstName = input.nextLine();
+                            System.out.println("Apellido: ");
+                            String lastName = input.nextLine();
+                            System.out.println("Fecha de nacimiento (YYYY-MM-dd): ");
+                            String dayBirth = input.nextLine();
+                            System.out.println("Correo electrónico: ");
+                            String email = input.nextLine();
+                            System.out.println("Nacionalidad: ");
+                            String nationality = input.nextLine();
+                            System.out.println("Número de teléfono: ");
+                            String phoneNumber = input.nextLine();
+                            System.out.println("Hora de llegada (HH:mm): ");
+                            String arrivalTime = input.nextLine();
 
+                            String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDay, endDay, adults, children, selectedRooms, dayBirth);
+                            System.out.println(reservationMessage);
                         }else{
                             System.out.println("\nProceso de reserva cancelado.");
                             System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
@@ -228,10 +245,17 @@ public class Main {
                         System.out.println("\nSerás redirigido(a) al menú principal. Espera un momento...");
                     }
                     break;
-                case 3:
-                    System.out.println("Hacer una reservación");
+                case 2:
+                    System.out.println("\n*------------------ Consultar Reservaciones --------------*");
+                    System.out.println("Ingresa tu correo electrónico: ");
+                    String email = input.nextLine();
+                    System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
+                    String dayBirth = input.nextLine();
+
+                    String reservationInfo = consultReservations(email, dayBirth);
+                    System.out.println(reservationInfo);
                     break;
-                case 5:
+                case 3:
                     System.out.println("Modificar una reservación");
                     break;
                 case 0:
@@ -439,5 +463,49 @@ public class Main {
             }
         }
         return new ArrayList<>();
+    }
+
+    /* ################################# MAKE RESERVATION ################################# */
+    public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime, String lodgingName, String startDate, String endDate, int adults, int children, List<String> selectedRooms, String dayBirth) {
+        for (List<String> lodging : lodgings) {
+            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
+                StringBuilder reservationData = new StringBuilder(lodging.get(10));
+                for (String room : selectedRooms) {
+                    reservationData.append(firstName).append(",").append(lastName).append(",").append(email).append(",").append(startDate).append(",").append(endDate)
+                            .append(",").append(adults).append(",").append(children).append(",").append(room).append(";");
+                }
+                lodging.set(10, reservationData.toString());
+                reservations.add(Arrays.asList(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDate, endDate, String.valueOf(adults), String.valueOf(children), selectedRooms.toString(), dayBirth));
+                return "Se ha realizado la reserva con éxito.";
+            }
+        }
+        return "No se pudo realizar la reserva. El alojamiento no está disponible.";
+    }
+    //Method to consult the reservations
+    public static String consultReservations(String email, String dayBirth) {
+        StringBuilder result = new StringBuilder();
+        boolean found = false;
+
+        for (List<String> reservation : reservations) {
+            if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
+                found = true;
+                result.append("\n*---------------- Detalles de la Reservación ----------------*\n")
+                        .append("Nombre: ").append(reservation.get(0)).append(" ").append(reservation.get(1)).append("\n")
+                        .append("Correo: ").append(reservation.get(2)).append("\n")
+                        .append("Alojamiento: ").append(reservation.get(6)).append("\n")
+                        .append("Fecha de llegada: ").append(reservation.get(7)).append("\n")
+                        .append("Fecha de salida: ").append(reservation.get(8)).append("\n")
+                        .append("Habitaciones reservadas: ").append(reservation.get(11)).append("\n")
+                        .append("Hora de llegada: ").append(reservation.get(5)).append("\n")
+                        .append("Nacionalidad: ").append(reservation.get(3)).append("\n")
+                        .append("Teléfono: ").append(reservation.get(4)).append("\n");
+            }
+        }
+
+        if (!found) {
+            return "No se encontraron reservaciones con los datos proporcionados.";
+        }
+
+        return result.toString();
     }
 }
