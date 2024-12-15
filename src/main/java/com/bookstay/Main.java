@@ -1,6 +1,7 @@
 package com.bookstay;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -211,6 +212,71 @@ public class Main {
         return (start1.isBefore(end2) || start1.equals(end2)) && (end1.isAfter(start2) || end1.equals(start2));
     }
 
+    // Method to print the information of the lodgings
+    public static void printLodgingInformation(List<String> lodging, String startDate, String endDate, int roomsNeeded) {
+        System.out.println("+----------------------------------+");
+        System.out.println(lodging.get(0));  // Lodging name
+        System.out.println("Calificación: " + lodging.get(3));  // Rating
 
+        float pricePerNight = 0;
+        float baseTotalPrice = 0;
+        float adjustment = calculateDiscountOrIncrement(startDate, endDate);
+
+        if (lodging.get(2).equalsIgnoreCase("Hotel")) {
+            String roomsInfo = lodging.get(7);
+            String[] roomTypes = roomsInfo.split(";");
+            int lowerPrice = Integer.MAX_VALUE;
+
+            for (String roomType : roomTypes) {
+                String[] roomDetails = roomType.split("\\|");
+                int roomPrice = Integer.parseInt(roomDetails[2]);
+                if (roomPrice < lowerPrice) {
+                    lowerPrice = roomPrice;
+                }
+            }
+            pricePerNight = lowerPrice;
+            baseTotalPrice = pricePerNight * roomsNeeded * calculateDaysBetween(startDate, endDate);
+
+        } else {
+            pricePerNight = Float.parseFloat(lodging.get(4));
+            baseTotalPrice = pricePerNight * calculateDaysBetween(startDate, endDate);
+        }
+
+        float adjustedTotalPrice = baseTotalPrice + (baseTotalPrice * adjustment);
+
+        System.out.println("Precio por noche: " + pricePerNight);
+        System.out.println("Precio base total: " + baseTotalPrice);
+        System.out.println("Precio total ajustado: " + adjustedTotalPrice);
+        System.out.println("+----------------------------------+");
+    }
+
+    // Method for calculating increase or discount in price of lodging
+    public static float calculateDiscountOrIncrement(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+
+        LocalDate range1Start = LocalDate.of(start.getYear(), start.getMonth(), 5);
+        LocalDate range1End = LocalDate.of(start.getYear(), start.getMonth(), 10);
+        LocalDate range2Start = LocalDate.of(start.getYear(), start.getMonth(), 10);
+        LocalDate range2End = LocalDate.of(start.getYear(), start.getMonth(), 15);
+        LocalDate range3Start = LocalDate.of(start.getYear(), start.getMonth(), 26);
+        LocalDate range3End = LocalDate.of(start.getYear(), start.getMonth(), 31);
+
+        if ((start.isAfter(range1Start) || start.equals(range1Start)) && (end.isBefore(range1End) || end.equals(range1End))) {
+            return -0.08f;
+        } else if ((start.isAfter(range2Start) || start.equals(range2Start)) && (end.isBefore(range2End) || end.equals(range2End))) {
+            return 0.10f;
+        } else if ((start.isAfter(range3Start) || start.equals(range3Start)) && (end.isBefore(range3End) || end.equals(range3End))) {
+            return 0.15f;
+        }
+        return 0;
+    }
+
+    // Method for calculating the number of days between two dates
+    public static long calculateDaysBetween(String startDate, String endDate) {
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        return ChronoUnit.DAYS.between(start, end);
+    }
 
 }
