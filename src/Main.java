@@ -61,40 +61,46 @@ public class Main {
     static double descuentoPrecio = 0.0;
     static double incrementoPrecio = 0.0;
     static int hotelSeleccionadoPorUsuarioIndex;
+    static boolean continuarBuscandoAlojamiento = true;
 
     public static void main(String[] args) {
 
         // Crear un objeto Scanner para leer la entrada del usuario
         Scanner scanner = new Scanner(System.in);
 
-        // solicito datos al usuario
-        System.out.println("Ingrese la ciudad destino:");
-        String ciudad = scanner.nextLine();
+        do {
+            // solicito datos al usuario
+            System.out.println("Ingrese la ciudad destino:");
+            String ciudad = scanner.nextLine();
 
-        System.out.println("Ingrese el tipo de alojamiento que desea (Ejemplo: Hotel, Apartamento, Finca, Dia de Sol):");
-        String tipo = scanner.nextLine();
+            System.out.println("Ingrese el tipo de alojamiento que desea (Ejemplo: Hotel, Apartamento, Finca, Dia de Sol):");
+            String tipo = scanner.nextLine();
 
-        // solicito las fechas de inicio y fin de la estadia
-        System.out.println("Ingrese la fecha de inicio de la estadia (en formato AAAA-MM-DD):");
-        String fechaInicioString = scanner.nextLine();
-        Date inicioEstadia = convertirStringADate(fechaInicioString);
+            // solicito las fechas de inicio y fin de la estadia
+            System.out.println("Ingrese la fecha de inicio de la estadia (en formato AAAA-MM-DD):");
+            String fechaInicioString = scanner.nextLine();
+            Date inicioEstadia = convertirStringADate(fechaInicioString);
 
-        System.out.println("Ingrese la fecha de fin de la estadia (en formato AAAA-MM-DD):");
-        String fechaFinString = scanner.nextLine();
-        Date finEstadia = convertirStringADate(fechaFinString);
+            System.out.println("Ingrese la fecha de fin de la estadia (en formato AAAA-MM-DD):");
+            String fechaFinString = scanner.nextLine();
+            Date finEstadia = convertirStringADate(fechaFinString);
 
-        // solicito la cantidad de adultos, ninos y habitaciones
-        System.out.println("Ingrese la cantidad de adultos que se van a hospedar:");
-        int adultos = scanner.nextInt();
+            // solicito la cantidad de adultos, ninos y habitaciones
+            System.out.println("Ingrese la cantidad de adultos que se van a hospedar:");
+            int adultos = scanner.nextInt();
 
-        System.out.println("Ingrese la cantidad de ninos que se van a hospedar:");
-        int ninos = scanner.nextInt();
+            System.out.println("Ingrese la cantidad de ninos que se van a hospedar:");
+            int ninos = scanner.nextInt();
 
-        System.out.println("Ingrese la cantidad de habitaciones que desea:");
-        int habitaciones = scanner.nextInt();
+            System.out.println("Ingrese la cantidad de habitaciones que desea:");
+            int habitaciones = scanner.nextInt();
 
-        // llamo la func de bucarHotel con los parametros dados por el usuario
-        buscarHotel(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
+            scanner.nextLine();
+
+            // llamo la func de bucarHotel con los parametros dados por el usuario
+            buscarHotel(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
+
+        } while (continuarBuscandoAlojamiento);
 
         // se cierra el scanner para evitar problemas con la gestion de los recursos
         scanner.close();
@@ -442,15 +448,6 @@ public class Main {
             }
             reservaCount++;
 
-            System.out.println("¿Desea actualizar su reserva? (Por favor digite Si o No)");
-            String respuestaActualizar = scanner.nextLine();
-
-            if (respuestaActualizar.equalsIgnoreCase("Si")) {
-                actualizarReserva();
-            } else {
-                System.out.println("¡Gracias por reservar con Starlight Booking!");
-            }
-
             // actualizo las habitaciones que quedan disponibles
             int hotelIndex = hotelSeleccionadoPorUsuarioIndex;
             if (hotelIndex != -1) {
@@ -459,8 +456,23 @@ public class Main {
             } else {
                 System.out.println("Hubo un problema al actualizar la disponibilidad de habitaciones.");
             }
+
+            // opciones para crear nueva, actualizar o salir del programa
+            System.out.println("Elija una de las siguientes opciones: \n1. Crear una nueva reservar" +
+                    "\n2. Actualizar reserva \n3. salir de Starlight Booking");
+            String respuestaActualizar = scanner.nextLine();
+
+            if (respuestaActualizar.equalsIgnoreCase("1")) {
+                continuarBuscandoAlojamiento = true;
+            } else if (respuestaActualizar.equalsIgnoreCase("2")){
+                actualizarReserva();
+            } else {
+                System.out.println("¡Gracias por reservar con Starlight Booking!");
+                continuarBuscandoAlojamiento = false;
+            }
+
         } else {
-            System.out.println("La reserva no se realizo.");
+            System.out.println("La reserva no se realizó.");
         }
     }
 
