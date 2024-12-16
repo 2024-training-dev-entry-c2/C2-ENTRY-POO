@@ -94,7 +94,7 @@ public class Main {
             scanner.nextLine();
 
             // llamo la func de bucarHotel con los parametros dados por el usuario
-            buscarHotel(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
+            buscarAlojamiento(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
 
         } while (continuarBuscandoAlojamiento);
 
@@ -119,10 +119,10 @@ public class Main {
         }
     }
 
-    // METODO PARA BUSCAR HOTEL SEGUN REQUERIMIENTOS DEL USUARIO
-    public static void buscarHotel(String ciudad, String tipo, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitaciones) {
+    // METODO PARA BUSCAR ALOJAMIENTO SEGUN REQUERIMIENTOS DEL USUARIO
+    public static void buscarAlojamiento(String ciudad, String tipo, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitaciones) {
 
-        boolean hotelEncontrado = false;
+        boolean alojamientoEncontrado = false;
 
         // calculando los dias de estadia
         long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
@@ -147,7 +147,7 @@ public class Main {
                     maximoAdultos[i] >= adultos &&
                     maximoNinos[i] >= ninos &&
                     totalHabitacionesDisponibles >= habitaciones) {
-                hotelEncontrado = true;
+                alojamientoEncontrado = true;
 
                 // usando el precio de la habitación más simple
                 double precioBase = precioPorNochePorTipoHabitacion[i][0];
@@ -215,7 +215,7 @@ public class Main {
             }
         }
 
-        if (hotelEncontrado) {
+        if (alojamientoEncontrado) {
             // solicito al usuario seleccionar un alojamiento
             Scanner scanner = new Scanner(System.in);
             System.out.println("Seleccione el alojamiento que desea (ingrese el nombre del alojamiento):");
@@ -300,7 +300,7 @@ public class Main {
             System.out.println("La reserva no se realizó.");
             }
         } else {
-            System.out.println("No se encontraron alojamientos que coincidan con su busqueda.");
+            System.out.println("No se encontraron alojamientos que coincidan con su busqueda. Intente nuevamente");
         }
     }
 
@@ -332,18 +332,18 @@ public class Main {
 
     // METODO PARA CONFIRMAR HABITACIONES
     public static void confirmarHabitaciones(String nombreHotel, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitacionesSolicitadas) {
-        boolean hotelEncontrado = false;
+        boolean alojamientoEncontrado = false;
 
         // busco el indice del hotel seleccionado por el usuario
         int hotelIndex = -1;
         for (int i = 0; i < nombreDelAlojamiento.length; i++) {
             if (nombreDelAlojamiento[i].equalsIgnoreCase(nombreHotel)) {
                 hotelIndex = i;
-                hotelEncontrado = true;
+                alojamientoEncontrado = true;
                 break;
             }
         }
-        if (!hotelEncontrado) {
+        if (!alojamientoEncontrado) {
             System.out.println("El hotel seleccionado no se encuentra disponible.");
             return;
         }
@@ -506,7 +506,6 @@ public class Main {
             } else if (eleccion.equalsIgnoreCase("alojamiento")) {
                 // elimino la reserva actual
                 System.out.println("Se ha eliminado la reserva actual.");
-
                 String habitacionesReservadasSinEspacios = reservas[indiceReserva][5].replaceAll(" ", "");
                 String[] habitacionesReservadas = habitacionesReservadasSinEspacios.split(",");
                 for (int i = 0; i < habitacionesReservadas.length; i++) {
@@ -517,7 +516,6 @@ public class Main {
                         }
                     }
                 }
-
                 reservas[indiceReserva] = null;
                 correosReservas[indiceReserva] = null;
                 nacimientosReservas[indiceReserva] = null;
@@ -529,6 +527,7 @@ public class Main {
             }
         } else {
             System.out.println("No se encontró una reserva con ese correo o fecha de nacimiento.");
+            menuBooking();
         }
     }
 
