@@ -24,15 +24,56 @@ public class Main {
 
     /* ############################### INITIALIZE DATA ############################### */
     public static void initializeData() {
+
         // Hotels
         Hotel hotel1 = new Hotel("Hotel Mar Azul", "Cartagena", 4.9, "Hotel frente al mar con excelentes comodidades");
         hotel1.addRoom("Habitación Estándar", "La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.", 200000.0, 2, 8);
+        hotel1.addRoom("Suite Familiar", "Amplia suite con 2 habitaciones, sala de estar y balcón con vista al mar.", 500000.0, 4, 5);
+        hotel1.addRoom("Suite Premium", "Suite de lujo con jacuzzi, cama king size y minibar gratuito.", 750000.0, 2, 3);
+        hotel1.addRoom("Habitación Económica", "Habitación compacta con todas las comodidades básicas.", 150000.0, 2, 10);
+        hotel1.addRoom("Habitación Doble Deluxe", "Habitación espaciosa con 2 camas dobles y escritorio de trabajo.", 300000.0, 4, 6);
+
+        Hotel hotel2 = new Hotel("Hotel Vista Sierra", "Medellín", 4.8, "Hotel moderno en la zona alta de Medellín con vistas a la ciudad");
+        hotel2.addRoom("Habitación Estándar", "Habitación cómoda con decoración contemporánea.", 180000.0, 2, 10);
+        hotel2.addRoom("Suite Ejecutiva", "Suite con escritorio, mini sala y acceso a gimnasio privado.", 400000.0, 2, 5);
+        hotel2.addRoom("Suite Presidencial", "La habitación más exclusiva del hotel con spa privado.", 900000.0, 2, 2);
+        hotel2.addRoom("Habitación Doble", "Habitación con 2 camas individuales y baño compartido.", 160000.0, 2, 7);
+        hotel2.addRoom("Habitación Junior Suite", "Habitación intermedia con balcón y vista panorámica.", 350000.0, 3, 4);
+
+        Hotel hotel3 = new Hotel("Hotel Central Park", "Bogotá", 4.6, "Hotel en el corazón financiero de Bogotá");
+        hotel3.addRoom("Habitación Individual", "Habitación ideal para viajeros de negocios.", 220000.0, 1, 15);
+        hotel3.addRoom("Habitación Doble", "Habitación elegante con 2 camas y baño privado.", 300000.0, 2, 10);
+        hotel3.addRoom("Suite Lujo", "Suite con servicios de oficina y sala de reuniones.", 600000.0, 4, 5);
+        hotel3.addRoom("Habitación Premium", "Confort y espacio con servicio a la habitación incluido.", 400000.0, 2, 8);
+        hotel3.addRoom("Habitación Económica", "Espacio compacto con desayuno incluido.", 180000.0, 2, 12);
+
+        Hotel hotel4 = new Hotel("Hotel Paraíso Natural", "Santa Marta", 5.0, "Hotel boutique ecológico junto a la playa Tayrona");
+        hotel4.addRoom("Cabaña Estándar", "Cabaña con techo de palma y decoración natural.", 250000.0, 2, 6);
+        hotel4.addRoom("Cabaña Familiar", "Amplia cabaña para grupos familiares.", 500000.0, 6, 4);
+        hotel4.addRoom("Suite de Lujo", "Suite con vistas inigualables al océano.", 800000.0, 2, 3);
+        hotel4.addRoom("Habitación Deluxe", "Habitación con terraza privada y hamaca.", 350000.0, 2, 8);
+        hotel4.addRoom("Cabaña Eco", "Cabaña rústica con paneles solares.", 200000.0, 2, 5);
+
+        Hotel hotel5 = new Hotel("Hotel Real Colonial", "Villa de Leyva", 4.7, "Hotel de arquitectura colonial con encanto histórico");
+        hotel5.addRoom("Habitación Colonial", "Habitación con decoración antigua y balcón.", 280000.0, 2, 8);
+        hotel5.addRoom("Suite Colonial", "Suite con chimenea y sala de estar privada.", 550000.0, 4, 5);
+        hotel5.addRoom("Habitación Doble Colonial", "Amplia habitación con 2 camas dobles.", 350000.0, 4, 6);
+        hotel5.addRoom("Habitación Individual", "Ideal para una persona, cómoda y funcional.", 200000.0, 1, 10);
+        hotel5.addRoom("Habitación Familiar", "Habitación amplia para familias pequeñas.", 400000.0, 4, 7);
+
+        // Apartments
+        Apartment apartment1 = new Apartment("Apartamento Playa", "Cartagena", 4.7, "Apartamento moderno con vista al océano, 3 habitaciones, 2 baños.", 5, 500000.0);
+        Apartment apartment2 = new Apartment("Apartamento Loft Centro", "Bogotá", 4.5, "Loft espacioso ubicado en el centro de la ciudad, ideal para negocios.", 2, 300000.0);
+        Apartment apartment3 = new Apartment("Apartamento Familiar Medellín", "Medellín", 4.6, "Apartamento amplio para familias con zona de juegos.", 6, 400000.0);
+        Apartment apartment4 = new Apartment("Penthouse Vista Mar", "Santa Marta", 4.9, "Penthouse de lujo con jacuzzi privado y vista al mar.", 4, 800000.0);
+        Apartment apartment5 = new Apartment("Apartamento Colonial Centro", "Villa de Leyva", 4.8, "Apartamento de estilo colonial con patio interior.", 3, 350000.0);
 
         // Farm Stays
         FarmStay farmStay1 = new FarmStay("Finca El Bosque", "Armenia", 4.8, "Finca tranquila rodeada de bosque", 10, 800000.0);
-
-        // Apartments
-        Apartment apartment1 = new Apartment("Apartamento Playa","Cartagena", 4.7, "Apartamento moderno con vista al océano, 3 habitaciones, 2 baños.", 5, 500000.0);
+        FarmStay farmStay2 = new FarmStay("Finca El Lago", "Guatapé", 4.9, "Finca con lago privado y zona de pesca.", 8, 900000.0);
+        FarmStay farmStay3 = new FarmStay("Finca Montaña Viva", "Manizales", 4.7, "Finca en la montaña con vistas espectaculares.", 12, 1000000.0);
+        FarmStay farmStay4 = new FarmStay("Finca Las Palmeras", "Cali", 4.6, "Finca con piscina y zona BBQ.", 15, 950000.0);
+        FarmStay farmStay5 = new FarmStay("Finca El Refugio", "Pereira", 4.8, "Finca rodeada de naturaleza y tranquilidad.", 10, 850000.0);
 
         // Day Resorts
         DayResort dayResort1 = new DayResort("Día de Sol Caribe", "San Andrés", 5.0, "Disfruta del sol, playa y actividades acuáticas", 200000.0);
@@ -41,103 +82,25 @@ public class Main {
         dayResort1.addMeal("Almuerzo con platos típicos");
         dayResort1.addMeal("Cena a la carta");
 
+        DayResort dayResort2 = new DayResort("Aventura en la Sierra", "Sierra Nevada", 4.8, "Naturaleza y actividades extremas", 250000.0);
+        dayResort2.addActivity("Escalada");
+        dayResort2.addActivity("Senderismo");
+        dayResort2.addMeal("Almuerzo campestre");
 
-        // Lodging structure: [Name, City, Category, Rating, Price, Description, MaxPeople, Rooms, Activities, Meals, ReservationData]
-        // Room structure: " Name | Description | Price | MaxAdults | MaxChildren | Quantily "
+        DayResort dayResort3 = new DayResort("Día Relax Spa", "Bogotá", 4.7, "Spa urbano con tratamientos relajantes", 180000.0);
+        dayResort3.addActivity("Masaje relajante");
+        dayResort3.addActivity("Piscina climatizada");
+        dayResort3.addMeal("Té y snacks saludables");
 
-        // Hoteles
-        addLodging("Hotel Mar Azul", "Cartagena", "Hotel", "4.9", "",
-                "Hotel frente al mar con excelentes comodidades", "",
-                "Habitación Estándar|La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.|200000|2|1|10;" +
-                        "Habitación Deluxe|La habitación deluxe tiene cama king, balcón con vista al mar, cafetera, y servicio de habitaciones las 24 horas.|400000|2|2|5;" +
-                        "Suite|La suite incluye una sala de estar separada, jacuzzi, minibar surtido, y vistas panorámicas al océano.|800000|2|2|3;" +
-                        "Junior Suite|Habitación amplia con sofá cama, jacuzzi, minibar y vistas al mar.|600000|2|2|4;" +
-                        "Presidential Suite|Suite de lujo con varias habitaciones, jacuzzi privado, y vistas completas al océano.|1200000|4|2|2",
-                "", "", "");
+        DayResort dayResort4 = new DayResort("Parque Aventura", "Medellín", 4.6, "Diversión familiar con actividades recreativas", 220000.0);
+        dayResort4.addActivity("Tirolesa");
+        dayResort4.addActivity("Paseos en cuatrimoto");
+        dayResort4.addMeal("Parrillada familiar");
 
-        addLodging("Hotel Los Andes", "Bogotá", "Hotel", "4.6", "",
-                "Hotel moderno con vistas a la ciudad", "",
-                "Habitación Estándar|Una opción económica y cómoda con una cama queen, baño privado y TV por cable.|200000|2|1|10;" +
-                        "Habitación Deluxe|Amplia habitación con cama king, vistas a la ciudad y minibar incluido.|400000|2|2|5;" +
-                        "Suite|La suite cuenta con una sala de estar privada, jacuzzi, y escritorio para trabajo.|800000|2|2|3;" +
-                        "Habitación Familiar|Habitación grande con cama queen, sofá cama, baño privado y área de estar.|500000|4|2|6;" +
-                        "Presidential Suite|Gran suite con varias habitaciones, jacuzzi privado y vistas panorámicas.|1200000|4|3|2",
-                "", "", "");
-
-        addLodging("Hotel Bahia Blanca", "Santa Marta", "Hotel", "4.7", "",
-                "Hotel cerca de la playa con piscina y spa", "",
-                "Habitación Estándar|Habitación con cama king, TV por cable, aire acondicionado y baño privado.|250000|2|1|12;" +
-                        "Habitación Deluxe|Habitación con vistas al mar, minibar y jacuzzi privado.|500000|2|2|6;" +
-                        "Suite Presidencial|Suite amplia con sala de estar, jacuzzi, y vistas al océano.|1000000|2|2|2;" +
-                        "Habitación Superior|Con cama queen, minibar y baño privado, ideal para estancias largas.|300000|2|1|8;" +
-                        "Habitación Conectada|Habitaciones comunicadas para familias grandes, con 2 camas queen y 2 baños privados.|550000|4|2|5",
-                "", "", "");
-
-        addLodging("Hotel Mirador del Valle", "Medellín", "Hotel", "4.8", "",
-                "Hotel con una vista espectacular de la ciudad", "",
-                "Habitación Estándar|Habitación con cama queen, escritorio y baño privado.|220000|2|1|8;" +
-                        "Habitación Deluxe|Habitación con vistas a las montañas, minibar y cafetera.|400000|2|2|4;" +
-                        "Suite|Suite con salón independiente, jacuzzi y minibar.|850000|2|2|3;" +
-                        "Junior Suite|Habitación más espaciosa con sofá cama, jacuzzi, y minibar.|600000|2|2|4;" +
-                        "Suite Presidencial|Suite con varias habitaciones, jacuzzi privado y vistas panorámicas de la ciudad.|1500000|4|3|2",
-                "", "", "");
-
-        addLodging("Hotel Costa Dorada", "Cartagena", "Hotel", "4.5", "",
-                "Hotel frente a la playa con restaurante y gimnasio", "",
-                "Habitación Estándar|Habitación con cama queen, aire acondicionado, TV por cable y baño privado.|200000|2|1|10;" +
-                        "Habitación Deluxe|Habitación con vistas al mar, minibar y escritorio.|400000|2|2|6;" +
-                        "Suite Familiar|Suite con 2 habitaciones, sala de estar y vista al océano.|600000|4|2|4;" +
-                        "Habitación Ejecutiva|Con cama king, escritorio de trabajo y minibar.|450000|2|2|5;" +
-                        "Suite Presidencial|Gran suite con sala de estar, jacuzzi y vistas completas al mar.|1200000|4|3|2",
-                "", "", "");
-
-        // Apartaments
-        addLodging("Apartamento Playa", "Cartagena", "Apartamento", "4.7", "500000",
-                "Apartamento moderno con vista al océano", "6", "", "", "", "");
-
-        addLodging("Apartamento Mirador", "Bogotá", "Apartamento", "4.6", "350000",
-                "Apartamento con vistas panorámicas de la ciudad", "4", "", "", "", "");
-
-        addLodging("Apartamento Acapulco", "Cartagena", "Apartamento", "4.8", "600000",
-                "Apartamento con vista al mar y piscina privada", "5", "", "", "", "");
-
-        addLodging("Apartamento Pinares", "Santa Marta", "Apartamento", "4.5", "400000",
-                "Apartamento de lujo con terraza privada", "8", "", "", "", "");
-
-        addLodging("Apartamento Estrella", "Medellín", "Apartamento", "4.7", "550000",
-                "Apartamento moderno con acceso a gimnasio y piscina", "4", "", "", "", "");
-
-        // Farm Stays
-        addLodging("Finca El Bosque", "Armenia", "Finca", "4.8", "800000",
-                "Finca tranquila rodeada de bosque", "10", "", "", "", "");
-
-        addLodging("Finca Los Pinos", "Pereira", "Finca", "4.9", "900000",
-                "Finca con vistas a la montaña y espacios amplios", "12", "", "", "", "");
-
-        addLodging("Finca Valle Verde", "Manizales", "Finca", "4.6", "750000",
-                "Finca ideal para retiros y actividades al aire libre", "8", "", "", "", "");
-
-        addLodging("Finca El Paraíso", "Caldas", "Finca", "4.7", "850000",
-                "Finca en un valle tranquilo rodeado de naturaleza", "14", "", "", "", "");
-
-        addLodging("Finca Los Robles", "Quindío", "Finca", "4.8", "950000",
-                "Finca con senderos ecológicos y vista panorámica", "10", "", "", "", "");
-
-        // Day Resorts
-        addLodging("Día de Sol Caribe", "San Andrés", "Día de sol", "5.0", "200000",
-                "Disfruta del sol, playa y actividades acuáticas", "4", "", "Snorkeling, paseos en bote, kayak, yoga en la playa", "Almuerzo con platos típicos, cena a la carta", "");
-
-        addLodging("Día de Sol Tulum", "Tulum", "Día de sol", "4.9", "220000",
-                "Un día de sol con actividades en la Riviera Maya", "2", "", "Tour en cenotes, paseos en bicicleta, actividades acuáticas", "Comida mexicana tradicional, bebidas incluidas", "");
-
-        addLodging("Día de Sol Santa Marta", "Santa Marta", "Día de sol", "5.0", "180000",
-                "Relájate en la playa con actividades acuáticas", "6", "", "Surf, paddleboard, snorkeling, caminatas", "Almuerzo buffet, cena en restaurante exclusivo", "");
-
-        addLodging("Día de Sol Cartagena", "Cartagena", "Día de sol", "4.8", "150000",
-                "Disfruta del sol en las playas más bellas", "5", "", "Bicicross, deportes acuáticos, yoga", "Comida local, bebidas tropicales", "");
-
-        addLodging("Día de Sol Isla Barú", "Cartagena", "Día de sol", "4.9", "210000",
-                "Un día de sol con todas las comodidades frente al mar", "8", "", "Kayak, excursión a la isla, pesca", "Comida caribeña, cócteles", "");
+        DayResort dayResort5 = new DayResort("Resort Lago Azul", "Guatapé", 4.9, "Día de relajación junto al lago", 200000.0);
+        dayResort5.addActivity("Kayak");
+        dayResort5.addActivity("Paseos en lancha");
+        dayResort5.addMeal("Almuerzo buffet");
     }
 
     public static void addLodging(String name, String city, String category, String rating, String price, String description, String maxPeople, String rooms, String activities, String meals, String reservationData) {
