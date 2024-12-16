@@ -154,7 +154,7 @@ public class Main {
         System.out.println("Seleccione un hotel disponible:");
         int hotelElegido = listarOpciones(scanner, hotelesDisponibles);
 
-// Filtrar habitaciones disponibles
+        // Filtrar habitaciones disponibles
         String[] habitaciones = filtrarHabitaciones(hotelElegido, hotelesDisponibles);
 
         if (habitaciones.length == 0) {
@@ -241,7 +241,107 @@ public class Main {
     }
 
     public static void cancelarReserva(Scanner scanner) {
-        System.out.println("\n--- Cancelar una Reserva no ha sido implementado---");
+        System.out.println("\n--- Cancelar una Reserva ---");
+
+        // Solicitar email y fecha de nacimiento para buscar la reserva
+        System.out.print("Ingrese su Email: ");
+        String email = scanner.nextLine();
+
+        LocalDate fechaNacimiento = null;
+        while (fechaNacimiento == null) {
+            System.out.print("Ingrese su Fecha de Nacimiento (dd/MM/yyyy): ");
+            try {
+                fechaNacimiento = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato de fecha inválido. Intente de nuevo.");
+            }
+        }
+
+        // Buscar la reserva
+        int reservaIndex = -1;
+        for (int i = 0; i < totalReservas; i++) {
+            if (emailsReservas[i] != null && emailsReservas[i].equalsIgnoreCase(email) &&
+                    fechaNacimientoReservas[i] != null && fechaNacimientoReservas[i].equals(fechaNacimiento)) {
+                reservaIndex = i;
+                break;
+            }
+        }
+
+        // Si la reserva no fue encontrada
+        if (reservaIndex == -1) {
+            System.out.println("No se encontró ninguna reserva asociada a los datos ingresados.");
+            return;
+        }
+
+        // Mostrar los detalles de la reserva encontrada
+        System.out.println("\nReserva encontrada:");
+        mostrarDetallesReserva(reservaIndex);
+
+        // Confirmar la cancelación
+        System.out.print("¿Está seguro de que desea cancelar esta reserva? (Si/No): ");
+        String confirmacion = scanner.next();
+        if (!confirmacion.equalsIgnoreCase("Si")) {
+            System.out.println("Cancelación abortada.");
+            return;
+        }
+
+        // Restablecer la disponibilidad de habitaciones asociadas a la reserva
+        restaurarDisponibilidad(reservaIndex);
+
+        // Eliminar la reserva desplazando los datos hacia arriba en los arreglos
+        for (int i = reservaIndex; i < totalReservas - 1; i++) {
+            nombresReservas[i] = nombresReservas[i + 1];
+            fechaNacimientoReservas[i] = fechaNacimientoReservas[i + 1];
+            emailsReservas[i] = emailsReservas[i + 1];
+            hotelesReservas[i] = hotelesReservas[i + 1];
+            habitacionesReservas[i] = habitacionesReservas[i + 1];
+            fechasInicioReservas[i] = fechasInicioReservas[i + 1];
+            fechasFinReservas[i] = fechasFinReservas[i + 1];
+            cantidadAdultosReservas[i] = cantidadAdultosReservas[i + 1];
+            cantidadNiniosReservas[i] = cantidadNiniosReservas[i + 1];
+            cantidadHabitacionesReservas[i] = cantidadHabitacionesReservas[i + 1];
+        }
+
+        // Restar el total de reservas
+        totalReservas--;
+
+        System.out.println("La reserva ha sido cancelada exitosamente.");
+    }
+
+    public static void restaurarDisponibilidad(int reservaIndex) {
+        String hotel = hotelesReservas[reservaIndex];
+        String tipoHabitacion = habitacionesReservas[reservaIndex];
+        LocalDate inicio = fechasInicioReservas[reservaIndex];
+        LocalDate fin = fechasFinReservas[reservaIndex];
+
+        // Encontrar el ID del hotel y la habitación
+        int hotelID = -1;
+        int habitacionID = -1;
+
+        for (int i = 0; i < hotelNombres.length; i++) {
+            if (hotelNombres[i] != null && hotelNombres[i].equals(hotel)) {
+                hotelID = i;
+                break;
+            }
+        }
+
+        for (int i = 0; i < habitacionTipos.length; i++) {
+            if (habitacionHotelID[i] == hotelID && habitacionTipos[i].equals(tipoHabitacion)) {
+                habitacionID = i;
+                break;
+            }
+        }
+
+        if (habitacionID == -1) {
+            System.out.println("Error: No se pudo encontrar la habitación asociada a la reserva cancelada.");
+            return;
+        }
+
+        // Restaurar la disponibilidad
+        int añoRelativo = inicio.getYear() - LocalDate.now().getYear();
+        for (int dia = inicio.getDayOfYear(); dia <= fin.getDayOfYear(); dia++) {
+            habitacionDisponibilidad[habitacionID][añoRelativo][dia] = true;
+        }
     }
 
     public static void realizarBloqueoHabitaciones(int habitacion, LocalDate inicio, LocalDate fin) {
@@ -479,7 +579,6 @@ public class Main {
 
         // Solicitar email y fecha de nacimiento del usuario para la búsqueda
         System.out.print("Ingrese su Email: ");
-        scanner.nextLine(); // Limpiar el buffer
         String email = scanner.nextLine();
 
         DateTimeFormatter formatoFecha = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -638,7 +737,7 @@ public class Main {
             return;
         }
 
-// Filtrar habitaciones disponibles en el hotel actual
+        // Filtrar las habitaciones disponibles en el hotel seleccionado
         String[] habitacionesDisponibles = filtrarHabitaciones(hotelID, hotelesDisponibles);
 
         if (habitacionesDisponibles.length == 0) {
