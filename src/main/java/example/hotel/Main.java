@@ -263,24 +263,17 @@ public class Main {
                         }
 
                         double precioHabitacion = habitacionPrecios[habitacionSeleccionada];
-                        double precioTotal = precioHabitacion; // Inicialmente, el precio total es el precio de la habitación
-                        double descuento = 0; // Inicializar descuento
-                        double aumento = 0; // Inicializar aumento
+                        double[] precioTotalConDescuentoYAumento = calcularPrecioTotal(precioHabitacion, cantidadHabitaciones, fechaInicio, fechaFin); // Obtener el precio total, el descuento y el aumento
+                        double precioTotal = precioTotalConDescuentoYAumento[0]; // Asignar el precio total
+                        double descuento = precioTotalConDescuentoYAumento[1]; // Asignar el descuento
+                        double aumento = precioTotalConDescuentoYAumento[2]; // Asignar el aumento
 
-                        // Si el precio de la habitación es mayor al precio base del hotel, mostrar el total a pagar
-                        if (precioHabitacion > precios[hotelSeleccionado]) {
-                            double[] precioTotalConDescuentoYAumento = calcularPrecioTotal(precioHabitacion, cantidadHabitaciones, fechaInicio, fechaFin); // Obtener el precio total, el descuento y el aumento
-                            precioTotal = precioTotalConDescuentoYAumento[0]; // Asignar el precio total
-                            descuento = precioTotalConDescuentoYAumento[1]; // Asignar el descuento
-                            aumento = precioTotalConDescuentoYAumento[2]; // Asignar el aumento
-
-                            System.out.println("\nPrecio total de la estadía: " + Math.round(precioTotal));
-                            if (descuento > 0) {
-                                System.out.println("Descuento aplicado: " + Math.round(descuento)); // Mostrar el descuento si existe
-                            }
-                            if (aumento > 0) {
-                                System.out.println("Aumento aplicado: " + Math.round(aumento)); // Mostrar el aumento si existe
-                            }
+                        System.out.println("\nPrecio total de la estadía: " + Math.round(precioTotal));
+                        if (descuento > 0) {
+                            System.out.println("Descuento aplicado: " + Math.round(descuento)); // Mostrar el descuento si existe
+                        }
+                        if (aumento > 0) {
+                            System.out.println("Aumento aplicado: " + Math.round(aumento)); // Mostrar el aumento si existe
                         }
 
                         // Confirmar reserva
@@ -324,7 +317,6 @@ public class Main {
             System.out.println("No se encontraron hoteles con esos criterios.");
         }
     }
-
     public static void crearReserva(int hotelId, int habitacionId, LocalDate fechaInicio, LocalDate fechaFin, int cantidadHabitaciones, String nombre, String apellido, String email, String nacionalidad, String telefono, String horaLlegada) { // Agregar parámetros para los datos del usuario
         System.out.println("\n--- Crear Reserva ---");
 
@@ -439,7 +431,8 @@ public class Main {
     }
 
     public static double[] calcularPrecioTotal(double precioHabitacion, int cantidadHabitaciones, LocalDate fechaInicio, LocalDate fechaFin) {
-        double precioTotal = precioHabitacion * cantidadHabitaciones;
+        long diasEstadia = ChronoUnit.DAYS.between(fechaInicio, fechaFin) + 1; // Calcular la cantidad de días de estadía
+        double precioTotal = precioHabitacion * cantidadHabitaciones * diasEstadia; // Calcular el precio total
         double descuento = 0;
         double aumento = 0;
 
