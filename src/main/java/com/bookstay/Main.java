@@ -133,7 +133,7 @@ public class Main {
         Scanner input = new Scanner(System.in);
 
         while(true){
-            System.out.println("*----------------------- Menú -----------------------*");
+            System.out.println("\n*----------------------- Menú -----------------------*");
             System.out.println("| 1. Buscar y reservar alojamiento.                  | ");
             System.out.println("| 2. Consultar reservaciones realizadas.             | ");
             System.out.println("| 3. Modificar una reservación.                      | ");
@@ -172,6 +172,11 @@ public class Main {
                     }
 
                     List<List<String>> results = searchLodgings(city, category, startDay, endDay, adults, children, roomsRequired);
+                    if(results.isEmpty()){
+                        System.out.println("\nNo se han encontrado resultados a la búsqueda.");
+                        System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
+                        break;
+                    }
                     System.out.println("\nLos resultados obtenidos en la búsqueda son: \n");
                     for(List<String> result : results){
                         printLodgingInformation(result, startDay, endDay, roomsRequired);
@@ -404,7 +409,12 @@ public class Main {
 
         System.out.println("Precio por noche: " + pricePerNight);
         System.out.println("Precio base total: " + baseTotalPrice);
-        System.out.println("Precio total ajustado: " + adjustedTotalPrice);
+        if(adjustment > 0){
+            System.out.println("Ajuste: Incremento de " + adjustment + "%");
+        }else{
+            System.out.println("Ajuste: Descuento de " + baseTotalPrice + "%");
+        }
+        System.out.println("Precio total: " + adjustedTotalPrice);
         System.out.println("+----------------------------------+\n");
     }
 
@@ -420,12 +430,29 @@ public class Main {
         LocalDate range3Start = LocalDate.of(start.getYear(), start.getMonth(), 26);
         LocalDate range3End = LocalDate.of(start.getYear(), start.getMonth(), 31);
 
-        if ((start.isAfter(range1Start) || start.equals(range1Start)) && (end.isBefore(range1End) || end.equals(range1End))) {
+        // Calculate intersection days for each range
+        long daysInRange1 = calculateIntersectionDays(start, end, range1Start, range1End);
+        long daysInRange2 = calculateIntersectionDays(start, end, range2Start, range2End);
+        long daysInRange3 = calculateIntersectionDays(start, end, range3Start, range3End);
+
+        // Determine the range with the largest intersection
+        if (daysInRange1 >= daysInRange2 && daysInRange1 >= daysInRange3) {
             return -0.08f;
-        } else if ((start.isAfter(range2Start) || start.equals(range2Start)) && (end.isBefore(range2End) || end.equals(range2End))) {
+        } else if (daysInRange2 >= daysInRange1 && daysInRange2 >= daysInRange3) {
             return 0.10f;
-        } else if ((start.isAfter(range3Start) || start.equals(range3Start)) && (end.isBefore(range3End) || end.equals(range3End))) {
+        } else if (daysInRange3 > 0) {
             return 0.15f;
+        }
+        return 0;
+    }
+
+    // Auxiliary method for calculating the number of days of intersection between two date ranges
+    private static long calculateIntersectionDays(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
+        LocalDate maxStart = start1.isAfter(start2) ? start1 : start2;
+        LocalDate minEnd = end1.isBefore(end2) ? end1 : end2;
+
+        if (maxStart.isBefore(minEnd) || maxStart.equals(minEnd)) {
+            return ChronoUnit.DAYS.between(maxStart, minEnd) + 1;
         }
         return 0;
     }
