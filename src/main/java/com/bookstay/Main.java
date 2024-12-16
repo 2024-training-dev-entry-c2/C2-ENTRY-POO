@@ -36,6 +36,11 @@ public class Main {
 
         // Day Resorts
         DayResort dayResort1 = new DayResort("Día de Sol Caribe", "San Andrés", 5.0, "Disfruta del sol, playa y actividades acuáticas", 200000.0);
+        dayResort1.addActivity("Snorkeling");
+        dayResort1.addActivity("Paseos en bote");
+        dayResort1.addMeal("Almuerzo con platos típicos");
+        dayResort1.addMeal("Cena a la carta");
+
 
         // Lodging structure: [Name, City, Category, Rating, Price, Description, MaxPeople, Rooms, Activities, Meals, ReservationData]
         // Room structure: " Name | Description | Price | MaxAdults | MaxChildren | Quantily "

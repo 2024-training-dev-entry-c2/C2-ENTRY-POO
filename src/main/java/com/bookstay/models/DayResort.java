@@ -16,6 +16,14 @@ public class DayResort extends Lodging{
         this.pricePerPerson = price;
     }
 
+    public void addActivity(String activity){
+        activities.add(activity);
+    }
+
+    public void addMeal(String meal){
+        meals.add(meal);
+    }
+
     @Override
     public double calculatePrice(int adults, int children, int days, Object... params) {
         if (days != 1) {
