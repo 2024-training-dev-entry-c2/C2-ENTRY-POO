@@ -3,14 +3,20 @@ package com.example.hotel.models;
 public class Stay {
   protected String typeOfRoom;
   protected String description;
-  protected int disponingCapacity;
+  protected int capacityAvailability;
   protected int quantity;
 
-  public Stay(String typeOfRoom, String description, int disponingCapacity, int quantity) {
+  public Stay(String typeOfRoom, String description, int capacityAvailability, int quantity) {
     this.typeOfRoom = typeOfRoom;
     this.description = description;
-    this.disponingCapacity = disponingCapacity;
+    this.capacityAvailability = capacityAvailability;
     this.quantity = quantity;
+  }
+
+  public Stay(String typeOfRoom, String description, int capacityAvailability) {
+    this.typeOfRoom = typeOfRoom;
+    this.description = description;
+    this.capacityAvailability = capacityAvailability;
   }
 
   public Stay() {
@@ -32,12 +38,12 @@ public class Stay {
     this.description = description;
   }
 
-  public int getDisponingCapacity() {
-    return disponingCapacity;
+  public int getCapacityAvailability() {
+    return capacityAvailability;
   }
 
-  public void setDisponingCapacity(int disponingCapacity) {
-    this.disponingCapacity = disponingCapacity;
+  public void setCapacityAvailability(int capacityAvailability) {
+    this.capacityAvailability = capacityAvailability;
   }
 
   public int getQuantity() {
@@ -51,7 +57,7 @@ public class Stay {
   public String printStay() {
     return "  Tipo de habitación: " + typeOfRoom + "\n" +
            "  Descripción: " + description + "\n" +
-           "  Disponibilidad: " + disponingCapacity + "\n" +
+           "  Disponibilidad: " + capacityAvailability + "\n" +
            "  Cantidad: " + quantity + "\n";
   }
 }

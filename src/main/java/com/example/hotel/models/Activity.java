@@ -3,9 +3,14 @@ package com.example.hotel.models;
 public class Activity extends Stay {
   private double pricePerDay;
 
-  public Activity(String typeOfRoom, String description, int disponingCapacity, int quantity, double pricePerDay) {
-    super(typeOfRoom, description, disponingCapacity, quantity);
+  public Activity(String typeOfRoom, String description, int capacityAvailability, int quantity, double pricePerDay) {
+    super(typeOfRoom, description, capacityAvailability, quantity);
     this.pricePerDay = pricePerDay;
+  }
+
+  public Activity(String typeOfRoom, String description, int capacityAvailability, double pricePerNight) {
+    super(typeOfRoom, description, capacityAvailability);
+    this.pricePerDay = pricePerNight;
   }
 
   public Activity(double pricePerDay) {
@@ -22,10 +27,10 @@ public class Activity extends Stay {
 
   @Override
   public String printStay() {
-    return "  Tipo de habitación: " + typeOfRoom + "\n" +
+    return "  Tipo de actividad: " + typeOfRoom + "\n" +
            "  Descripción: " + description + "\n" +
            "  Precio por noche: $" + pricePerDay + "\n" +
-           "  Disponibilidad: " + disponingCapacity + "\n" +
+           "  Disponibilidad: " + capacityAvailability + "\n" +
            "  Cantidad: " + quantity + "\n";
   }
 }
