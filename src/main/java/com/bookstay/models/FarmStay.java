@@ -6,8 +6,8 @@ public class FarmStay extends Lodging{
     private int maxCapacity;
     private double pricePerNight;
 
-    public FarmStay(String name, String city, String category, double rating, String description, int maxCapacity, double price) {
-        super(name, city, category, rating, description);
+    public FarmStay(String name, String city, double rating, String description, int maxCapacity, double price) {
+        super(name, city, "Finca", rating, description);
         this.maxCapacity = maxCapacity;
         this.pricePerNight = price;
     }

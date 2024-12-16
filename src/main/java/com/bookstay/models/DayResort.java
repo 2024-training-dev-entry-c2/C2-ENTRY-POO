@@ -1,6 +1,7 @@
 package com.bookstay.models;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DayResort extends Lodging{
@@ -8,10 +9,10 @@ public class DayResort extends Lodging{
     private List<String> meals;
     private double pricePerPerson;
 
-    public DayResort(String name, String city, String category, double rating, String description, List<String> activities, List<String> meals, double price) {
-        super(name, city, category, rating, description);
-        this.activities = activities;
-        this.meals = meals;
+    public DayResort(String name, String city, double rating, String description, double price) {
+        super(name, city, "Día de sol", rating, description);
+        this.activities = new ArrayList<>();
+        this.meals = new ArrayList<>();
         this.pricePerPerson = price;
     }
 

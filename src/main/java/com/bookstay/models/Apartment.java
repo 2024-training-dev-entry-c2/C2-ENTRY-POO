@@ -6,8 +6,8 @@ public class Apartment extends Lodging{
     private int maxCapacity;
     private double pricePerNight;
 
-    public Apartment(String name, String city, String category, double rating, String description, int maxCapacity, double pricePerNight) {
-        super(name, city, category, rating, description);
+    public Apartment(String name, String city, double rating, String description, int maxCapacity, double pricePerNight) {
+        super(name, city, "Apartamento", rating, description);
         this.maxCapacity = maxCapacity;
         this.pricePerNight = pricePerNight;
     }

@@ -1,5 +1,8 @@
 package com.bookstay;
 
+import com.bookstay.models.Apartment;
+import com.bookstay.models.DayResort;
+import com.bookstay.models.FarmStay;
 import com.bookstay.models.Hotel;
 
 import java.time.LocalDate;
@@ -21,11 +24,18 @@ public class Main {
 
     /* ############################### INITIALIZE DATA ############################### */
     public static void initializeData() {
-        //Hotels
+        // Hotels
         Hotel hotel1 = new Hotel("Hotel Mar Azul", "Cartagena", 4.9, "Hotel frente al mar con excelentes comodidades");
         hotel1.addRoom("Habitación Estándar", "La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.", 200000.0, 2, 8);
 
-        
+        // Farm Stays
+        FarmStay farmStay1 = new FarmStay("Finca El Bosque", "Armenia", 4.8, "Finca tranquila rodeada de bosque", 10, 800000.0);
+
+        // Apartments
+        Apartment apartment1 = new Apartment("Apartamento Playa","Cartagena", 4.7, "Apartamento moderno con vista al océano, 3 habitaciones, 2 baños.", 5, 500000.0);
+
+        // Day Resorts
+        DayResort dayResort1 = new DayResort("Día de Sol Caribe", "San Andrés", 5.0, "Disfruta del sol, playa y actividades acuáticas", 200000.0);
 
         // Lodging structure: [Name, City, Category, Rating, Price, Description, MaxPeople, Rooms, Activities, Meals, ReservationData]
         // Room structure: " Name | Description | Price | MaxAdults | MaxChildren | Quantily "
