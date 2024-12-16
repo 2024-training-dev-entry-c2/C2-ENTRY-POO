@@ -22,10 +22,14 @@ abstract class Alojamiento {
     public String getCiudad() {
         return ciudad;
     }
-    
+    public String getTipo() {
+        return tipo;
+    }
+
     public List<Habitacion> getHabitaciones() {
         return habitaciones;
     }
+
 
     public void mostrarHabitaciones() {
         System.out.println("Habitaciones en " + nombre + ":");
