@@ -2,54 +2,56 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
+// - Lodging.java -//
 
-    static String[] names = {
-            "Hotel Grand Salon", "Villa San Marcos", "Finca el Azul",
-            "Florida Tropical", "Oasis Tropical", "Hotel Globo de oro"
-    };
-    static String[] locations = {
-            "Medellin", "Medellin", "Bogota",
-            "Santa Fe", "Girardota", "Medellin"
-    };
-    static String[] types = {
-            "Hotel", "Apartamento", "Finca",
-            "Dia de Sol", "Dia de Sol", "Hotel"
-    };
-    static double[] ratings = {
-            3.4, 4.3, 4.4,
-            4.0, 4.2, 3.4
-    };
-    static int[] prices = {
-            125, 180, 320,
-            115, 120, 100
-    };
-    static int[] avaliableRooms = {
-            2, 1, 1,
-            1, 1 , 2
-    };
 
-    static String[][] roomDescriptions = {
-            // Para Hotel Grand Salon
-            {"- Habitación doble con 2 camas dobles, vista al mar, aire acondicionado, cafetera, TV de pantalla plana, ducha y escritorio.\n Precio: $100 por noche",
-                    " - Habitación sencilla con vista al mar, aire acondicionado, TV de pantalla plana y ducha.\n Precio: $125 por noche"},
-
-            // Para Villa San Marcos
-            {" - Habitación familiar con 2 camas matrimoniales, terraza privada, cocina pequeña, baño completo, vista al jardín. Precio: $180 por noche",
-                    " - Habitación King con 3 camas, dos matrimoniales y una individual, terraza privada, cocina pequeña, baño completo, vista al jardín, Jacuzzi. Precio: $280 por noche"},
-
-            // Para Finca el Azul
-            {" - Habitación rústica con 2 camas individuales, ventanas amplias, baño privado, vista a los campos, decoración tradicional. Precio: $320 por noche"},
-
-            // Para Florida Tropical
-            {" - Actividades como Mesas de Ping Pong, Piscina, Canchas de Voley, y Futbol, Juegos de mesa. \nIncluye Almuerzo y Refrigerio. Precio: $115 por dia"},
-
-            // Para Oasis Tropical
-            {" - Actividades como Botes de remo, Lago, Natación, Juegos de Salón, Pesca, Rutas de Bicicleta, Voleibol.\nIncluye Desayuno, Almuerzo, Refrigerio. Precio: $120 por dia"},
-
-            // Para Hotel Globo de oro
-            {"- Habitación doble con 2 camas dobles, vista al mar, aire acondicionado, cafetera, TV de pantalla plana, ducha y escritorio.\n Precio: $150 por noche",
-                    " - Habitación sencilla con vista al mar, aire acondicionado, TV de pantalla plana y ducha.\n Precio: $100 por noche"},
-    };
+//    static String[] names = {
+//            "Hotel Grand Salon", "Villa San Marcos", "Finca el Azul",
+//            "Florida Tropical", "Oasis Tropical", "Hotel Globo de oro"
+//    };
+//    static String[] locations = {
+//            "Medellin", "Medellin", "Bogota",
+//            "Santa Fe", "Girardota", "Medellin"
+//    };
+//    static String[] types = {
+//            "Hotel", "Apartamento", "Finca",
+//            "Dia de Sol", "Dia de Sol", "Hotel"
+//    };
+//    static double[] ratings = {
+//            3.4, 4.3, 4.4,
+//            4.0, 4.2, 3.4
+//    };
+//    static int[] prices = {
+//            125, 180, 320,
+//            115, 120, 100
+//    };
+//    static int[] avaliableRooms = {
+//            2, 1, 1,
+//            1, 1 , 2
+//    };
+//
+//    static String[][] roomDescriptions = {
+//            // Para Hotel Grand Salon
+//            {"- Habitación doble con 2 camas dobles, vista al mar, aire acondicionado, cafetera, TV de pantalla plana, ducha y escritorio.\n Precio: $100 por noche",
+//                    " - Habitación sencilla con vista al mar, aire acondicionado, TV de pantalla plana y ducha.\n Precio: $125 por noche"},
+//
+//            // Para Villa San Marcos
+//            {" - Habitación familiar con 2 camas matrimoniales, terraza privada, cocina pequeña, baño completo, vista al jardín. Precio: $180 por noche",
+//                    " - Habitación King con 3 camas, dos matrimoniales y una individual, terraza privada, cocina pequeña, baño completo, vista al jardín, Jacuzzi. Precio: $280 por noche"},
+//
+//            // Para Finca el Azul
+//            {" - Habitación rústica con 2 camas individuales, ventanas amplias, baño privado, vista a los campos, decoración tradicional. Precio: $320 por noche"},
+//
+//            // Para Florida Tropical
+//            {" - Actividades como Mesas de Ping Pong, Piscina, Canchas de Voley, y Futbol, Juegos de mesa. \nIncluye Almuerzo y Refrigerio. Precio: $115 por dia"},
+//
+//            // Para Oasis Tropical
+//            {" - Actividades como Botes de remo, Lago, Natación, Juegos de Salón, Pesca, Rutas de Bicicleta, Voleibol.\nIncluye Desayuno, Almuerzo, Refrigerio. Precio: $120 por dia"},
+//
+//            // Para Hotel Globo de oro
+//            {"- Habitación doble con 2 camas dobles, vista al mar, aire acondicionado, cafetera, TV de pantalla plana, ducha y escritorio.\n Precio: $150 por noche",
+//                    " - Habitación sencilla con vista al mar, aire acondicionado, TV de pantalla plana y ducha.\n Precio: $100 por noche"},
+//    };
 
     public static void main(String[] args) {
         System.out.println("----------[Bienvenido a Booking Hotel!]---------- \n");
@@ -171,7 +173,7 @@ public class Main {
 
             // Encontrar el índice del alojamiento actual
             int hotelId = -1;
-            for (int i = 0; i < names.length; i++) {
+            for (int i = 0; i < Lodging.name.length; i++) {
                 if (names[i].equalsIgnoreCase(alojamientoActual)) {
                     hotelId = i;
                     break;
@@ -214,54 +216,54 @@ public class Main {
             String newRoom = availableRooms[selectedRoomIndex];
 
             // Verificar disponibilidad y realizar el cambio
-            for (int i = 0; i < roomDescriptions[hotelId].length; i++) {
-                if (roomDescriptions[hotelId][i].equals(newRoom)) {
-                    // Liberar la habitación actual
-                    for (int j = 0; j < roomDescriptions[hotelId].length; j++) {
-                        if (roomDescriptions[hotelId][j].equals("Ocupada")) {
-                            // Restablecer la descripción original de la habitación
-                            roomDescriptions[hotelId][j] = reservationRecords[reservationIndex][7];
-                            avaliableRooms[hotelId]++;
-                            break;
-                        }
-                    }
-
-                    // Marcar nueva habitación como ocupada
-                    roomDescriptions[hotelId][i] = "Ocupada";
-                    avaliableRooms[hotelId]--;
-
-                    // Actualizar la reserva con la nueva habitación
-                    reservationRecords[reservationIndex][7] = newRoom;
-                    System.out.println("Habitación cambiada exitosamente.");
-                    return;
-                }
-            }
-            System.out.println("La habitación seleccionada no está disponible.");
-
-        } else if (updateOption == 2) { // Eliminar reserva y liberar habitación
-            // Encontrar el índice del alojamiento actual
-            int hotelId = -1;
-            for (int i = 0; i < names.length; i++) {
-                if (names[i].equalsIgnoreCase(reservationRecords[reservationIndex][0])) {
-                    hotelId = i;
-                    break;
-                }
-            }
-
-            if (hotelId == -1) {
-                System.out.println("Error: Alojamiento no encontrado.");
-                return;
-            }
-
-            // Liberar la habitación
-            for (int i = 0; i < roomDescriptions[hotelId].length; i++) {
-                if (roomDescriptions[hotelId][i].equals("Ocupada")) {
-                    // Restaurar la descripción original de la habitación
-                    roomDescriptions[hotelId][i] = reservationRecords[reservationIndex][7];
-                    avaliableRooms[hotelId]++;
-                    break;
-                }
-            }
+//            for (int i = 0; i < roomDescriptions[hotelId].length; i++) {
+//                if (roomDescriptions[hotelId][i].equals(newRoom)) {
+//                    // Liberar la habitación actual
+//                    for (int j = 0; j < roomDescriptions[hotelId].length; j++) {
+//                        if (roomDescriptions[hotelId][j].equals("Ocupada")) {
+//                            // Restablecer la descripción original de la habitación
+//                            roomDescriptions[hotelId][j] = reservationRecords[reservationIndex][7];
+//                            avaliableRooms[hotelId]++;
+//                            break;
+//                        }
+//                    }
+//
+//                    // Marcar nueva habitación como ocupada
+//                    roomDescriptions[hotelId][i] = "Ocupada";
+//                    avaliableRooms[hotelId]--;
+//
+//                    // Actualizar la reserva con la nueva habitación
+//                    reservationRecords[reservationIndex][7] = newRoom;
+//                    System.out.println("Habitación cambiada exitosamente.");
+//                    return;
+//                }
+//            }
+//            System.out.println("La habitación seleccionada no está disponible.");
+//
+//        } else if (updateOption == 2) { // Eliminar reserva y liberar habitación
+//            // Encontrar el índice del alojamiento actual
+//            int hotelId = -1;
+//            for (int i = 0; i < names.length; i++) {
+//                if (names[i].equalsIgnoreCase(reservationRecords[reservationIndex][0])) {
+//                    hotelId = i;
+//                    break;
+//                }
+//            }
+//
+//            if (hotelId == -1) {
+//                System.out.println("Error: Alojamiento no encontrado.");
+//                return;
+//            }
+//
+//            // Liberar la habitación
+//            for (int i = 0; i < roomDescriptions[hotelId].length; i++) {
+//                if (roomDescriptions[hotelId][i].equals("Ocupada")) {
+//                    // Restaurar la descripción original de la habitación
+//                    roomDescriptions[hotelId][i] = reservationRecords[reservationIndex][7];
+//                    avaliableRooms[hotelId]++;
+//                    break;
+//                }
+//            }
 
             // Eliminar la reserva moviendo los registros
             for (int i = reservationIndex; i < reservationCount - 1; i++) {
