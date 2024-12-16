@@ -28,7 +28,7 @@ public class DayResort extends Lodging{
     @Override
     public boolean isAvailable(String startDate, String endDate, int guests) {
         if (!startDate.equals(endDate)) {
-            return false; // Un 'Día de Sol' solo puede ser reservado por un día
+            return false;
         }
 
         LocalDate date = LocalDate.parse(startDate);

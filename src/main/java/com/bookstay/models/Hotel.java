@@ -12,6 +12,11 @@ public class Hotel extends Lodging{
         this.rooms = new ArrayList<>();
     }
 
+    public void addRoom(String type, String description, double pricePerNight, int capacity, int totalRooms){
+        Room room = new Room(type,description,pricePerNight,capacity,totalRooms);
+        rooms.add(room);
+    }
+
     @Override
     public double calculatePrice(int adults, int children, int days, Object... params) {
         if (params.length == 1 && params[0] instanceof Integer) {

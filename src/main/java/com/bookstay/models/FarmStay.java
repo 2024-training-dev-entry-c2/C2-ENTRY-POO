@@ -4,12 +4,12 @@ import java.time.LocalDate;
 
 public class FarmStay extends Lodging{
     private int maxCapacity;
-    private double price;
+    private double pricePerNight;
 
     public FarmStay(String name, String city, String category, double rating, String description, int maxCapacity, double price) {
         super(name, city, category, rating, description);
         this.maxCapacity = maxCapacity;
-        this.price = price;
+        this.pricePerNight = price;
     }
 
     @Override
@@ -20,7 +20,7 @@ public class FarmStay extends Lodging{
             throw new IllegalArgumentException("La capacidad máxima de la finca es de " + maxCapacity + " personas.");
         }
 
-        return price * days;
+        return pricePerNight * days;
     }
 
     @Override

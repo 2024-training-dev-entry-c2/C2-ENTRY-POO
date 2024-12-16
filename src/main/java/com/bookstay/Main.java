@@ -1,5 +1,7 @@
 package com.bookstay;
 
+import com.bookstay.models.Hotel;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -19,6 +21,12 @@ public class Main {
 
     /* ############################### INITIALIZE DATA ############################### */
     public static void initializeData() {
+        //Hotels
+        Hotel hotel1 = new Hotel("Hotel Mar Azul", "Cartagena", 4.9, "Hotel frente al mar con excelentes comodidades");
+        hotel1.addRoom("Habitación Estándar", "La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.", 200000.0, 2, 8);
+
+        
+
         // Lodging structure: [Name, City, Category, Rating, Price, Description, MaxPeople, Rooms, Activities, Meals, ReservationData]
         // Room structure: " Name | Description | Price | MaxAdults | MaxChildren | Quantily "
 
