@@ -2,7 +2,10 @@ package org.example;
 
 import java.util.List;
 
+
 abstract class Alojamiento {
+
+
     private String nombre;
     private String ciudad;
     private String tipo;
@@ -25,6 +28,13 @@ abstract class Alojamiento {
     public String getTipo() {
         return tipo;
     }
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getCalificacion() {
+        return calificacion;
+    }
 
     public List<Habitacion> getHabitaciones() {
         return habitaciones;
@@ -34,7 +44,7 @@ abstract class Alojamiento {
     public void mostrarHabitaciones() {
         System.out.println("Habitaciones en " + nombre + ":");
         for (int i = 0; i < habitaciones.size(); i++) {
-            System.out.println((i + 1) + ". " + habitaciones.get(i));
+            System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
         }
     }
 

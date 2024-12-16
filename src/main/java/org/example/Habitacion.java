@@ -1,6 +1,26 @@
 package org.example;
 
 public class Habitacion {
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public double getPrecio() {
+        return precio;
+    }
+
+    public int getDisponibles() {
+        return disponibles;
+    }
+
+    public int getCapacidad() {
+        return capacidad;
+    }
+
     private String tipo;
     private String descripcion;
     private double precio;
