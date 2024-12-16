@@ -726,7 +726,7 @@ public class Main {
             }
 
             anio = ingresarNumero("Ingrese el anio: ");
-            if (anio < 2024) {
+            if (anio <= 2024) {
                 limpiarConsola();
                 System.out.println("Error ingrese los datos nuevamente");
                 continue;
