@@ -18,6 +18,9 @@ public class HostingWithRoom extends Hosting {
     super(city, typeOfHousing, name, rating, pricePerNight);
   }
 
+  public HostingWithRoom() {
+  }
+
   public List<Room> getRooms() {
     return rooms;
   }

@@ -3,14 +3,14 @@ package com.example.hotel.models;
 public class Activity extends Stay {
   private double pricePerDay;
 
-  public Activity(String typeOfRoom, String description, int capacityAvailability, int quantity, double pricePerDay) {
+  public Activity(String typeOfRoom, String description, double pricePerDay,int capacityAvailability, int quantity) {
     super(typeOfRoom, description, capacityAvailability, quantity);
     this.pricePerDay = pricePerDay;
   }
 
-  public Activity(String typeOfRoom, String description, int capacityAvailability, double pricePerNight) {
+  public Activity(String typeOfRoom, String description, double pricePerDay, int capacityAvailability) {
     super(typeOfRoom, description, capacityAvailability);
-    this.pricePerDay = pricePerNight;
+    this.pricePerDay = pricePerDay;
   }
 
   public Activity(double pricePerDay) {
