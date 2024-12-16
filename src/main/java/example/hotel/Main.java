@@ -67,11 +67,11 @@ public class Main {
     public static void inicializarHabitaciones() {
         agregarHabitacion(0, 0, "Single", "2 camas simples, aire acondicionado, WiFi", 50.0);
         agregarHabitacion(1, 0, "Double", "1 cama doble, aire acondicionado, TV", 75.0);
-        agregarHabitacion(2, 1, "Suite", "1 cama king size, jacuzzi, TV de pantalla plana", 120.0);
+        agregarHabitacion(2, 3, "Suite", "1 cama king size, jacuzzi, TV de pantalla plana", 120.0);
         agregarHabitacion(3, 2, "Single", "2 camas simples, desayuno incluido, WiFi", 55.0);
         agregarHabitacion(4, 4, "Activities", "Piscinas, excursiones y juegos familiares", 150.0);
         agregarHabitacion(5, 5, "Activities", "Spa, actividades al aire libre y recreación", 140.0);
-        
+
     }
 
     public static void agregarHabitacion(int index, int hotelID, String tipo, String caracteristicas, double precio) {
@@ -404,6 +404,7 @@ public class Main {
         System.arraycopy(resultado, 0, habitacionesFiltradas, 0, indice);
         return habitacionesFiltradas;
     }
+
     public static double calcularDescuento(LocalDate inicio, LocalDate fin, double precioBase) {
         boolean aumento15 = false;
         boolean aumento10 = false;
@@ -538,7 +539,6 @@ public class Main {
         }
     }
 
-    // Nueva función para obtener los hoteles disponibles para una reserva existente
     public static String[] obtenerHotelesDisponiblesParaReserva(int reservaIndex) {
         String ciudadReserva = null;
         String tipoAlojamientoReserva = null;
