@@ -71,6 +71,7 @@ public class Main {
         agregarHabitacion(3, 2, "Single", "2 camas simples, desayuno incluido, WiFi", 55.0);
         agregarHabitacion(4, 4, "Activities", "Piscinas, excursiones y juegos familiares", 150.0);
         agregarHabitacion(5, 5, "Activities", "Spa, actividades al aire libre y recreación", 140.0);
+        
     }
 
     public static void agregarHabitacion(int index, int hotelID, String tipo, String caracteristicas, double precio) {
@@ -153,8 +154,8 @@ public class Main {
         System.out.println("Seleccione un hotel disponible:");
         int hotelElegido = listarOpciones(scanner, hotelesDisponibles);
 
-        // Filtrar habitaciones disponibles
-        String[] habitaciones = filtrarHabitaciones(hotelElegido);
+// Filtrar habitaciones disponibles
+        String[] habitaciones = filtrarHabitaciones(hotelElegido, hotelesDisponibles);
 
         if (habitaciones.length == 0) {
             System.out.println("No hay habitaciones disponibles en el hotel seleccionado.");
@@ -287,7 +288,14 @@ public class Main {
         for (int i = 0; i < opciones.length && opciones[i] != null; i++) {
             System.out.printf("%d. %s%n", i + 1, opciones[i]);
         }
-        int seleccion = solicitarNumero(scanner, "Elija el número correspondiente: ") - 1;
+        int seleccion;
+        do {
+            seleccion = solicitarNumero(scanner, "Elija el número correspondiente: ") - 1;
+            if (seleccion < 0 || seleccion >= opciones.length) { // Validar que la selección esté dentro del rango
+                System.out.println("Opción inválida. Intente nuevamente.");
+            }
+        } while (seleccion < 0 || seleccion >= opciones.length); // Repetir hasta que la selección sea válida
+
         return seleccion;
     }
 
@@ -335,25 +343,67 @@ public class Main {
         return hotelesFiltrados;
     }
 
-    public static String[] filtrarHabitaciones(int hotelElegido) {
-        String[] resultado = new String[100];
+    public static String[] filtrarHabitaciones(int hotelElegido, String[] hotelesDisponibles) {
+        // Validar si el array hotelesDisponibles es vacío o nulo
+        if (hotelesDisponibles == null || hotelesDisponibles.length == 0) {
+            System.out.println("No hay hoteles disponibles.");
+            return new String[0];
+        }
+
+        // Validar que el índice del hotel elegido está dentro de los límites
+        if (hotelElegido < 0 || hotelElegido >= hotelesDisponibles.length) {
+            System.out.println("Error: Selección de hotel fuera de rango.");
+            return new String[0];
+        }
+
+        String[] resultado = new String[100]; // Array con resultados filtrados
         int indice = 0;
 
-        for (int i = 0; i < habitacionHotelID.length && habitacionTipos[i] != null; i++) {
-            System.out.printf("Verificando habitación: %s, Hotel ID: %d\n", habitacionTipos[i], habitacionHotelID[i]);
+        // Obtener el nombre del hotel seleccionado
+        String hotelSeleccionado = hotelesDisponibles[hotelElegido]; // Índice 0-based del usuario
 
-            if (habitacionHotelID[i] == hotelElegido) {
-                resultado[indice++] = String.format("%s - Precio por noche: $%.2f - Características: %s",
-                        habitacionTipos[i], habitacionPrecios[i], habitacionCaracteristicas[i]);
+        // Buscar el índice correspondiente en hotelNombres
+        int indiceHotel = -1;
+        for (int i = 0; i < hotelNombres.length && hotelNombres[i] != null; i++) {
+            if (hotelSeleccionado.contains(hotelNombres[i])) { // Comprobación flexible
+                indiceHotel = i;
+                break;
             }
         }
-        System.out.printf("Habitaciones disponibles para hotel ID %d: %d resultado(s)\n", hotelElegido, indice);
 
+        if (indiceHotel == -1) {
+            System.out.println("Error: No se encontró el hotel seleccionado en la base de datos.");
+            return new String[0];
+        }
+
+        // Filtrar habitaciones asociadas al hotel seleccionado
+        for (int i = 0; i < habitacionHotelID.length && habitacionTipos[i] != null; i++) {
+            // Validar que la habitación pertenece al hotel seleccionado
+            if (habitacionHotelID[i] == indiceHotel) {
+                // Aplicar reglas adicionales para "Día de Sol"
+                if (tipoAlojamiento[indiceHotel].equalsIgnoreCase("Día de Sol")) {
+                    if (habitacionTipos[i].equalsIgnoreCase("Activities")) {
+                        resultado[indice++] = String.format("%s - Características: %s - Precio: $%.2f",
+                                habitacionTipos[i], habitacionCaracteristicas[i], habitacionPrecios[i]);
+                    }
+                } else {
+                    // Habitaciones para otros tipos de alojamiento
+                    resultado[indice++] = String.format("%s - Características: %s - Precio: $%.2f",
+                            habitacionTipos[i], habitacionCaracteristicas[i], habitacionPrecios[i]);
+                }
+            }
+        }
+
+        if (indice == 0) {
+            System.out.println("No hay habitaciones disponibles en el hotel seleccionado.");
+            return new String[0];
+        }
+
+        // Crear un array ajustado al tamaño de resultados
         String[] habitacionesFiltradas = new String[indice];
         System.arraycopy(resultado, 0, habitacionesFiltradas, 0, indice);
         return habitacionesFiltradas;
     }
-
     public static double calcularDescuento(LocalDate inicio, LocalDate fin, double precioBase) {
         boolean aumento15 = false;
         boolean aumento10 = false;
@@ -416,7 +466,9 @@ public class Main {
             System.out.println("Por favor, ingrese un número válido.");
             scanner.next();
         }
-        return scanner.nextInt();
+        int numero = scanner.nextInt();
+        scanner.nextLine(); // Consumir la nueva línea // <-- Corrección aquí
+        return numero;
     }
 
     /* Metodos de Actualización de Reservas */
@@ -461,6 +513,9 @@ public class Main {
         System.out.println("\nReserva encontrada:");
         mostrarDetallesReserva(reservaIndex);
 
+        // Obtener los hoteles disponibles para la reserva
+        String[] hotelesDisponibles = obtenerHotelesDisponiblesParaReserva(reservaIndex);
+
         // Ofrecer opciones de actualización
         System.out.println("\n¿Qué desea actualizar?");
         System.out.println("1. Fechas de Estadía");
@@ -474,12 +529,47 @@ public class Main {
         switch (opcion) {
             case 1 -> actualizarFechas(scanner, reservaIndex);
             case 2 -> actualizarHotel(scanner, reservaIndex);
-            case 3 -> actualizarTipoHabitacion(scanner, reservaIndex);
+            case 3 ->
+                    actualizarTipoHabitacion(scanner, reservaIndex, hotelesDisponibles); // Pasar hotelesDisponibles como argumento
             case 4 -> actualizarCantidadHabitaciones(scanner, reservaIndex);
             case 5 -> actualizarDatosPersonales(scanner, reservaIndex);
             case 6 -> System.out.println("Actualización cancelada.");
             default -> System.out.println("Opción inválida.");
         }
+    }
+
+    // Nueva función para obtener los hoteles disponibles para una reserva existente
+    public static String[] obtenerHotelesDisponiblesParaReserva(int reservaIndex) {
+        String ciudadReserva = null;
+        String tipoAlojamientoReserva = null;
+
+        for (int i = 0; i < hotelNombres.length; i++) {
+            if (hotelNombres[i] != null && hotelNombres[i].equals(hotelesReservas[reservaIndex])) {
+                ciudadReserva = ciudades[i];
+                tipoAlojamientoReserva = tipoAlojamiento[i];
+                break;
+            }
+        }
+
+        if (ciudadReserva == null || tipoAlojamientoReserva == null) {
+            System.out.println("Error: No se pudieron recuperar los datos del hotel asociado a la reserva.");
+            return new String[0]; // Devolver un array vacío si hay un error
+        }
+
+        // Filtrar los hoteles disponibles basados en la ciudad y tipo de alojamiento
+        String[] hotelesDisponibles = new String[100];
+        int indice = 0;
+        for (int i = 0; i < hotelNombres.length && hotelNombres[i] != null; i++) {
+            if (ciudades[i].equals(ciudadReserva) && tipoAlojamiento[i].equals(tipoAlojamientoReserva)) {
+                hotelesDisponibles[indice++] = hotelNombres[i];
+            }
+        }
+
+        // Reducir el tamaño del array de hoteles disponibles
+        String[] hotelesFiltrados = new String[indice];
+        System.arraycopy(hotelesDisponibles, 0, hotelesFiltrados, 0, indice);
+
+        return hotelesFiltrados;
     }
 
     public static void mostrarDetallesReserva(int reservaIndex) {
@@ -527,7 +617,7 @@ public class Main {
         }
     }
 
-    public static void actualizarTipoHabitacion(Scanner scanner, int reservaIndex) {
+    public static void actualizarTipoHabitacion(Scanner scanner, int reservaIndex, String[] hotelesDisponibles) { // Agregar parámetro hotelesDisponibles
         System.out.println("\n--- Actualizar Tipo de Habitación ---");
 
         String hotelActual = hotelesReservas[reservaIndex];
@@ -545,8 +635,8 @@ public class Main {
             return;
         }
 
-        // Filtrar habitaciones disponibles en el hotel actual
-        String[] habitacionesDisponibles = filtrarHabitaciones(hotelID);
+// Filtrar habitaciones disponibles en el hotel actual
+        String[] habitacionesDisponibles = filtrarHabitaciones(hotelID, hotelesDisponibles);
 
         if (habitacionesDisponibles.length == 0) {
             System.out.println("No hay habitaciones disponibles en el hotel seleccionado.");
