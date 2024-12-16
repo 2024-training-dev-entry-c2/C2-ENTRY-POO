@@ -410,9 +410,9 @@ public class Main {
         System.out.println("Precio por noche: " + pricePerNight);
         System.out.println("Precio base total: " + baseTotalPrice);
         if(adjustment > 0){
-            System.out.println("Ajuste: Incremento de " + adjustment + "%");
+            System.out.println("Ajuste: Incremento de " + adjustment * 100 + "%");
         }else{
-            System.out.println("Ajuste: Descuento de " + baseTotalPrice + "%");
+            System.out.println("Ajuste: Descuento de " + adjustment * 100 + "%");
         }
         System.out.println("Precio total: " + adjustedTotalPrice);
         System.out.println("+----------------------------------+\n");
@@ -522,14 +522,23 @@ public class Main {
         for (List<String> reservation : reservations) {
             if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
                 found = true;
+
+                String lodgingName = reservation.get(6);
+                String lodgingCategory = getLodgingCategory(lodgingName);
+
                 result.append("\n*---------------- Detalles de la Reservación ----------------*\n")
                         .append("Nombre: ").append(reservation.get(0)).append(" ").append(reservation.get(1)).append("\n")
                         .append("Correo: ").append(reservation.get(2)).append("\n")
-                        .append("Alojamiento: ").append(reservation.get(6)).append("\n")
+                        .append("Alojamiento: ").append(lodgingName).append("\n")
+                        .append("Categoría: ").append(lodgingCategory).append("\n")
                         .append("Fecha de llegada: ").append(reservation.get(7)).append("\n")
-                        .append("Fecha de salida: ").append(reservation.get(8)).append("\n")
-                        .append("Habitaciones reservadas: ").append(reservation.get(11)).append("\n")
-                        .append("Hora de llegada: ").append(reservation.get(5)).append("\n")
+                        .append("Fecha de salida: ").append(reservation.get(8)).append("\n");
+
+                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
+                    result.append("Habitaciones reservadas: ").append(reservation.get(11)).append("\n");
+                }
+
+                result.append("Hora de llegada: ").append(reservation.get(5)).append("\n")
                         .append("Nacionalidad: ").append(reservation.get(3)).append("\n")
                         .append("Teléfono: ").append(reservation.get(4)).append("\n");
             }
@@ -540,6 +549,16 @@ public class Main {
         }
 
         return result.toString();
+    }
+
+    // Auxiliary method for obtaining the category of a lodging by name
+    private static String getLodgingCategory(String lodgingName) {
+        for (List<String> lodging : lodgings) {
+            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
+                return lodging.get(2); // Índice de la categoría
+            }
+        }
+        return "Desconocida"; // Si no se encuentra
     }
 
     /* ################################# MODIFY RESERVATION ################################# */
