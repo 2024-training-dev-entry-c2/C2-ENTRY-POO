@@ -570,15 +570,28 @@ public class Main {
             if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
                 found = true;
 
-                System.out.println("\n*---------------- Detalles de la Reservación ----------------*\n");
-                System.out.println("Alojamiento actual: " + reservation.get(6));
-                System.out.println("Habitaciones reservadas: " + reservation.get(11));
+                String lodgingName = reservation.get(6);
+                String lodgingCategory = getLodgingCategory(lodgingName);
 
-                System.out.println("¿Qué deseas modificar? \n1: Cambio de habitación, \n2: Cambio de alojamiento: ");
+                System.out.println("\n*---------------- Detalles de la Reservación ----------------*\n");
+                System.out.println("Alojamiento actual: " + lodgingName);
+                System.out.println("Categoría: " + lodgingCategory);
+
+                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
+                    System.out.println("Habitaciones reservadas: " + reservation.get(11));
+                }
+
+                System.out.println("¿Qué deseas modificar?");
+
+                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
+                    System.out.println("1: Cambio de habitación");
+                }
+                System.out.println("2: Cambio de alojamiento");
+
                 int choice = input.nextInt();
                 input.nextLine();
 
-                if (choice == 1) {
+                if (choice == 1 && lodgingCategory.equalsIgnoreCase("Hotel")) {
                     System.out.println("\nHabitaciones actuales: " + reservation.get(11));
                     System.out.println("Indica el tipo y la cantidad de habitación(es) que deseas cambiar (ejemplo: 'Habitación Estándar x1'): ");
                     String oldRoomEntry = input.nextLine();
@@ -596,7 +609,7 @@ public class Main {
                     }
 
                     for (List<String> lodging : lodgings) {
-                        if (lodging.get(0).equalsIgnoreCase(reservation.get(6))) {
+                        if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
                             System.out.println("Habitaciones disponibles:");
                             String[] roomDetails = lodging.get(7).split(";");
                             for (String room : roomDetails) {
@@ -620,7 +633,7 @@ public class Main {
                     System.out.println("Reservación eliminada. Por favor, crea una nueva reservación.");
                     return;
                 } else {
-                    System.out.println("Opción no válida.");
+                    System.out.println("Opción no válida o no aplicable para esta categoría.");
                 }
             }
         }
