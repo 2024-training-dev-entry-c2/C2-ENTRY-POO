@@ -525,17 +525,20 @@ public class Main {
         System.out.println("4. Cantidad de Habitaciones");
         System.out.println("5. Datos Personales");
         System.out.println("6. Cancelar");
-        int opcion = solicitarNumero(scanner, "Ingrese su opción: ");
-
-        switch (opcion) {
-            case 1 -> actualizarFechas(scanner, reservaIndex);
-            case 2 -> actualizarHotel(scanner, reservaIndex);
-            case 3 ->
-                    actualizarTipoHabitacion(scanner, reservaIndex, hotelesDisponibles); // Pasar hotelesDisponibles como argumento
-            case 4 -> actualizarCantidadHabitaciones(scanner, reservaIndex);
-            case 5 -> actualizarDatosPersonales(scanner, reservaIndex);
-            case 6 -> System.out.println("Actualización cancelada.");
-            default -> System.out.println("Opción inválida.");
+        while (true) {
+            int opcion = solicitarNumero(scanner, "Ingrese su opción: ");
+            switch (opcion) {
+                case 1 -> actualizarFechas(scanner, reservaIndex);
+                case 2 -> actualizarHotel(scanner, reservaIndex);
+                case 3 -> actualizarTipoHabitacion(scanner, reservaIndex, hotelesDisponibles);
+                case 4 -> actualizarCantidadHabitaciones(scanner, reservaIndex);
+                case 5 -> actualizarDatosPersonales(scanner, reservaIndex);
+                case 6 -> {
+                    System.out.println("Actualización cancelada.");
+                    return; // Salir del menú
+                }
+                default -> System.out.println("Opción inválida. Intente nuevamente.");
+            }
         }
     }
 
