@@ -151,10 +151,19 @@ public class Main {
                     String city = input.nextLine();
                     System.out.println("¿Qué tipo de alojamiento buscas?: ");
                     String category = input.nextLine();
-                    System.out.println("Escribe el día inicial de la estadía (YYYY-MM-dd): ");
+                    if(category.equalsIgnoreCase("Día de Sol")){
+                        System.out.println("Escribe el día de la estadía (YYYY-MM-dd): ");
+                    }else{
+                        System.out.println("Escribe el día inicial de la estadía (YYYY-MM-dd): ");
+                    }
                     String startDay = input.nextLine();
-                    System.out.println("Escribe el día final de la estadía (YYYY-MM-dd): ");
-                    String endDay = input.nextLine();
+                    String endDay;
+                    if(category.equalsIgnoreCase("Día de Sol")){
+                        endDay = startDay;
+                    }else{
+                        System.out.println("Escribe el día final de la estadía (YYYY-MM-dd): ");
+                        endDay = input.nextLine();
+                    }
                     System.out.println("Cantidad de adultos: ");
                     int adults = input.nextInt();
                     input.nextLine();
@@ -179,7 +188,7 @@ public class Main {
                     }
                     System.out.println("\nLos resultados obtenidos en la búsqueda son: \n");
                     for(List<String> result : results){
-                        printLodgingInformation(result, startDay, endDay, roomsRequired);
+                        printLodgingInformation(result, startDay, endDay, roomsRequired, adults, children);
                     }
 
                     System.out.println("\n¿Deseas hacer una reservación? (Si - No)");
@@ -201,7 +210,7 @@ public class Main {
                                     int count = input.nextInt();
                                     input.nextLine();
                                     if(countSelectedRooms + count > roomsRequired){
-                                        System.out.println("Has seleccionado más habitaciones de las requeridas, se ajustará a lo establecido.");
+                                        System.out.println("\nHas seleccionado más habitaciones de las requeridas, se ajustará a lo establecido.");
                                         int countAdjusted = roomsRequired - countSelectedRooms;
                                         selectedRooms.add(room + " x" + countAdjusted);
                                     }else{
@@ -217,10 +226,10 @@ public class Main {
                         } else {
                             if(category.equalsIgnoreCase("Hotel")){
 
-                                System.out.println("No hay habitaciones disponibles en este hotel.");
+                                System.out.println("\nNo hay habitaciones disponibles en este hotel.");
                             }
                         }
-                        System.out.println("¿Confirmas la selección? (Si - No): ");
+                        System.out.println("\n¿Confirmas la selección? (Si - No): ");
                         String selection = input.nextLine();
                         if(selection.equalsIgnoreCase("Si")){
                             System.out.println("\n*----- Datos personales de la Reservación -----*");
@@ -270,10 +279,10 @@ public class Main {
                     modifyReservation(modEmail, modDayBirth);
                     break;
                 case 0:
-                    System.out.println("¡Gracias por usar nuestros servicios!");
+                    System.out.println("\n¡Gracias por usar nuestros servicios!\n");
                     return;
                 default:
-                    System.out.println("Opción no válida, rectifica el menú.");
+                    System.out.println("\nOpción no válida, rectifica el menú.");
                     break;
             }
         }
@@ -376,7 +385,7 @@ public class Main {
     }
 
     // Method to print the information of the lodgings
-    public static void printLodgingInformation(List<String> lodging, String startDate, String endDate, int roomsNeeded) {
+    public static void printLodgingInformation(List<String> lodging, String startDate, String endDate, int roomsNeeded, int adults, int children) {
         System.out.println("+----------------------------------+");
         System.out.println(lodging.get(0));  // Lodging name
         System.out.println("Calificación: " + lodging.get(3));  // Rating
@@ -384,6 +393,8 @@ public class Main {
         float pricePerNight = 0;
         float baseTotalPrice = 0;
         float adjustment = calculateDiscountOrIncrement(startDate, endDate);
+
+        long days = calculateDaysBetween(startDate, endDate); // Asegura que nunca sea 0 días
 
         if (lodging.get(2).equalsIgnoreCase("Hotel")) {
             String roomsInfo = lodging.get(7);
@@ -398,21 +409,31 @@ public class Main {
                 }
             }
             pricePerNight = lowerPrice;
-            baseTotalPrice = pricePerNight * roomsNeeded * calculateDaysBetween(startDate, endDate);
+            baseTotalPrice = pricePerNight * roomsNeeded * days;
+
+        } else if (lodging.get(2).equalsIgnoreCase("Día de sol")) {
+            int totalPeople = adults + children;
+            pricePerNight = Float.parseFloat(lodging.get(4));
+            baseTotalPrice = pricePerNight * totalPeople;
+
+            System.out.println("Actividades incluidas: " + lodging.get(8));
+            System.out.println("Meriendas incluidas: " + lodging.get(9));
 
         } else {
             pricePerNight = Float.parseFloat(lodging.get(4));
-            baseTotalPrice = pricePerNight * calculateDaysBetween(startDate, endDate);
+            baseTotalPrice = pricePerNight * days;
         }
 
         float adjustedTotalPrice = baseTotalPrice + (baseTotalPrice * adjustment);
 
-        System.out.println("Precio por noche: " + pricePerNight);
+        System.out.println("Precio por noche (por persona): " + pricePerNight);
         System.out.println("Precio base total: " + baseTotalPrice);
-        if(adjustment > 0){
+        if (adjustment > 0) {
             System.out.println("Ajuste: Incremento de " + adjustment * 100 + "%");
-        }else{
-            System.out.println("Ajuste: Descuento de " + adjustment * 100 + "%");
+        } else if (adjustment < 0) {
+            System.out.println("Ajuste: Descuento de " + Math.abs(adjustment * 100) + "%");
+        } else {
+            System.out.println("Ajuste: Sin cambios.");
         }
         System.out.println("Precio total: " + adjustedTotalPrice);
         System.out.println("+----------------------------------+\n");
@@ -461,7 +482,9 @@ public class Main {
     public static long calculateDaysBetween(String startDate, String endDate) {
         LocalDate start = LocalDate.parse(startDate);
         LocalDate end = LocalDate.parse(endDate);
-        return ChronoUnit.DAYS.between(start, end);
+
+        long days = ChronoUnit.DAYS.between(start, end);
+        return (days == 0) ? 1 : days;
     }
 
     /* ################################# CONFIRM DATA ################################# */
@@ -514,6 +537,7 @@ public class Main {
         }
         return "No se pudo realizar la reserva. El alojamiento no está disponible.";
     }
+
     //Method to consult the reservations
     public static String consultReservations(String email, String dayBirth) {
         StringBuilder result = new StringBuilder();
