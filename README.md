@@ -1,7 +1,18 @@
-# Book Stay
+# 🏩 Book Stay
+[![GitHub last commit](https://img.shields.io/github/last-commit/KJRM20/book-stay)](#)<br><br>
+
+## Tabla de Contenidos
+- [Descripción](#descripción)
+- [Características](#características)
+- [Tecnologías](#tecnologías)
+- [Instalación y Configuración](#instalación-y-configuración)
+- [Arquitectura y Funcionalidad](#arquitectura-y-funcionalidad)
+- [Principales Métodos](#principales-métodos)
+- [Limitaciones](#limitaciones)
+- [Contacto](#contacto)
 
 ## Descripción
-**Book Stay**es un programa de gestión de reservas desarrollado en  **Java 17 con Gradle**, que permite a los usuarios buscar, reservar, consultar y modificar reservas en hoteles y otros alojamientos turísticos. Diseñado para ejecutarse en consola, este sistema simula la funcionalidad básica de un sistema de reservas.
+**Book Stay** es un programa de gestión de reservas desarrollado en  **Java 17 con Gradle**, que permite a los usuarios buscar, reservar, consultar y modificar reservas en hoteles y otros alojamientos turísticos. Diseñado para ejecutarse en consola, este sistema simula la funcionalidad básica de un sistema de reservas.
 
 ## Características
 - **Buscar alojamiento**: Permite realizar búsquedas por ciudad, tipo de alojamiento, fechas, cantidad de personas y número de habitaciones necesarias.
@@ -53,4 +64,7 @@ Para preguntas, problemas o colaboraciones, por favor, contáctame.
 
 -----
 
-¡Gracias por tu interés en este booking de alojamientos!
+¡Gracias por tu interés en este booking de alojamientos! 🎉
+<br><small>Realizado por Karen Rincón, 2024</small><br><br>
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/KJRM20) 
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-100000?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/karen-rincon/) 
