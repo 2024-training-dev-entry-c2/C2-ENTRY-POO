@@ -51,9 +51,9 @@ public class Main {
 
     public static void inicializarHoteles() {
         agregarHotel(0, "Hotel Buenos Aires", "Hotel", "Buenos Aires", 4, 50.0);
-        agregarHotel(1, "Hotel Mar del Plata", "Hotel", "Mar del Plata", 3, 60.0);
+        agregarHotel(1, "Hotelazo Porteño", "Hotel", "Buenos Aires", 5, 60.0);
         agregarHotel(2, "Apartamento Cordoba", "Apartamento", "Cordoba", 2, 40.0);
-        agregarHotel(3, "Finca Rosario", "Finca", "Rosario", 5, 100.0);
+        agregarHotel(3, "Finca Rosario", "Finca", "Rosario", 5, 180.0);
         agregarHotel(4, "Día de Sol Buenos Aires", "Día de Sol", "Buenos Aires", 4, 70.0);
         agregarHotel(5, "Día de Sol Mar del Plata", "Día de Sol", "Mar del Plata", 3, 80.0);
 
@@ -77,12 +77,17 @@ public class Main {
     }
 
     public static void inicializarHabitaciones() {
+        // Habitaciones del Hotel Buenos Aires
         agregarHabitacion(0, 0, "Single", "2 camas simples, aire acondicionado, WiFi", 50.0);
         agregarHabitacion(1, 0, "Double", "1 cama doble, aire acondicionado, TV", 75.0);
-        agregarHabitacion(2, 3, "Suite", "1 cama king size, jacuzzi, TV de pantalla plana", 120.0);
-        agregarHabitacion(3, 2, "Single", "2 camas simples, desayuno incluido, WiFi", 55.0);
-        agregarHabitacion(4, 4, "Activities", "Piscinas, excursiones, juegos familiares, incluye almuerzo", 150.0);
-        agregarHabitacion(5, 5, "Activities", "Spa, actividades al aire libre, recreación, incluye refrigerio", 140.0);
+        agregarHabitacion(2, 1, "Suite", "1 cama king size, jacuzzi, TV de pantalla plana", 120.0);
+        agregarHabitacion(3, 1, "Single", "2 camas simples, desayuno incluido, WiFi", 55.0);
+        agregarHabitacion(4, 3, "Suite", "Cabaña privada, piscina, desayuno incluido", 200.0);
+        agregarHabitacion(5, 3, "Double", "Cama doble, vista al jardín, desayuno incluido", 180.0);
+        agregarHabitacion(6, 2, "Apartamento Simple", "1 habitación, cocina equipada, WiFi", 100.0);
+        agregarHabitacion(7, 2, "Apartamento Familiar", "2 habitaciones, cocina equipada, sala de estar", 150.0);
+        agregarHabitacion(8, 4, "Activities", "Piscinas, excursiones, juegos familiares, incluye almuerzo", 150.0);
+        agregarHabitacion(9, 5, "Activities", "Spa, actividades al aire libre, recreación, incluye refrigerio", 140.0);
     }
 
     public static void agregarHabitacion(int index, int hotelID, String tipo, String caracteristicas, double precio) {
@@ -772,8 +777,45 @@ public class Main {
         System.out.println("Seleccione un nuevo hotel:");
         int hotelElegido = listarOpciones(scanner, hotelesFiltrados);
 
-        hotelesReservas[reservaIndex] = hotelesFiltrados[hotelElegido];
-        System.out.println("Hotel actualizado exitosamente a: " + hotelesReservas[reservaIndex]);
+        String nuevoHotel = hotelesFiltrados[hotelElegido];
+        int nuevoHotelID = -1;
+        for (int i = 0; i < hotelNombres.length; i++) {
+            if (hotelNombres[i] != null && hotelNombres[i].equals(nuevoHotel)) {
+                nuevoHotelID = i;
+                break;
+            }
+        }
+
+        if (nuevoHotelID == -1) {
+            System.out.println("Error: No se pudo encontrar el hotel seleccionado.");
+            return;
+        }
+
+        double nuevoPrecioPorNoche = precios[nuevoHotelID];
+        long diasEstadia = ChronoUnit.DAYS.between(fechasInicioReservas[reservaIndex], fechasFinReservas[reservaIndex]);
+        double nuevoPrecioTotal = nuevoPrecioPorNoche * diasEstadia;
+
+        System.out.println("\n--- Detalles del Nuevo Hotel ---");
+        System.out.printf("Hotel: %s%n", nuevoHotel);
+        System.out.printf("Precio por noche: $%.2f%n", nuevoPrecioPorNoche);
+        System.out.printf("Días de estadía: %d%n", diasEstadia);
+        System.out.printf("Precio total (estimado): $%.2f%n", nuevoPrecioTotal);
+
+        System.out.print("\n¿Desea confirmar los cambios en el hotel y el precio? (Si/No): ");
+        String confirmacion = scanner.nextLine();
+
+        if (!confirmacion.equalsIgnoreCase("Si")) {
+            System.out.println("Actualización de hotel cancelada.");
+            return;
+        }
+
+        hotelesReservas[reservaIndex] = nuevoHotel;
+        System.out.println("¡Hotel actualizado exitosamente!");
+
+        System.out.println("\n--- Detalles Actualizados de la Reserva ---");
+        mostrarDetallesReserva(reservaIndex);
+
+        System.out.println("\nRegresando al menú de actualización...");
     }
 
     public static void actualizarDatosPersonales(Scanner scanner, int reservaIndex) {
