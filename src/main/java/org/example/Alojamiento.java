@@ -18,6 +18,11 @@ abstract class Alojamiento {
         this.habitaciones = habitaciones;
     }
 
+
+    public String getCiudad() {
+        return ciudad;
+    }
+    
     public List<Habitacion> getHabitaciones() {
         return habitaciones;
     }
