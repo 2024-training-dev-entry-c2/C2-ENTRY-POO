@@ -70,13 +70,13 @@ public class Main {
 
         // Apartaments
         addLodging("Apartamento Playa", "Cartagena", "Apartamento", "4.7", "500000",
-                "Apartamento moderno con vista al océano", "6", "", "", "", "");
+                "Apartamento moderno con vista al océano, 4 habitaciones, 3 baños", "6", "", "", "", "");
 
         addLodging("Apartamento Mirador", "Bogotá", "Apartamento", "4.6", "350000",
                 "Apartamento con vistas panorámicas de la ciudad", "4", "", "", "", "");
 
         addLodging("Apartamento Acapulco", "Cartagena", "Apartamento", "4.8", "600000",
-                "Apartamento con vista al mar y piscina privada", "5", "", "", "", "");
+                "Apartamento con vista al mar y piscina privada, 3 habitaciones, 2 baños", "5", "", "", "", "");
 
         addLodging("Apartamento Pinares", "Santa Marta", "Apartamento", "4.5", "400000",
                 "Apartamento de lujo con terraza privada", "8", "", "", "", "");
@@ -86,16 +86,16 @@ public class Main {
 
         // Farm Stays
         addLodging("Finca El Bosque", "Armenia", "Finca", "4.8", "800000",
-                "Finca tranquila rodeada de bosque", "10", "", "", "", "");
+                "Finca tranquila rodeada de bosque, 6 habitaciones, 4 baños", "10", "", "", "", "");
 
         addLodging("Finca Los Pinos", "Pereira", "Finca", "4.9", "900000",
-                "Finca con vistas a la montaña y espacios amplios", "12", "", "", "", "");
+                "Finca con vistas a la montaña y espacios amplios, 8 habitaciones, 6 baños", "12", "", "", "", "");
 
         addLodging("Finca Valle Verde", "Manizales", "Finca", "4.6", "750000",
                 "Finca ideal para retiros y actividades al aire libre", "8", "", "", "", "");
 
         addLodging("Finca El Paraíso", "Caldas", "Finca", "4.7", "850000",
-                "Finca en un valle tranquilo rodeado de naturaleza", "14", "", "", "", "");
+                "Finca en un valle tranquilo rodeado de naturaleza, 10 habitaciones, 8 baños", "14", "", "", "", "");
 
         addLodging("Finca Los Robles", "Quindío", "Finca", "4.8", "950000",
                 "Finca con senderos ecológicos y vista panorámica", "10", "", "", "", "");
