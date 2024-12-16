@@ -19,6 +19,7 @@ public class Main {
     static String[] habitacionCaracteristicas = new String[500];
     static double[] habitacionPrecios = new double[500];
     static boolean[][][] habitacionDisponibilidad = new boolean[500][10][366]; // Disponibilidad de habitaciones
+    static int[][] habitacionesDisponibles = new int[100][5]; // 100 hoteles, 5 tipos de habitación
 
     static int[] reservaID = new int[100];
     static int[] reservaHotelID = new int[100];
@@ -98,11 +99,9 @@ public class Main {
         habitacionPrecios[5] = 100.0;
 
         // Inicializar la disponibilidad de las habitaciones
-        for (int i = 0; i < habitacionDisponibilidad.length; i++) {
-            for (int j = 0; j < habitacionDisponibilidad[i].length; j++) {
-                for (int k = 0; k < habitacionDisponibilidad[i][j].length; k++) {
-                    habitacionDisponibilidad[i][j][k] = true;
-                }
+        for (int i = 0; i < habitacionesDisponibles.length; i++) {
+            for (int j = 0; j < habitacionesDisponibles[i].length; j++) {
+                habitacionesDisponibles[i][j] = 10;
             }
         }
 
@@ -158,6 +157,20 @@ public class Main {
         System.out.print("Seleccione un tipo de alojamiento (ingrese el número): ");
         int tipoSeleccionado = scanner.nextInt() - 1;
         scanner.nextLine();
+
+        // Pedir los datos del usuario
+        System.out.print("Ingrese su nombre: ");
+        String nombreUsuario = scanner.nextLine();
+        System.out.print("Ingrese su apellido: ");
+        String apellidoUsuario = scanner.nextLine();
+        System.out.print("Ingrese su email: ");
+        String emailUsuario = scanner.nextLine();
+        System.out.print("Ingrese su nacionalidad: ");
+        String nacionalidadUsuario = scanner.nextLine();
+        System.out.print("Ingrese su número de teléfono: ");
+        String telefonoUsuario = scanner.nextLine();
+        System.out.print("Ingrese su hora aproximada de llegada: ");
+        String horaLlegadaUsuario = scanner.nextLine();
 
         System.out.print("Ingrese la cantidad de adultos: ");
         int cantidadAdultos = scanner.nextInt();
@@ -250,19 +263,42 @@ public class Main {
 
                         // Si el precio de la habitación es mayor al precio base del hotel, mostrar el total a pagar
                         if (precioHabitacion > precios[hotelSeleccionado]) {
-                            precioTotal = calcularPrecioTotal(precioHabitacion, cantidadHabitaciones, fechaInicio, fechaFin);
-                            System.out.println("\nPrecio total de la estadía: " + precioTotal);
+                            double[] precioTotalConDescuentoYAumento = calcularPrecioTotal(precioHabitacion, cantidadHabitaciones, fechaInicio, fechaFin); // Obtener el precio total, el descuento y el aumento
+                            precioTotal = precioTotalConDescuentoYAumento[0]; // Asignar el precio total
+                            double descuento = precioTotalConDescuentoYAumento[1]; // Asignar el descuento
+                            double aumento = precioTotalConDescuentoYAumento[2]; // Asignar el aumento
+
+                            System.out.println("\nPrecio total de la estadía: " + Math.round(precioTotal));
+                            if (descuento > 0) {
+                                System.out.println("Descuento aplicado: " + Math.round(descuento)); // Mostrar el descuento si existe
+                            }
+                            if (aumento > 0) {
+                                System.out.println("Aumento aplicado: " + Math.round(aumento)); // Mostrar el aumento si existe
+                            }
                         }
 
                         // Confirmar reserva
+                        System.out.println("\n--- Resumen de la reserva ---");
+                        System.out.println("Hotel: " + hotelNombres[hotelSeleccionado]);
+                        System.out.println("Habitación: " + habitacionTipos[habitacionSeleccionada]);
+                        System.out.println("Características: " + habitacionCaracteristicas[habitacionSeleccionada]);
+                        System.out.println("Precio por noche: " + precioHabitacion);
+                        System.out.println("Cantidad de habitaciones: " + cantidadHabitaciones);
+                        System.out.println("Fecha de inicio: " + fechaInicio.format(formato));
+                        System.out.println("Fecha de fin: " + fechaFin.format(formato));
+                        System.out.println("Precio total: " + Math.round(precioTotal)); // Mostrar precio total sin decimales
+                        System.out.println("Nombre: " + nombreUsuario); // Mostrar datos del usuario
+                        System.out.println("Apellido: " + apellidoUsuario);
+                        System.out.println("Email: " + emailUsuario);
+                        System.out.println("Nacionalidad: " + nacionalidadUsuario);
+                        System.out.println("Teléfono: " + telefonoUsuario);
+                        System.out.println("Hora de llegada: " + horaLlegadaUsuario);
+
                         System.out.print("\n¿Desea confirmar la reserva? (s/n): ");
                         String respuesta = scanner.nextLine();
                         if (respuesta.equalsIgnoreCase("s")) {
-                            LocalDate fechaInicioReserva = LocalDate.parse(fechaInicio.format(formato), formato); // Convertir fechaInicio a LocalDate
-                            LocalDate fechaFinReserva = LocalDate.parse(fechaFin.format(formato), formato); // Convertir fechaFin a LocalDate
-                            crearReserva(scanner, hotelSeleccionado, habitacionSeleccionada, fechaInicioReserva, fechaFinReserva, cantidadHabitaciones, precioTotal); // Pasar las fechas como LocalDate
+                            crearReserva(hotelSeleccionado, habitacionSeleccionada, fechaInicio, fechaFin, cantidadHabitaciones, nombreUsuario, apellidoUsuario, emailUsuario, nacionalidadUsuario, telefonoUsuario, horaLlegadaUsuario); // Pasar los datos del usuario
                         }
-
                     } else {
                         System.out.println("Opción inválida.");
                     }
@@ -276,6 +312,30 @@ public class Main {
             System.out.println("No se encontraron hoteles con esos criterios.");
         }
     }
+
+    public static void crearReserva(int hotelId, int habitacionId, LocalDate fechaInicio, LocalDate fechaFin, int cantidadHabitaciones, String nombre, String apellido, String email, String nacionalidad, String telefono, String horaLlegada) { // Agregar parámetros para los datos del usuario
+        System.out.println("\n--- Crear Reserva ---");
+
+        // Registrar la reserva
+        reservaID[contadorReservas] = contadorReservas;
+        reservaHotelID[contadorReservas] = hotelId;
+        reservaHabitacionID[contadorReservas] = habitacionId;
+        reservaUsuario[contadorReservas] = nombre + " " + apellido; // Usar los datos del usuario
+        reservaFechas[contadorReservas][0] = fechaInicio;
+        reservaFechas[contadorReservas][1] = fechaFin;
+        contadorReservas++;
+
+        // Actualizar la disponibilidad de la habitación
+        int tipoHabitacion = obtenerTipoHabitacion(habitacionId);
+        habitacionesDisponibles[hotelId][tipoHabitacion] -= cantidadHabitaciones;
+
+        // Marcar los días como no disponibles en habitacionDisponibilidad
+        for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
+            habitacionDisponibilidad[habitacionId][fecha.getYear() - 2024][fecha.getDayOfYear() - 1] = false;
+        }
+
+        System.out.println("Se ha realizado la reserva con éxito.");
+    };
 
     public static int calcularDiasEstadia(String fechaInicio, String fechaFin) {
         String[] inicio = fechaInicio.split("/");
@@ -293,15 +353,27 @@ public class Main {
         return totalDias > 0 ? totalDias : 1; // Al menos un día
     }
 
-    public static double aplicarAumentosYDescuentos(double precioTotal, LocalDate fechaInicio, LocalDate fechaFin) {
-        // Ejemplo de lógica: aplicar un aumento del 10% si es temporada alta (diciembre-enero)
-        int mesInicio = fechaInicio.getMonthValue();
-        int mesFin = fechaFin.getMonthValue();
+    public static double[] aplicarAumentosYDescuentos(double precioTotal, LocalDate fechaInicio, LocalDate fechaFin) {
+        double descuento = 0;
+        double aumento = 0;
 
-        if ((mesInicio == 12 || mesInicio == 1) || (mesFin == 12 || mesFin == 1)) {
-            precioTotal *= 1.10; // Aumento del 10%
+        // Verificar si la estadía comprende los 5 últimos días de un mes
+        if (fechaInicio.getDayOfMonth() >= 26 && fechaInicio.getMonth() == fechaFin.getMonth() && fechaInicio.getYear() == fechaFin.getYear()) {
+            aumento = precioTotal * 0.15; // Calcular el aumento
+            precioTotal *= 1.15; // Aumentar 15%
         }
-        return precioTotal;
+        // Verificar si la estadía comprende los días del 10 al 15 del mes
+        else if (fechaInicio.getDayOfMonth() >= 10 && fechaFin.getDayOfMonth() <= 15 && fechaInicio.getMonth() == fechaFin.getMonth() && fechaInicio.getYear() == fechaFin.getYear()) {
+            aumento = precioTotal * 0.10; // Calcular el aumento
+            precioTotal *= 1.10; // Aumentar 10%
+        }
+        // Verificar si la estadía comprende del 5 al 10 del mes
+        else if (fechaInicio.getDayOfMonth() >= 5 && fechaFin.getDayOfMonth() <= 10 && fechaInicio.getMonth() == fechaFin.getMonth() && fechaInicio.getYear() == fechaFin.getYear()) {
+            descuento = precioTotal * 0.08; // Calcular el descuento
+            precioTotal *= 0.92; // Descontar 8%
+        }
+
+        return new double[] { precioTotal, descuento, aumento }; // Devolver un arreglo con el precio total, el descuento y el aumento
     }
 
     public static String[] obtenerValoresUnicos(String[] array) {
@@ -354,45 +426,30 @@ public class Main {
         return true; // La habitación está disponible en todo el rango
     }
 
-    public static double calcularPrecioTotal(double precioHabitacion, int cantidadHabitaciones, LocalDate fechaInicio, LocalDate fechaFin) {
+    public static double[] calcularPrecioTotal(double precioHabitacion, int cantidadHabitaciones, LocalDate fechaInicio, LocalDate fechaFin) {
         double precioTotal = precioHabitacion * cantidadHabitaciones;
         long diasEstadia = ChronoUnit.DAYS.between(fechaInicio, fechaFin);
+        double[] resultado = aplicarAumentosYDescuentos(precioTotal, fechaInicio, fechaFin); // Obtener el precio total, el descuento y el aumento desde aplicarAumentosYDescuentos
 
-        // Aplicar aumentos y descuentos
-        precioTotal = aplicarAumentosYDescuentos(precioTotal, fechaInicio, fechaFin);
+        resultado[0] = resultado[0] * diasEstadia; // Multiplicar el precio total por la cantidad de días
 
-        return precioTotal * diasEstadia;
+        return resultado; // Devolver el arreglo con el precio total, el descuento y el aumento
     }
 
-    public static void crearReserva(Scanner scanner, int hotelId, int habitacionId, LocalDate fechaInicio, LocalDate fechaFin, int cantidadHabitaciones, double precioTotal) {
-        System.out.println("\n--- Crear Reserva ---");
 
-        // Pedir los datos del usuario
-        System.out.print("Ingrese su nombre: ");
-        String nombre = scanner.nextLine();
-        System.out.print("Ingrese su apellido: ");
-        String apellido = scanner.nextLine();
-        System.out.print("Ingrese su email: ");
-        String email = scanner.nextLine();
-        System.out.print("Ingrese su nacionalidad: ");
-        String nacionalidad = scanner.nextLine();
-        System.out.print("Ingrese su número de teléfono: ");
-        String telefono = scanner.nextLine();
-        System.out.print("Ingrese su hora aproximada de llegada: ");
-        String horaLlegada = scanner.nextLine();
-
-        // Registrar la reserva
-        reservaID[contadorReservas] = contadorReservas;
-        reservaHotelID[contadorReservas] = hotelId;
-        reservaHabitacionID[contadorReservas] = habitacionId;
-        reservaUsuario[contadorReservas] = nombre + " " + apellido;
-        reservaFechas[contadorReservas][0] = fechaInicio;
-        reservaFechas[contadorReservas][1] = fechaFin;
-        contadorReservas++;
-
-        // TODO: Actualizar la disponibilidad de la habitación
-
-        System.out.println("Se ha realizado la reserva con éxito. Su ID de reserva es: " + (contadorReservas - 1));
-        System.out.println("NOTA: Conserve este ID. Es necesario para actualizar o cancelar la reserva.");
+    // Nueva función para obtener el tipo de habitación (0: Single, 1: Double, 2: Suite, 3: Activities)
+    public static int obtenerTipoHabitacion(int habitacionId) {
+        switch (habitacionTipos[habitacionId]) {
+            case "Single":
+                return 0;
+            case "Double":
+                return 1;
+            case "Suite":
+                return 2;
+            case "Activities":
+                return 3;
+            default:
+                return -1; // Tipo de habitación inválido
+        }
     }
 };
