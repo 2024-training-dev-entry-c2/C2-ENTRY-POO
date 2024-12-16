@@ -202,7 +202,7 @@ public class Main {
                         List<String> selectedRooms = new ArrayList<>();
 
                         if (!availableRooms.isEmpty()) {
-                            System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:");
+                            System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:\n");
                             int countSelectedRooms = 0;
                             for (String room : availableRooms) {
                                 if(countSelectedRooms < roomsRequired){
@@ -260,7 +260,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    System.out.println("\n*------------------ Consultar Reservaciones --------------*");
+                    System.out.println("\n*------------------- Consultar Reservaciones ---------------*");
                     System.out.println("Ingresa tu correo electrónico: ");
                     String email = input.nextLine();
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
@@ -270,7 +270,7 @@ public class Main {
                     System.out.println(reservationInfo);
                     break;
                 case 3:
-                    System.out.println("\n*------------------- Modificar Reservación ---------------*");
+                    System.out.println("\n*-------------------- Modificar Reservación ----------------*");
                     System.out.println("Ingresa tu correo electrónico: ");
                     String modEmail = input.nextLine();
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
@@ -408,7 +408,7 @@ public class Main {
                     lowerPrice = roomPrice;
                 }
             }
-            pricePerNight = lowerPrice;
+            pricePerNight = lowerPrice * roomsNeeded;
             baseTotalPrice = pricePerNight * roomsNeeded * days;
 
         } else if (lodging.get(2).equalsIgnoreCase("Día de sol")) {
@@ -425,8 +425,11 @@ public class Main {
         }
 
         float adjustedTotalPrice = baseTotalPrice + (baseTotalPrice * adjustment);
-
-        System.out.println("Precio por noche (por persona): " + pricePerNight);
+        if(lodging.get(2).equalsIgnoreCase("Día de sol")){
+            System.out.println("Precio por persona: " + pricePerNight);
+        }else{
+            System.out.println("Precio por noche: " + pricePerNight);
+        }
         System.out.println("Precio base total: " + baseTotalPrice);
         if (adjustment > 0) {
             System.out.println("Ajuste: Incremento de " + adjustment * 100 + "%");
@@ -605,7 +608,7 @@ public class Main {
                     System.out.println("Habitaciones reservadas: " + reservation.get(11));
                 }
 
-                System.out.println("¿Qué deseas modificar?");
+                System.out.println("\n¿Qué deseas modificar?");
 
                 if (lodgingCategory.equalsIgnoreCase("Hotel")) {
                     System.out.println("1: Cambio de habitación");
@@ -644,20 +647,20 @@ public class Main {
                             System.out.println("Selecciona la nueva habitación (ejemplo: 'Habitación Deluxe'): ");
                             String newRoomType = input.nextLine();
 
-                            // Actualiza las habitaciones reservadas
+                            // Update reserved rooms
                             String updatedRooms = updateRoomEntry(currentRooms, oldRoomType, newRoomType, quantityToChange);
                             reservation.set(11, updatedRooms);
 
-                            System.out.println("Habitaciones actualizadas con éxito. Nuevas habitaciones reservadas: " + updatedRooms);
+                            System.out.println("\nHabitaciones actualizadas con éxito.\n Nuevas habitaciones reservadas: " + updatedRooms);
                             return;
                         }
                     }
                 } else if (choice == 2) {
                     reservations.remove(reservation);
-                    System.out.println("Reservación eliminada. Por favor, crea una nueva reservación.");
+                    System.out.println("\nReservación eliminada. Por favor, crea una nueva reservación.");
                     return;
                 } else {
-                    System.out.println("Opción no válida o no aplicable para esta categoría.");
+                    System.out.println("\nOpción no válida o no aplicable para esta categoría.");
                 }
             }
         }
