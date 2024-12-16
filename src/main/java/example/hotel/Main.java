@@ -143,7 +143,7 @@ public class Main {
         }
 
         // Filtrar hoteles disponibles
-        String[] hotelesDisponibles = filtrarHoteles(ciudadElegida, tipoAlojamientoElegido);
+        String[] hotelesDisponibles = filtrarHoteles(ciudadElegida, tipoAlojamientoElegido, ciudadesUnicas, tiposAlojamientoUnicos); // Pasar ciudadesUnicas y tiposAlojamientoUnicos como parámetro
 
         if (hotelesDisponibles.length == 0) {
             System.out.println("No hay hoteles disponibles con las opciones seleccionadas.");
@@ -291,19 +291,37 @@ public class Main {
         return seleccion;
     }
 
-    public static String[] filtrarHoteles(int ciudadElegida, int tipoElegido) {
+    public static String[] filtrarHoteles(int ciudadElegida, int tipoElegido, String[] ciudadesUnicas, String[] tiposAlojamientoUnicos) { // Agregar parámetro tiposAlojamientoUnicos
         String[] resultado = new String[100];
         int indice = 0;
 
-        // Obtener directamente las cadenas de la ciudad y tipo elegidos
-        String ciudadSeleccionada = ciudades[ciudadElegida];
-        String tipoSeleccionado = tipoAlojamiento[tipoElegido];
+        // Obtener la ciudad seleccionada del array ciudadesUnicas
+        String ciudadSeleccionada = ciudadesUnicas[ciudadElegida];
+
+        // Buscar el índice de la ciudad en el array ciudades
+        int indiceCiudad = 0;
+        for (int i = 0; i < ciudades.length; i++) {
+            if (ciudades[i].equals(ciudadSeleccionada)) {
+                indiceCiudad = i;
+                break;
+            }
+        }
+
+        // Obtener el tipo de alojamiento seleccionado del array tiposAlojamientoUnicos
+        String tipoSeleccionado = tiposAlojamientoUnicos[tipoElegido];
+
+        // Buscar el índice del tipo de alojamiento en el array tipoAlojamiento
+        int indiceTipoAlojamiento = 0;
+        for (int i = 0; i < tipoAlojamiento.length; i++) {
+            if (tipoAlojamiento[i].equals(tipoSeleccionado)) {
+                indiceTipoAlojamiento = i;
+                break;
+            }
+        }
 
         for (int i = 0; i < hotelNombres.length && hotelNombres[i] != null; i++) {
-            System.out.printf("Verificando el hotel: %s, Ciudad: %s, Tipo: %s%n", hotelNombres[i], ciudades[i], tipoAlojamiento[i]);
-
-            // Comparar directamente con las cadenas seleccionadas
-            if (ciudades[i].equalsIgnoreCase(ciudadSeleccionada) && tipoAlojamiento[i].equalsIgnoreCase(tipoSeleccionado)) {
+            // Comparar los índices de ciudad y tipo de alojamiento
+            if (ciudades[i].equals(ciudades[indiceCiudad]) && tipoAlojamiento[i].equals(tipoAlojamiento[indiceTipoAlojamiento])) {
                 resultado[indice++] = String.format("%s - Precio Base: $%.2f - Calificación: %d estrellas",
                         hotelNombres[i], precios[i], calificaciones[i]);
             }
