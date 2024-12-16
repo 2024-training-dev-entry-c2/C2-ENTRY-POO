@@ -1,5 +1,8 @@
 package example.hotel;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Main {
@@ -21,11 +24,11 @@ public class Main {
     static int[] reservaHabitacionID = new int[100];
     static String[] reservaUsuario = new String[100];
     static String[][] reservaFechas = new String[100][2];
-    static int contadorReservas = 0;
+    static int contadorReservas = 0; // Contador para el ID de las reservas
 
     public static void main(String[] args) {
 
-// Inicialización de hoteles
+        // Inicialización de hoteles
         hotelNombres[0] = "Hotel Buenos Aires";
         tipoAlojamiento[0] = "Hotel";
         ciudades[0] = "Buenos Aires";
@@ -62,7 +65,7 @@ public class Main {
         calificaciones[5] = 3;
         precios[5] = 80.0; // Precio base del hotel 5
 
-// Inicialización de habitaciones
+        // Inicialización de habitaciones
         habitacionHotelID[0] = 0;
         habitacionTipos[0] = "Single";
         habitacionCaracteristicas[0] = "2 camas simples, aire acondicionado, WiFi";
@@ -124,8 +127,7 @@ public class Main {
             scanner.nextLine(); // Consumir la nueva línea
 
             switch (option) {
-                case 1 ->
-                        buscarHoteles(scanner, hotelNombres, tipoAlojamiento, ciudades, calificaciones, habitacionHotelID, habitacionTipos, habitacionCaracteristicas, habitacionPrecios);
+                case 1 -> buscarHoteles(scanner, hotelNombres, tipoAlojamiento, ciudades, calificaciones, precios, habitacionHotelID, habitacionTipos, habitacionCaracteristicas, habitacionPrecios);
                 case 2 -> actualizarReserva(scanner);
                 case 3 -> cancelarReserva(scanner);
                 case 4 -> System.out.println("Saliendo de la aplicación...");
@@ -134,7 +136,7 @@ public class Main {
         } while (option != 4);
     }
 
-    public static void buscarHoteles(Scanner scanner, String[] hotelNombres, String[] tipoAlojamiento, String[] ciudades, int[] calificaciones, int[] habitacionHotelID, String[] habitacionTipos, String[] habitacionCaracteristicas, double[] habitacionPrecios) {
+    public static void buscarHoteles(Scanner scanner, String[] hotelNombres, String[] tipoAlojamiento, String[] ciudades, int[] calificaciones, double[] precios, int[] habitacionHotelID, String[] habitacionTipos, String[] habitacionCaracteristicas, double[] habitacionPrecios) {
         System.out.println("\n--- Búsqueda de Hoteles ---");
 
         String[] ciudadesDisponibles = obtenerValoresUnicos(ciudades);
@@ -164,29 +166,58 @@ public class Main {
         System.out.print("Ingrese la cantidad de habitaciones: ");
         int cantidadHabitaciones = scanner.nextInt();
         scanner.nextLine();
-        System.out.print("Ingrese la fecha de inicio (DD/MM/YYYY): ");
-        String fechaInicio = scanner.nextLine();
-        System.out.print("Ingrese la fecha de fin (DD/MM/YYYY): ");
-        String fechaFin = scanner.nextLine();
+
+        LocalDate fechaInicio = null;
+        LocalDate fechaFin = null;
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Validar el formato de la fecha de inicio
+        while (fechaInicio == null) {
+            System.out.print("Ingrese la fecha de inicio (DD/MM/YYYY): ");
+            String fechaInicioStr = scanner.nextLine();
+            try {
+                fechaInicio = LocalDate.parse(fechaInicioStr, formato);
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato de fecha inválido. Intente nuevamente.");
+            }
+        }
+
+        // Validar el formato de la fecha de fin
+        while (fechaFin == null) {
+            System.out.print("Ingrese la fecha de fin (DD/MM/YYYY): ");
+            String fechaFinStr = scanner.nextLine();
+            try {
+                fechaFin = LocalDate.parse(fechaFinStr, formato);
+            } catch (DateTimeParseException e) {
+                System.out.println("Formato de fecha inválido. Intente nuevamente.");
+            }
+        }
 
         System.out.println("\n--- Hoteles disponibles ---");
+        int contadorHoteles = 0; // Contador para numerar los hoteles
         for (int i = 0; i < hotelNombres.length && hotelNombres[i] != null; i++) {
             if (ciudades[i].equals(ciudadesDisponibles[ciudadSeleccionada]) && tipoAlojamiento[i].equals(tiposDisponibles[tipoSeleccionado])) {
-
-                // Calcular precio total de la estadía
-                double precioBase = precios[i]; // Obtener el precio base del array precios
-                int diasEstadia = calcularDiasEstadia(fechaInicio, fechaFin);
-                double precioTotal = precioBase * cantidadHabitaciones * diasEstadia;
-
-                // Aplicar aumentos y descuentos
-                precioTotal = aplicarAumentosYDescuentos(precioTotal, fechaInicio, fechaFin);
-
-                System.out.println("Hotel: " + hotelNombres[i]);
+                contadorHoteles++;
+                System.out.println(contadorHoteles + ". Hotel: " + hotelNombres[i]);
                 System.out.println("  Calificación: " + calificaciones[i]);
-                System.out.println("  Precio por noche: " + precioBase);
-                System.out.println("  Precio total: " + precioTotal);
-                System.out.println("--------------------");
+                System.out.println("  Precio base: " + precios[i]);
             }
+        }
+
+        if (contadorHoteles > 0) {
+            System.out.println((contadorHoteles + 1) + ". Salir"); // Opción para salir
+            System.out.print("\nSeleccione un hotel para crear una reserva (ingrese el número): ");
+            int opcionHotel = scanner.nextInt();
+            scanner.nextLine(); // Consumir la nueva línea
+
+            if (opcionHotel > 0 && opcionHotel <= contadorHoteles) {
+                int hotelSeleccionado = opcionHotel - 1;
+                crearReserva(scanner, hotelSeleccionado, fechaInicio.format(formato), fechaFin.format(formato), cantidadHabitaciones); // Pasar los datos de la reserva
+            } else if (opcionHotel != contadorHoteles + 1) {
+                System.out.println("Opción inválida.");
+            }
+        } else {
+            System.out.println("No se encontraron hoteles con esos criterios.");
         }
     }
 
@@ -260,9 +291,35 @@ public class Main {
         // Implementa la lógica para confirmar las habitaciones
     }
 
-    // TODO: Implementar la función habitacionDisponible
-    public static boolean habitacionDisponible(int habitacionId, String fechaInicio, String fechaFin) {
-        // Implementa la lógica para verificar la disponibilidad de una habitación
-        return false;
+    public static boolean habitacionDisponible(int habitacionId, LocalDate fechaInicio, LocalDate fechaFin) {
+        // Verificar la disponibilidad para cada día del rango
+        for (LocalDate fecha = fechaInicio; !fecha.isAfter(fechaFin); fecha = fecha.plusDays(1)) {
+            if (!habitacionDisponibilidad[habitacionId][fecha.getYear() - 2024][fecha.getDayOfYear() - 1]) {
+                return false; // La habitación no está disponible en este día
+            }
+        }
+        return true; // La habitación está disponible en todo el rango
+    }
+
+    public static void crearReserva(Scanner scanner, int hotelId, String fechaInicio, String fechaFin, int cantidadHabitaciones) {
+        System.out.println("\n--- Crear Reserva ---");
+
+        // Pedir los datos del usuario
+        System.out.print("Ingrese su nombre: ");
+        String nombre = scanner.nextLine();
+        System.out.print("Ingrese su apellido: ");
+        String apellido = scanner.nextLine();
+        System.out.print("Ingrese su email: ");
+        String email = scanner.nextLine();
+        System.out.print("Ingrese su nacionalidad: ");
+        String nacionalidad = scanner.nextLine();
+        System.out.print("Ingrese su número de teléfono: ");
+        String telefono = scanner.nextLine();
+        System.out.print("Ingrese su hora aproximada de llegada: ");
+        String horaLlegada = scanner.nextLine();
+
+        // TODO: Implementar la lógica para registrar la reserva y actualizar la disponibilidad
+
+        System.out.println("Se ha realizado la reserva con éxito.");
     }
 }
