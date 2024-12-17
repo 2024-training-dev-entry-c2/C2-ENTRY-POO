@@ -7,15 +7,11 @@ import com.bookstay.models.Hotel;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
-    // Global variables
-    static List<List<String>> lodgings = new ArrayList<>();
-    static List<List<String>> reservations = new ArrayList<>();
+    //Global variables
+    static List<Object> lodgings = new ArrayList<>();
 
     public static void main(String[] args) {
         initializeData();
@@ -24,7 +20,6 @@ public class Main {
 
     /* ############################### INITIALIZE DATA ############################### */
     public static void initializeData() {
-
         // Hotels
         Hotel hotel1 = new Hotel("Hotel Mar Azul", "Cartagena", 4.9, "Hotel frente al mar con excelentes comodidades");
         hotel1.addRoom("Habitación Estándar", "La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.", 200000.0, 2, 8);
@@ -32,6 +27,7 @@ public class Main {
         hotel1.addRoom("Suite Premium", "Suite de lujo con jacuzzi, cama king size y minibar gratuito.", 750000.0, 2, 3);
         hotel1.addRoom("Habitación Económica", "Habitación compacta con todas las comodidades básicas.", 150000.0, 2, 10);
         hotel1.addRoom("Habitación Doble Deluxe", "Habitación espaciosa con 2 camas dobles y escritorio de trabajo.", 300000.0, 4, 6);
+        lodgings.add(hotel1);
 
         Hotel hotel2 = new Hotel("Hotel Vista Sierra", "Medellín", 4.8, "Hotel moderno en la zona alta de Medellín con vistas a la ciudad");
         hotel2.addRoom("Habitación Estándar", "Habitación cómoda con decoración contemporánea.", 180000.0, 2, 10);
@@ -39,6 +35,7 @@ public class Main {
         hotel2.addRoom("Suite Presidencial", "La habitación más exclusiva del hotel con spa privado.", 900000.0, 2, 2);
         hotel2.addRoom("Habitación Doble", "Habitación con 2 camas individuales y baño compartido.", 160000.0, 2, 7);
         hotel2.addRoom("Habitación Junior Suite", "Habitación intermedia con balcón y vista panorámica.", 350000.0, 3, 4);
+        lodgings.add(hotel2);
 
         Hotel hotel3 = new Hotel("Hotel Central Park", "Bogotá", 4.6, "Hotel en el corazón financiero de Bogotá");
         hotel3.addRoom("Habitación Individual", "Habitación ideal para viajeros de negocios.", 220000.0, 1, 15);
@@ -46,6 +43,7 @@ public class Main {
         hotel3.addRoom("Suite Lujo", "Suite con servicios de oficina y sala de reuniones.", 600000.0, 4, 5);
         hotel3.addRoom("Habitación Premium", "Confort y espacio con servicio a la habitación incluido.", 400000.0, 2, 8);
         hotel3.addRoom("Habitación Económica", "Espacio compacto con desayuno incluido.", 180000.0, 2, 12);
+        lodgings.add(hotel3);
 
         Hotel hotel4 = new Hotel("Hotel Paraíso Natural", "Santa Marta", 5.0, "Hotel boutique ecológico junto a la playa Tayrona");
         hotel4.addRoom("Cabaña Estándar", "Cabaña con techo de palma y decoración natural.", 250000.0, 2, 6);
@@ -53,6 +51,7 @@ public class Main {
         hotel4.addRoom("Suite de Lujo", "Suite con vistas inigualables al océano.", 800000.0, 2, 3);
         hotel4.addRoom("Habitación Deluxe", "Habitación con terraza privada y hamaca.", 350000.0, 2, 8);
         hotel4.addRoom("Cabaña Eco", "Cabaña rústica con paneles solares.", 200000.0, 2, 5);
+        lodgings.add(hotel4);
 
         Hotel hotel5 = new Hotel("Hotel Real Colonial", "Villa de Leyva", 4.7, "Hotel de arquitectura colonial con encanto histórico");
         hotel5.addRoom("Habitación Colonial", "Habitación con decoración antigua y balcón.", 280000.0, 2, 8);
@@ -60,6 +59,7 @@ public class Main {
         hotel5.addRoom("Habitación Doble Colonial", "Amplia habitación con 2 camas dobles.", 350000.0, 4, 6);
         hotel5.addRoom("Habitación Individual", "Ideal para una persona, cómoda y funcional.", 200000.0, 1, 10);
         hotel5.addRoom("Habitación Familiar", "Habitación amplia para familias pequeñas.", 400000.0, 4, 7);
+        lodgings.add(hotel5);
 
         // Apartments
         Apartment apartment1 = new Apartment("Apartamento Playa", "Cartagena", 4.7, "Apartamento moderno con vista al océano, 3 habitaciones, 2 baños.", 5, 500000.0);
@@ -68,6 +68,13 @@ public class Main {
         Apartment apartment4 = new Apartment("Penthouse Vista Mar", "Santa Marta", 4.9, "Penthouse de lujo con jacuzzi privado y vista al mar.", 4, 800000.0);
         Apartment apartment5 = new Apartment("Apartamento Colonial Centro", "Villa de Leyva", 4.8, "Apartamento de estilo colonial con patio interior.", 3, 350000.0);
 
+        lodgings.add(apartment1);
+        lodgings.add(apartment2);
+        lodgings.add(apartment3);
+        lodgings.add(apartment4);
+        lodgings.add(apartment5);
+
+
         // Farm Stays
         FarmStay farmStay1 = new FarmStay("Finca El Bosque", "Armenia", 4.8, "Finca tranquila rodeada de bosque", 10, 800000.0);
         FarmStay farmStay2 = new FarmStay("Finca El Lago", "Guatapé", 4.9, "Finca con lago privado y zona de pesca.", 8, 900000.0);
@@ -75,37 +82,46 @@ public class Main {
         FarmStay farmStay4 = new FarmStay("Finca Las Palmeras", "Cali", 4.6, "Finca con piscina y zona BBQ.", 15, 950000.0);
         FarmStay farmStay5 = new FarmStay("Finca El Refugio", "Pereira", 4.8, "Finca rodeada de naturaleza y tranquilidad.", 10, 850000.0);
 
+        lodgings.add(farmStay1);
+        lodgings.add(farmStay2);
+        lodgings.add(farmStay3);
+        lodgings.add(farmStay4);
+        lodgings.add(farmStay5);
+
         // Day Resorts
         DayResort dayResort1 = new DayResort("Día de Sol Caribe", "San Andrés", 5.0, "Disfruta del sol, playa y actividades acuáticas", 200000.0);
         dayResort1.addActivity("Snorkeling");
         dayResort1.addActivity("Paseos en bote");
         dayResort1.addMeal("Almuerzo con platos típicos");
         dayResort1.addMeal("Cena a la carta");
+        lodgings.add(dayResort1);
+
 
         DayResort dayResort2 = new DayResort("Aventura en la Sierra", "Sierra Nevada", 4.8, "Naturaleza y actividades extremas", 250000.0);
         dayResort2.addActivity("Escalada");
         dayResort2.addActivity("Senderismo");
         dayResort2.addMeal("Almuerzo campestre");
+        lodgings.add(dayResort2);
 
         DayResort dayResort3 = new DayResort("Día Relax Spa", "Bogotá", 4.7, "Spa urbano con tratamientos relajantes", 180000.0);
         dayResort3.addActivity("Masaje relajante");
         dayResort3.addActivity("Piscina climatizada");
         dayResort3.addMeal("Té y snacks saludables");
+        lodgings.add(dayResort3);
 
         DayResort dayResort4 = new DayResort("Parque Aventura", "Medellín", 4.6, "Diversión familiar con actividades recreativas", 220000.0);
         dayResort4.addActivity("Tirolesa");
         dayResort4.addActivity("Paseos en cuatrimoto");
         dayResort4.addMeal("Parrillada familiar");
+        lodgings.add(dayResort4);
 
         DayResort dayResort5 = new DayResort("Resort Lago Azul", "Guatapé", 4.9, "Día de relajación junto al lago", 200000.0);
         dayResort5.addActivity("Kayak");
         dayResort5.addActivity("Paseos en lancha");
         dayResort5.addMeal("Almuerzo buffet");
+        lodgings.add(dayResort5);
     }
 
-    public static void addLodging(String name, String city, String category, String rating, String price, String description, String maxPeople, String rooms, String activities, String meals, String reservationData) {
-        lodgings.add(Arrays.asList(name, city, category, rating, price, description, maxPeople, rooms, activities, meals, reservationData));
-    }
 
     /* ################################# PRINT MENU ################################# */
     public static void showMenu(){
@@ -277,142 +293,47 @@ public class Main {
     }
 
     /* ################################# SEARCH DATA ################################# */
-    public static List<List<String>> searchLodgings(String city, String category, String startDate, String endDate, int adults, int children, int roomsNeeded) {
-        List<List<String>> results = new ArrayList<>();
-        for (List<String> lodging : lodgings) {  // Check each lodging on the list
-            String lodgingCity = lodging.get(1);
-            String lodgingCategory = lodging.get(2);
+    public static List<Object> searchLodgings(String city, String category, String startDate, String endDate, int adults, int children, int roomsNeeded) {
+        List<Object> results = new ArrayList<>();
 
-            if (lodgingCity.equalsIgnoreCase(city) && lodgingCategory.equalsIgnoreCase(category)) {
-                int totalPeople = adults + children;
+        int totalPeople = adults + children;
 
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    String roomsInfo = lodging.get(7);
-                    String[] roomTypes = roomsInfo.split(";");
-                    int roomsAvailable = 0;
-
-                    for (String roomType : roomTypes) { // Validate which room types are valid and how many are available
-                        String[] roomDetails = roomType.split("\\|");
-                        int maxAdults = Integer.parseInt(roomDetails[3]);
-                        int maxChildren = Integer.parseInt(roomDetails[4]);
-                        int roomCount = Integer.parseInt(roomDetails[5]);
-
-                        // Calculate currently reserved rooms for this room type
-                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
-
-                        if (totalPeople <= (maxAdults + maxChildren) && (roomCount - reservedRooms) > 0) {
-                            roomsAvailable += (roomCount - reservedRooms);
-                        }
-                    }
-
-                    if (roomsAvailable >= roomsNeeded) {
-                        results.add(lodging);
-                    }
-                } else {
-                    int maxPeople = Integer.parseInt(lodging.get(6));
-                    int reservedCapacity = countReservedCapacity(lodging.get(10), startDate, endDate);
-
-                    if ((totalPeople + reservedCapacity) <= maxPeople) {
-                        results.add(lodging);
-                    }
+        for (Object lodging : lodgings) {
+            if (lodging instanceof Hotel && category.equalsIgnoreCase("Hotel")) {
+                Hotel hotel = (Hotel) lodging;
+                if (hotel.getCity().equalsIgnoreCase(city) && hotel.isAvailable(startDate, endDate, totalPeople)) {
+                    results.add(hotel);
+                }
+            } else if (lodging instanceof Apartment && category.equalsIgnoreCase("Apartamento")) {
+                Apartment apartment = (Apartment) lodging;
+                if (apartment.getCity().equalsIgnoreCase(city) && apartment.isAvailable(startDate,endDate,totalPeople)) {
+                    results.add(apartment);
+                }
+            } else if (lodging instanceof FarmStay && category.equalsIgnoreCase("Finca")) {
+                FarmStay farmStay = (FarmStay) lodging;
+                if (farmStay.getCity().equalsIgnoreCase(city) && farmStay.isAvailable(startDate,endDate,totalPeople)) {
+                    results.add(farmStay);
+                }
+            } else if (lodging instanceof DayResort && category.equalsIgnoreCase("Día de sol")) {
+                DayResort dayResort = (DayResort) lodging;
+                if (dayResort.getCity().equalsIgnoreCase(city) && dayResort.isAvailable(startDate, endDate, totalPeople)) {
+                    results.add(dayResort);
                 }
             }
         }
         return results;
     }
 
-    // Auxiliary method to count how many reserved rooms there are of that type in the hotel
-    private static int countReservedRooms(String reservationData, String roomType, String startDate, String endDate) {
-        if (reservationData.isEmpty()) return 0;
-        int reservedCount = 0;
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        String[] reservations = reservationData.split(";");
 
-        for (String reservation : reservations) {
-            String[] details = reservation.split(",");
-            if (details.length > 8 && details[7].equalsIgnoreCase(roomType)) {
-                LocalDate reservationStart = LocalDate.parse(details[3]);
-                LocalDate reservationEnd = LocalDate.parse(details[4]);
-
-                if (datesOverlap(start, end, reservationStart, reservationEnd)) {
-                    reservedCount++;
-                }
-            }
-        }
-        return reservedCount;
-    }
-
-    // Auxiliary method to count how many spaces are reserved in the other types of accommodation: Farm Stay, Apartment and Day Resort.
-    private static int countReservedCapacity(String reservationData, String startDate, String endDate) {
-        if (reservationData.isEmpty()) return 0;
-        int totalReserved = 0;
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        String[] reservations = reservationData.split(";");
-
-        for (String reservation : reservations) {
-            String[] details = reservation.split(",");
-            if (details.length > 6) {
-                LocalDate reservationStart = LocalDate.parse(details[3]);
-                LocalDate reservationEnd = LocalDate.parse(details[4]);
-
-                if (datesOverlap(start, end, reservationStart, reservationEnd)) {
-                    totalReserved += Integer.parseInt(details[5]) + Integer.parseInt(details[6]);
-                }
-            }
-        }
-        return totalReserved;
-    }
-
-    // Auxiliary method to check if dates cross between reservations
-    private static boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
-        return (start1.isBefore(end2) || start1.equals(end2)) && (end1.isAfter(start2) || end1.equals(start2));
-    }
 
     // Method to print the information of the lodgings
-    public static void printLodgingInformation(List<String> lodging, String startDate, String endDate, int roomsNeeded, int adults, int children) {
-        System.out.println("+----------------------------------+");
-        System.out.println(lodging.get(0));  // Lodging name
-        System.out.println("Calificación: " + lodging.get(3));  // Rating
-
-        float pricePerNight = 0;
-        float baseTotalPrice = 0;
-        float adjustment = calculateDiscountOrIncrement(startDate, endDate);
-
-        long days = calculateDaysBetween(startDate, endDate); // Asegura que nunca sea 0 días
-
-        if (lodging.get(2).equalsIgnoreCase("Hotel")) {
-            String roomsInfo = lodging.get(7);
-            String[] roomTypes = roomsInfo.split(";");
-            int lowerPrice = Integer.MAX_VALUE;
-
-            for (String roomType : roomTypes) {
-                String[] roomDetails = roomType.split("\\|");
-                int roomPrice = Integer.parseInt(roomDetails[2]);
-                if (roomPrice < lowerPrice) {
-                    lowerPrice = roomPrice;
-                }
-            }
-            pricePerNight = lowerPrice * roomsNeeded;
-            baseTotalPrice = pricePerNight * roomsNeeded * days;
-
-        } else if (lodging.get(2).equalsIgnoreCase("Día de sol")) {
-            int totalPeople = adults + children;
-            pricePerNight = Float.parseFloat(lodging.get(4));
-            baseTotalPrice = pricePerNight * totalPeople;
-
-            System.out.println("Actividades incluidas: " + lodging.get(8));
-            System.out.println("Meriendas incluidas: " + lodging.get(9));
-
-        } else {
-            pricePerNight = Float.parseFloat(lodging.get(4));
-            baseTotalPrice = pricePerNight * days;
-        }
-
-        float adjustedTotalPrice = baseTotalPrice + (baseTotalPrice * adjustment);
-        if(lodging.get(2).equalsIgnoreCase("Día de sol")){
-            System.out.println("Precio por persona: " + pricePerNight);
+    public static void printLodgingInformation(Object lodging, int adults, int children, int roomsNeeded) {
+        double pricePerNight;
+        if (lodging instanceof Hotel) {
+            Hotel hotel = (Hotel) lodging;
+            pricePerNight = hotel.calculatePrice(adults, children, roomsNeeded)
+            hotel.toString();
+            System.out.println("Precio por noche: " + pricePerNight);
         }else{
             System.out.println("Precio por noche: " + pricePerNight);
         }
@@ -425,47 +346,10 @@ public class Main {
             System.out.println("Ajuste: Sin cambios.");
         }
         System.out.println("Precio total: " + adjustedTotalPrice);
-        System.out.println("+----------------------------------+\n");
+        System.out.println("+------------------------------------+\n");
     }
 
-    // Method for calculating increase or discount in price of lodging
-    public static float calculateDiscountOrIncrement(String startDate, String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
 
-        LocalDate range1Start = LocalDate.of(start.getYear(), start.getMonth(), 5);
-        LocalDate range1End = LocalDate.of(start.getYear(), start.getMonth(), 10);
-        LocalDate range2Start = LocalDate.of(start.getYear(), start.getMonth(), 10);
-        LocalDate range2End = LocalDate.of(start.getYear(), start.getMonth(), 15);
-        LocalDate range3Start = LocalDate.of(start.getYear(), start.getMonth(), 26);
-        LocalDate range3End = LocalDate.of(start.getYear(), start.getMonth(), 31);
-
-        // Calculate intersection days for each range
-        long daysInRange1 = calculateIntersectionDays(start, end, range1Start, range1End);
-        long daysInRange2 = calculateIntersectionDays(start, end, range2Start, range2End);
-        long daysInRange3 = calculateIntersectionDays(start, end, range3Start, range3End);
-
-        // Determine the range with the largest intersection
-        if (daysInRange1 >= daysInRange2 && daysInRange1 >= daysInRange3) {
-            return -0.08f;
-        } else if (daysInRange2 >= daysInRange1 && daysInRange2 >= daysInRange3) {
-            return 0.10f;
-        } else if (daysInRange3 > 0) {
-            return 0.15f;
-        }
-        return 0;
-    }
-
-    // Auxiliary method for calculating the number of days of intersection between two date ranges
-    private static long calculateIntersectionDays(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
-        LocalDate maxStart = start1.isAfter(start2) ? start1 : start2;
-        LocalDate minEnd = end1.isBefore(end2) ? end1 : end2;
-
-        if (maxStart.isBefore(minEnd) || maxStart.equals(minEnd)) {
-            return ChronoUnit.DAYS.between(maxStart, minEnd) + 1;
-        }
-        return 0;
-    }
 
     // Method for calculating the number of days between two dates
     public static long calculateDaysBetween(String startDate, String endDate) {

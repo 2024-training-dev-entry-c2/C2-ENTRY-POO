@@ -35,15 +35,13 @@ public class DayResort extends Lodging{
     }
 
     @Override
-    public boolean isAvailable(String startDate, String endDate, int guests) {
-        if (!startDate.equals(endDate)) {
+    public boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests) {
+        if (!startDate.isEqual(endDate)) {
             return false;
         }
 
-        LocalDate date = LocalDate.parse(startDate);
-
         for (Reservation reservation : getReservations()) {
-            if (datesOverlap(reservation.getStartDate(), reservation.getEndDate(), date, date)) {
+            if (datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, startDate)) {
                 return false;
             }
         }
@@ -52,6 +50,18 @@ public class DayResort extends Lodging{
 
     private boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
         return !start1.isAfter(end2) && !end1.isBefore(start2);
+    }
+
+    @Override
+    public String toString() {
+        return "+------------------------------------+" +
+                "       " + name + '\n' +
+                "Calificación: " + rating +'\n' +
+                "Descripción: " + description + '\n' +
+                "Actividades: " + activities.toString() + '\n' +
+                "Meriendas Incluidas: " + meals.toString() +
+                "+------------------------------------+"
+                ;
     }
 
     // Getters

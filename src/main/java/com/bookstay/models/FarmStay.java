@@ -24,16 +24,13 @@ public class FarmStay extends Lodging{
     }
 
     @Override
-    public boolean isAvailable(String startDate, String endDate, int guests) {
+    public boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests) {
         if (guests > maxCapacity) {
             return false;
         }
 
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-
         for (Reservation reservation : getReservations()) {
-            if (datesOverlap(reservation.getStartDate(), reservation.getEndDate(), start, end)) {
+            if (datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, endDate)) {
                 return false;
             }
         }
@@ -42,6 +39,16 @@ public class FarmStay extends Lodging{
 
     private boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
         return !start1.isAfter(end2) && !end1.isBefore(start2);
+    }
+
+    @Override
+    public String toString() {
+        return "+------------------------------------+" +
+                "       " + name + '\n' +
+                "Calificación: " + rating +'\n' +
+                "Descripción: " + description + '\n' +
+                "+------------------------------------+"
+                ;
     }
 
     // Getter

@@ -40,17 +40,31 @@ public class Hotel extends Lodging{
     }
 
     @Override
-    public boolean isAvailable(String startDate, String endDate, int guests) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        int requiredRooms = (int) Math.ceil((double) guests / rooms.get(0).getCapacity());
+    public boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests, int requiredRooms) {
+        int roomsNeeded = requiredRooms > 0 ? requiredRooms : (int) Math.ceil((double) guests / rooms.get(0).getCapacity());
+        int roomsAvailable = 0;
 
         for (Room room : rooms) {
-            if (room.getCapacity() >= guests / requiredRooms && room.isAvailable(getReservations(), startDate, endDate)) {
+            if (room.isAvailable(getReservations(), startDate, endDate)) {
+                roomsAvailable++;
+            }
+
+            // Verificar si ya hay suficientes habitaciones disponibles
+            if (roomsAvailable >= roomsNeeded) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public String toString() {
+        return "+------------------------------------+" +
+                "       " + name + '\n' +
+                "Calificación: " + rating +'\n' +
+                "Descripción: " + description + '\n' +
+                "+------------------------------------+"
+                ;
     }
 
     // Getters
@@ -74,14 +88,11 @@ class Room {
         this.totalRooms = totalRooms;
     }
 
-    public boolean isAvailable(List<Reservation> reservations, String startDate, String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-
+    public boolean isAvailable(List<Reservation> reservations, LocalDate startDate, LocalDate endDate) {
         int reservedCount = 0;
         for (Reservation reservation : reservations) {
             for (Room room : reservation.getRooms()) {
-                if (room.getType().equals(this.type) && datesOverlap(reservation.getStartDate(), reservation.getEndDate(), start, end)) {
+                if (room.getType().equals(this.type) && datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, endDate)) {
                     reservedCount++;
                 }
             }

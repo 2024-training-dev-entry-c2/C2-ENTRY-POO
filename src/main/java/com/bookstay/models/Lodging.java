@@ -1,15 +1,17 @@
 package com.bookstay.models;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Lodging {
-    private String name;
-    private String city;
-    private String category;
-    private double rating;
-    private String description;
-    private List<Reservation> reservations;
+    protected String name;
+    protected String city;
+    protected String category;
+    protected double rating;
+    protected String description;
+    protected List<Reservation> reservations;
 
     //Constructor
     public Lodging(String name, String city, String category, double rating, String description) {
@@ -23,8 +25,41 @@ public abstract class Lodging {
 
     public abstract double calculatePrice(int adults, int children, int days, Object... params);
 
-    public abstract boolean isAvailable(String startDate, String endDate, int guests);
+    public abstract boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests);
 
+    public double calculateDiscountOrIncrement(LocalDate startDate, LocalDate endDate){
+        LocalDate range1Start = LocalDate.of(startDate.getYear(), startDate.getMonth(), 5);
+        LocalDate range1End = LocalDate.of(startDate.getYear(), startDate.getMonth(), 10);
+        LocalDate range2Start = LocalDate.of(startDate.getYear(), startDate.getMonth(), 10);
+        LocalDate range2End = LocalDate.of(startDate.getYear(), startDate.getMonth(), 15);
+        LocalDate range3Start = LocalDate.of(startDate.getYear(), startDate.getMonth(), 26);
+        LocalDate range3End = LocalDate.of(startDate.getYear(), startDate.getMonth(), 31);
+
+        // Calculate intersection days for each range
+        long daysInRange1 = calculateIntersectionDays(startDate, endDate, range1Start, range1End);
+        long daysInRange2 = calculateIntersectionDays(startDate, endDate, range2Start, range2End);
+        long daysInRange3 = calculateIntersectionDays(startDate, endDate, range3Start, range3End);
+
+        // Determine the range with the largest intersection
+        if (daysInRange1 >= daysInRange2 && daysInRange1 >= daysInRange3) {
+            return -0.08f;
+        } else if (daysInRange2 >= daysInRange1 && daysInRange2 >= daysInRange3) {
+            return 0.10f;
+        } else if (daysInRange3 > 0) {
+            return 0.15f;
+        }
+        return 0;
+    }
+
+    private long calculateIntersectionDays(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
+        LocalDate maxStart = start1.isAfter(start2) ? start1 : start2;
+        LocalDate minEnd = end1.isBefore(end2) ? end1 : end2;
+
+        if (maxStart.isBefore(minEnd) || maxStart.equals(minEnd)) {
+            return ChronoUnit.DAYS.between(maxStart, minEnd) + 1;
+        }
+        return 0;
+    }
 
     public void addReservation(Reservation reservation) {
         reservations.add(reservation);
@@ -33,7 +68,6 @@ public abstract class Lodging {
     public List<Reservation> getReservations() {
         return reservations;
     }
-
 
     // Getters y setters
     public String getName() {
