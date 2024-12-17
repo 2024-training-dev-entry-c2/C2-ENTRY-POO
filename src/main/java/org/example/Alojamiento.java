@@ -5,13 +5,11 @@ import java.util.List;
 
 abstract class Alojamiento {
 
-
     private String nombre;
     private String ciudad;
     private String tipo;
     private double calificacion;
     private List<Habitacion> habitaciones;
-
 
     public Alojamiento(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones) {
         this.nombre = nombre;
@@ -21,28 +19,9 @@ abstract class Alojamiento {
         this.habitaciones = habitaciones;
     }
 
+    abstract void escribirCondicion ();
 
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public double getCalificacion() {
-        return calificacion;
-    }
-
-    public List<Habitacion> getHabitaciones() {
-        return habitaciones;
-    }
-
-    public void mostrarAlojamiento(){
+    public void mostrarAlojamiento() {
         System.out.println(getCiudad() + ":" + getTipo());
         System.out.println("-----------------------------------------------------------");
         System.out.println("Ciudad Seleccionada: " + getCiudad());
@@ -58,17 +37,19 @@ abstract class Alojamiento {
             System.out.println("*********************************************************");
             System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
             System.out.println("Description" + habitaciones.get(i).getDescripcion());
+            escribirCondicion();
             double precio = calcularPrecio(diaInicio, diaFinal, cantidadHabitaciones, habitaciones.get(i).getPrecio());
         }
         System.out.println("___________________________________________________________________________");
         System.out.println("Seleccionar Habitacion");
-        for (int i = 0; i < habitaciones.size(); i++){
+        for (int i = 0; i < habitaciones.size(); i++) {
             System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
         }
     }
-    public void mostrarHabitacionCambio(){
+
+    public void mostrarHabitaciones() {
         System.out.println("Seleccionar Habitacion");
-        for (int i = 0; i < habitaciones.size(); i++){
+        for (int i = 0; i < habitaciones.size(); i++) {
             System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
         }
     }
@@ -101,6 +82,46 @@ abstract class Alojamiento {
     public String toString() {
         return nombre + " - " + ciudad + " - " + tipo + " - " + calificacion + "⭐";
     }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public double getCalificacion() {
+        return calificacion;
+    }
+
+    public List<Habitacion> getHabitaciones() {
+        return habitaciones;
+    }
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
+    }
+
+    public void setCalificacion(double calificacion) {
+        this.calificacion = calificacion;
+    }
+
+    public void setHabitaciones(List<Habitacion> habitaciones) {
+        this.habitaciones = habitaciones;
+    }
+
 
 
 }

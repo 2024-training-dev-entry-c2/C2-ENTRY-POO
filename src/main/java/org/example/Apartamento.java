@@ -3,15 +3,33 @@ package org.example;
 import java.util.List;
 
 public class Apartamento extends Alojamiento {
-    public boolean isPerro() {
-        return perro;
+
+    protected boolean parqueadero;
+    protected boolean mascota;
+
+
+    public Apartamento(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones) {
+        super(nombre, ciudad, tipo, calificacion, habitaciones);
     }
 
-    public void setPerro(boolean perro) {
-        this.perro = perro;
+    public Apartamento(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones, boolean mascota) {
+        super(nombre, ciudad, tipo, calificacion, habitaciones);
+        this.mascota = mascota;
     }
 
-    protected boolean perro;
+    @Override
+    void escribirCondicion() {
+        System.out.println("Permitido Perros: " + mascota);
+    }
+
+    public boolean ismascota() {
+        return mascota;
+    }
+
+    public void setmascota(boolean mascota) {
+        this.mascota = mascota;
+    }
+
 
     public boolean isParqueadero() {
         return parqueadero;
@@ -21,14 +39,5 @@ public class Apartamento extends Alojamiento {
         this.parqueadero = parqueadero;
     }
 
-    protected  boolean parqueadero;
 
-    public Apartamento(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones) {
-        super(nombre, ciudad, tipo, calificacion, habitaciones);
-    }
-
-    public Apartamento(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones, boolean perro) {
-        super(nombre, ciudad, tipo, calificacion, habitaciones);
-        this.perro = perro;
-    }
 }
