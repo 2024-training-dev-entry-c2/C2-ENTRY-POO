@@ -33,7 +33,5 @@ public abstract class Alojamiento {
 
     public abstract void mostrarDetalles();
 
-    public ArrayList<Habitacion> getHabitaciones() {
-        return null;
-    }
+    public abstract ArrayList<Habitacion> getHabitaciones();
 }

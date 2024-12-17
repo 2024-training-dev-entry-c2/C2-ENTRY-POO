@@ -46,5 +46,6 @@ public class MenuPrincipal {
         int opcion = scanner.nextInt();
         scanner.nextLine(); // Consumir nueva línea
         return opcion;
+
     }
 }

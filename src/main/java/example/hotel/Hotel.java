@@ -21,21 +21,8 @@ class Hotel extends Alojamiento {
         }
     }
 
+    @Override
     public ArrayList<Habitacion> getHabitaciones() {
         return habitaciones;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
