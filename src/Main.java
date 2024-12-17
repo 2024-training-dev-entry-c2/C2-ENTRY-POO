@@ -289,7 +289,7 @@ switch (confirmar) {
             LocalDate fechaNacimientoCliente = LocalDate.parse(scanner.nextLine());
 
             Cliente cliente = new Cliente(nombreCliente, apellidoCliente, emailCliente, nacionalidadCliente, telefonoCliente, fechaNacimientoCliente);
-//            Reserva reserva = new Reserva(fechaInicio, fechaFin, adultos, ninos, cliente, alojamientoSeleccionado, ArrayList<Habitacion> List.of(alojamientoSeleccionado.habitaciones.get(opcionHabitacion)));
+            Reserva reserva = new Reserva(fechaInicio, fechaFin, adultos, ninos, cliente, alojamientoSeleccionado, alojamientoSeleccionado.habitaciones.get(opcionHabitacion));
         }
     }
     case 2 -> {
