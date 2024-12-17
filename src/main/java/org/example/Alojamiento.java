@@ -42,15 +42,25 @@ abstract class Alojamiento {
         return habitaciones;
     }
 
+    public void mostrarAlojamiento(){
+        System.out.println(getCiudad() + ":" + getTipo());
+        System.out.println("-----------------------------------------------------------");
+        System.out.println("Ciudad Seleccionada: " + getCiudad());
+        System.out.println("Nombre: " + getNombre());
+        System.out.println("Precio: " + getHabitaciones().get(0).getPrecio());
+        System.out.println("Calificación: " + getCalificacion() + "⭐");
 
+    }
 
     public void mostrarHabitaciones(int cantidadHabitaciones, int diaInicio, int diaFinal) {
         System.out.println("Habitaciones en " + nombre + ":");
         for (int i = 0; i < habitaciones.size(); i++) {
+            System.out.println("*********************************************************");
             System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
             System.out.println("Description" + habitaciones.get(i).getDescripcion());
             double precio = calcularPrecio(diaInicio, diaFinal, cantidadHabitaciones, habitaciones.get(i).getPrecio());
         }
+        System.out.println("___________________________________________________________________________");
         System.out.println("Seleccionar Habitacion");
         for (int i = 0; i < habitaciones.size(); i++){
             System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());

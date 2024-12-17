@@ -4,6 +4,7 @@ public class Reserva {
     private String nombreCliente;
     private String emailCliente;
 
+
     public String getNacionalidad() {
         return nacionalidad;
     }
@@ -61,7 +62,7 @@ public class Reserva {
         System.out.println("Teléfono: " + telefono);
         System.out.println("Hora de llegada: " + horaLlegada + ":00");
         System.out.println("Hotel: " + alojamiento.getNombre());
-        System.out.println("Habitación: " + alojamiento.getHabitaciones().get(index).getTipo());
+        System.out.println("Habitación: " + habitacion.getTipo());
         System.out.println("Cantidad de habitaciones reservadas: " + cantidadHabitaciones);
         System.out.println("-----------------------------------------------------");
     }

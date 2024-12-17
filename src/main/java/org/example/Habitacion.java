@@ -48,6 +48,7 @@ public class Habitacion implements Reservable {
         }
         return false;
     }
+
     public void cancelar() {
         disponibles++;
     }
