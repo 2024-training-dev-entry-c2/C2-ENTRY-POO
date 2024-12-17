@@ -48,8 +48,8 @@ public class Main {
         // Creación de arreglo de ciudades en las que se encuentran los alojamientos
         ArrayList<String> ciudades = new ArrayList<>();
         for (Alojamiento alojamiento : alojamientos) {
-            if (!ciudades.contains(alojamiento.Ciudad)) {
-                ciudades.add(alojamiento.Ciudad);
+            if (!ciudades.contains(alojamiento.ciudad)) {
+                ciudades.add(alojamiento.ciudad);
             }
         };
 
@@ -158,30 +158,62 @@ public class Main {
         scanner.close();
     }
 
-    public static void buscarAlojamientos(Alojamiento[] alojamientos, ArrayList<String>ciudades, Scanner scanner) {
-        System.out.print("Ingrese una ciudad entre las opciones disponibles: ");
-        for (String ciudad : ciudades) {
-           System.out.print(ciudad + " | ");
-        }
-        System.out.println();
+   public static void buscarAlojamientos(Alojamiento[] alojamientos, ArrayList<String> ciudades, Scanner scanner) {
+    // Mostrar las opciones de ciudades
+    System.out.println("Ingrese una ciudad entre las opciones disponibles:");
+    for (String ciudad : ciudades) {
+        System.out.print(ciudad + " | ");
+    }
+    System.out.println("\n"); // Salto de línea
 
-        scanner.nextLine(); // Limpiar buffer
-        String ciudadEscogida = scanner.nextLine();
+    // Leer la ciudad escogida
+    System.out.print("Ciudad: ");
+    scanner.nextLine(); // Consumir el carácter de nueva línea pendiente
+    String ciudadEscogida = scanner.nextLine().trim();
 
-        System.out.println("\nAlojamientos disponibles en " + ciudadEscogida + ":");
-        for (int i = 0; i < alojamientos.length; i++) {
-            if (alojamientos[i][1].equalsIgnoreCase(ciudadEscogida)) {
-                System.out.printf("Nombre: %s | Tipo: %s | Calificación: %.1f estrellas%n",
-                        alojamientos[i][0], alojamientos[i][2], Float.parseFloat(alojamientos[i][3]));
-                for (int j = 0; j < preciosHabitaciones[i].length; j++) {
-                    System.out.printf("  %d- %s: $%.2f | Disponibles: %d%n",
-                            j + 1, obtenerDescripcionHabitacion(j), preciosHabitaciones[i][j],
-                            disponibilidadHabitaciones[i][j]);
-                }
-                System.out.println();
+    // Leer el tipo de alojamiento
+    System.out.println("Ingrese el tipo de alojamiento que desea buscar:");
+    System.out.println("Hotel\nApartamento\nFinca");
+    System.out.print("Tipo: ");
+    String tipoAlojamiento = scanner.nextLine().trim();
+
+    //Leer fecha de inicio
+    System.out.print("Ingrese la fecha de inicio de la reserva (yyyy-MM-dd): ");
+    System.out.println();
+    LocalDate fechaInicio = LocalDate.parse(scanner.nextLine());
+
+    //Leer fecha de fin
+    System.out.print("Ingrese la fecha de finalización de la reserva (yyyy-MM-dd): ");
+    System.out.println();
+    LocalDate fechaFin = LocalDate.parse(scanner.nextLine());
+
+    // Buscar coincidencias
+    boolean encontrado = false;
+
+    System.out.println("\nAlojamientos disponibles en " + ciudadEscogida + " (" + tipoAlojamiento + "):");
+    for (Alojamiento alojamiento : alojamientos) {
+        // Filtrar por ciudad y tipo de alojamiento
+        if (alojamiento.ciudad.equalsIgnoreCase(ciudadEscogida) &&
+                alojamiento.tipo.equalsIgnoreCase(tipoAlojamiento)) {
+            encontrado = true;
+            System.out.printf("Nombre: %s | Tipo: %s | Calificación: %.1f estrellas%n",
+                    alojamiento.nombre,
+                    alojamiento.tipo,
+                    alojamiento.calificacion);
+            for (Habitacion habitacion : alojamiento.habitaciones) {
+                System.out.printf("   - %s | Descripción: %s | Precio por noche: $%.2f%n",
+                        habitacion.nombre,
+                        habitacion.descripcion,
+                        habitacion.precioNoche);
             }
         }
     }
+    // Si no se encontraron alojamientos
+    if (!encontrado) {
+        System.out.println("No se encontraron alojamientos de tipo '" + tipoAlojamiento +
+                "' en la ciudad '" + ciudadEscogida + ". En las fechas seleccionadas, vuelva a intentarlo con parametros diferentes.");
+    }
+}
 
     public static String obtenerDescripcionHabitacion(int indice) {
         return switch (indice) {
