@@ -40,7 +40,7 @@ public class Reserva {
     public String mostrarDetalles() {
         return ("Reserva de tipo " + tipo + " : " + "Fecha de inicio: " + fechaInicio + ", Fecha de fin: " + fechaFin +
                 ", Cantidad de adultos: " + cantidadAdultos + ", Cantidad de niños: " + cantidadNinos + ", Cliente: " +
-                cliente.nombre + " " + cliente.apellido + ", Alojamiento: " + alojamiento.nombre + " en " +
+                cliente.getNombre() + " " + cliente.getApellido() + ", Alojamiento: " + alojamiento.nombre + " en " +
                 alojamiento.ciudad + ", Habitación: " + habitacion.nombre + "Con un costo de: " +
                 calcularCostoReserva(fechaInicio, fechaFin, habitacion.precioNoche) +
                 " pesos" + "(Ajuste por temporada: " + calcularAjuste(fechaInicio, fechaFin) + " pesos)"
