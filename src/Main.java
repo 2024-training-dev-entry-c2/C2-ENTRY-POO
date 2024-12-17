@@ -11,6 +11,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        // Creación de objetos de tipo Habitación
+        Habitacion habitacion1 = new Habitacion("Suit Presidencial", "Habitacion con cama queen size, tv y cocina", 2, 800000);
+        Habitacion habitacion2 = new Habitacion("Suit Matrimonial", "Habitacion con cama doble, tv y cocina y vista panoramica", 4, 600000);
+        Habitacion habitacion3 = new Habitacion("Habitación Doble", "Habitacion con dos camas dobles, tv y cocina", 3, 400000);
+        Habitacion habitacion4 = new Habitacion("Habitación Simple", "Habitacion con cama sencilla, tv y cocina", 8, 200000);
+        Habitacion habitacion5 = new Habitacion("Habitación Familiar", "Habitacion con cama doble y dos camas sencillas, tv y cocina", 2, 700000);
+
         String[] ciudades = { "Bogota", "Cartagena", "Santa Marta", "San Andres", "Amazonas" };
 
         String[][] alojamientos = {
