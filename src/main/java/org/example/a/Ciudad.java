@@ -1,6 +1,6 @@
 package org.example.a;
 
-public class Ciudad {
+public class Ciudad implements ICiudadInterfas{
 
     private int id;
     private String nombre;
