@@ -288,7 +288,7 @@ public class Main {
 
         reservas[reservaCount] = reserva;
         // Confirmar la reserva
-        System.out.println("\n¡Se ha realizado la reserva con éxito!: \n" + reserva);
+        System.out.println("\n¡Se ha realizado la reserva con éxito!: \n" + reserva.mostrarReserva());
         System.out.println("==========================================");
         menuBooking();
     }
@@ -319,7 +319,7 @@ public class Main {
         }
 
         if (encontrada) {
-            System.out.println("\nReserva encontrada: \n" + reservas[indiceReserva].toString());
+            System.out.println("\nReserva encontrada: \n" + reservas[indiceReserva].mostrarReserva());
 
             System.out.println("¿Desea cambiar de habitación o de alojamiento? (Escriba 'habitacion' o 'alojamiento')");
             String eleccion = scanner.nextLine();

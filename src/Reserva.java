@@ -55,7 +55,7 @@ public class Reserva implements IReserva{
     }
 
     @Override
-    public String toString() {
+    public String mostrarReserva() {
         StringBuilder infoReserva = new StringBuilder();
         infoReserva.append("Reserva a nombre de: ").append(nombreUsuario).append(" ").append(apellidoUsuario).append("\n");
         infoReserva.append("Correo: ").append(correoUsuario).append("\n");
