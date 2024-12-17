@@ -6,6 +6,7 @@ public abstract class Alojamiento {
     private float calificacion;
     private double precioPorNoche;
 
+    // Constructor
     public Alojamiento(String nombre, String ciudad, float calificacion, double precioPorNoche) {
         this.nombre = nombre;
         this.ciudad = ciudad;
@@ -13,11 +14,12 @@ public abstract class Alojamiento {
         this.precioPorNoche = precioPorNoche;
     }
 
-    // Getters y setters (encapsulamiento)
+    // Getters
     public String getNombre() { return nombre; }
     public String getCiudad() { return ciudad; }
     public float getCalificacion() { return calificacion; }
     public double getPrecioPorNoche() { return precioPorNoche; }
 
-    public abstract void mostrarDetalles(); // Método abstracto
+    // Método abstracto
+    public abstract void mostrarDetalles();
 }
