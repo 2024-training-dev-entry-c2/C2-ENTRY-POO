@@ -133,10 +133,10 @@ public class Main {
                     formularioConfirmacionHabitaciones();
                     break;
                 case 3:
-                    formularioReserva();
+                    //formularioReserva();
                     break;
                 case 4:
-                    actualizarReserva();
+                    //actualizarReserva();
                     break;
                 default:
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.");
@@ -147,7 +147,7 @@ public class Main {
         scanner.close();
     }
 
-    public static void actualizarReserva() {
+    /*public static void actualizarReserva() {
 
         boolean reservaEncontrada = false;
 
@@ -264,7 +264,7 @@ public class Main {
         }
 
 
-    }
+    }*/
 
 
     public static void formularioConfirmacionHabitaciones() {
@@ -307,11 +307,23 @@ public class Main {
 
     public static void ConfirmarHabitaciones(String nombreHotel, int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion, int cantAdultos, int cantNinos, int numHabitaciones) {
 
-        LocalDate fechaInicio = LocalDate.of(2024, mesInicio, diaInicio);
-        LocalDate fechaFin = LocalDate.of(2024, mesFinalizacion, diaFinalizacion);
+
+        for (int i = 0; i < hoteles.length; i++) {
+
+            if (nombreHotel.equals(hoteles[i].getNombre())) {
+                hoteles[i].mostrarInformacionHabitaciones(numHabitaciones);
+            } else if (nombreHotel.equals(apartamentos[i].getNombre())) {
+                apartamentos[i].mostrarInformacionHabitaciones(numHabitaciones);
+            } else if (nombreHotel.equals(fincas[i].getNombre())) {
+                fincas[i].mostrarInformacionHabitaciones(numHabitaciones);
+            } else if (nombreHotel.equals(diasDeSol[i].getNombre())) {
+                diasDeSol[i].mostrarInformacionHabitaciones(numHabitaciones);
+            }
+
+        }
 
 
-        for (int i = 0; i < nombreAlojamiento.length; i++) {
+        /*for (int i = 0; i < nombreAlojamiento.length; i++) {
             if (nombreHotel.equals(nombreAlojamiento[i])) {
 
                 if (!validarFechasDisponibles(fechaInicio, fechaFin, i)) {
@@ -337,14 +349,13 @@ public class Main {
                 }
                 return;
             }
-        }
+        }*/
 
-        // Si no se encuentra el hotel
-        System.out.println("El hotel '" + nombreHotel + "' no existe en la base de datos.");
+
     }
-    
 
-    public static void formularioReserva() {
+
+    /*public static void formularioReserva() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== Formulario de Reserva ===");
@@ -397,9 +408,9 @@ public class Main {
 
         reservarHabitacion(nombre, apellido, email, nacionalidad, telefono, mesInicio, diaInicio, mesfinalizacion, diaFinalizacion, horaLlegada, alojamiento, tipoHabitacion, cantidadHabitaciones);
 
-    }
+    }*/
 
-    public static void reservarHabitacion(String nombre, String apellido, String email, String nacionalidad, String telefono, int mesInicio, int diaInicio, int mesfinalizacion, int diaFinalizacion, String horaLlegada, String alojamiento, int tipoHabitacion, int cantidadHabitaciones) {
+    /*public static void reservarHabitacion(String nombre, String apellido, String email, String nacionalidad, String telefono, int mesInicio, int diaInicio, int mesfinalizacion, int diaFinalizacion, String horaLlegada, String alojamiento, int tipoHabitacion, int cantidadHabitaciones) {
 
         LocalDate fechaInicio = LocalDate.of(2024, mesInicio, diaInicio);
         LocalDate fechaFin = LocalDate.of(2024, mesfinalizacion, diaFinalizacion);
@@ -442,9 +453,9 @@ public class Main {
             }
         }
 
-    }
+    }*/
 
-    public static void agregarReserva(String nombreHotel, String email, int tipoHabitacion, int cantidadHabitaciones, String horaLlegada, LocalDate fechaInicio, LocalDate fechaFin) {
+    /*public static void agregarReserva(String nombreHotel, String email, int tipoHabitacion, int cantidadHabitaciones, String horaLlegada, LocalDate fechaInicio, LocalDate fechaFin) {
 
         for (int i = 0; i < reservas.length; i++) {
             // Verificar si la fila está vacía
@@ -467,7 +478,7 @@ public class Main {
                 return;
             }
         }
-    }
+    }*/
 
 
     public static void formularioOpcion1() {

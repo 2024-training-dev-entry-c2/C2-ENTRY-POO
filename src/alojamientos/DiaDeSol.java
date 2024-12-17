@@ -26,7 +26,7 @@ public class DiaDeSol extends Alojamiento {
     @Override
     public double calcularPrecioBase(int numHabitaciones) {
         this.precio = this.obtenerPrecioHabitacionMasBarata()*numHabitaciones;
-        return 0;
+        return precio;
     }
 
 
@@ -70,9 +70,15 @@ public class DiaDeSol extends Alojamiento {
     }
 
     @Override
-    public void mostrarInformacionHabitaciones() {
-        for(int i=0; i<this.habitaciones.length; i++){
-            habitaciones[i].mostrarInfoHabatiacion();
+    public void mostrarInformacionHabitaciones(int cantHabitacionesParametro) {
+        System.out.println("=== Información de Habitaciones ===");
+        for (int i = 0; i < this.habitaciones.length; i++) {
+            if (this.cantHabitaciones[i] > cantHabitacionesParametro && this.habitaciones[i] != null) {
+                System.out.println("Habitación " + (i + 1) + ":");
+                habitaciones[i].mostrarInfoHabatiacion();
+            }
         }
+        System.out.println("===================================");
     }
+
 }

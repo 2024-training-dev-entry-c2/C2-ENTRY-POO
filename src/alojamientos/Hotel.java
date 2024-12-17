@@ -5,8 +5,6 @@ import src.reservas.Reserva;
 
 public class Hotel extends Alojamiento {
 
-
-
     public Hotel(String nombre, String ciudad, double calificacion, String tipo) {
         this.nombre = nombre;
         this.ciudad =ciudad;
@@ -63,9 +61,15 @@ public class Hotel extends Alojamiento {
     }
 
     @Override
-    public void mostrarInformacionHabitaciones() {
-        for(int i=0; i<this.habitaciones.length; i++){
-            habitaciones[i].mostrarInfoHabatiacion();
+    public void mostrarInformacionHabitaciones(int cantHabitacionesParametro) {
+        System.out.println("=== Información de Habitaciones ===");
+        for (int i = 0; i < this.habitaciones.length; i++) {
+            if (this.cantHabitaciones[i] > cantHabitacionesParametro && this.habitaciones[i] != null) {
+                System.out.println("Habitación " + (i + 1) + ":");
+                habitaciones[i].mostrarInfoHabatiacion();
+            }
         }
+        System.out.println("===================================");
     }
+
 }

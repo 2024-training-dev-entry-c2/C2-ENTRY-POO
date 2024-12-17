@@ -22,7 +22,7 @@ public abstract class Alojamiento {
 
     public abstract void mostrarInformacionAlojamiento(int numHabitaciones, int diaInicio, int diaFinalizacion);
 
-    public abstract void mostrarInformacionHabitaciones();
+    public abstract void mostrarInformacionHabitaciones(int cantHabitaciones);
 
     //metodos concretos
     public double obtenerPrecioHabitacionMasBarata() {
