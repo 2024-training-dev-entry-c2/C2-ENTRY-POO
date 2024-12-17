@@ -49,4 +49,12 @@ public class Habitacion {
         System.out.println("Tipo de habitacion: " + tiposDeHabitaciones + "\nCaracterísticas: " + caracteristicasHabitaciones +
                 "\nPrecio por noche: " + precioPorNochePorTipoHabitacion + "\nNumero de habitaciones disponibles: " + habitacionesDisponibles + "\n***********************************");
     }
+
+    public void agregarHabitacionesDisponibles(int habitacionesAgregar) {
+        this.habitacionesDisponibles += habitacionesAgregar;
+    }
+
+    public void removerHabitacionesDisponibles(int habitacionesRemover) {
+        this.habitacionesDisponibles -= habitacionesRemover;
+    }
 }
