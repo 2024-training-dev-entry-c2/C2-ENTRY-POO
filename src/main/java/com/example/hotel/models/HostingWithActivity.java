@@ -27,12 +27,22 @@ public class HostingWithActivity extends Hosting {
 
   @Override
   public String printHosting() {
-    return "  Nombre: " + name + "\n" +
-      "  Calificación: " + rating + "\n" +
-      "  Precio por noche: $" + pricePerNight + "\n" +
-      "  Precio por estadía: $" + pricePerStay + "\n" +
-      "  Actividades: " + activities.size() + "\n" +
-      "-----------------------------------\n" +
-      activities.toString();
+    String result = "\n********** ALOJAMIENTO **********\n";
+
+    result += "Ciudad: " + city + "\n";
+    result += "Tipo de alojamiento: " + typeOfHousing + "\n";
+    result += "Nombre: " + name + "\n";
+    result += "Calificación: " + rating + "\n";
+    result += "Precio por día: " + pricePerNight + "\n";
+
+    result += "\n********** ACTIVIDADES **********\n";
+    int index = 1;
+    for (Activity activity : activities) {
+      result += activity.printStay();
+      result += "----\n";
+      index++;
+    }
+
+    return result;
   }
 }

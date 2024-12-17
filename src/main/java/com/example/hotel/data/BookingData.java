@@ -74,47 +74,77 @@ public class BookingData {
     return activities;
   }
 
-  public List<HostingWithActivity> createHostingWithActivity() {
-    List<String> cities = createCities();
-    List<String> typeOfHosting = createHostingTypes();
-    List<String> activityTypes = createSunnyDayActivities();
-    List<Activity> activities = createActivityForSunnyDay();
-
-    List<HostingWithActivity> hotels = new ArrayList<>();
-
-    for (String cityName : cities) {
-      for (String type : typeOfHosting) {
-        for (String activityType : activityTypes) {
-          HostingWithActivity hotel = new HostingWithActivity(cityName, type, activityType, getAverageRating(), 100, activities);
-          hotels.add(hotel);
-        }
-      }
-    }
-
-    return hotels;
-  }
-
   public List<HostingWithRoom> createHostingWithRoom() {
     List<String> cities = createCities();
     List<String> typeOfHosting = createHostingTypes();
-    List<String> typeOfRoom = createTypesOfRoom();
-    List<Room> rooms = createRoomsForHotel();
 
-    List<HostingWithRoom> hotels = new ArrayList<>();
+    List<HostingWithRoom> hostings = new ArrayList<>();
 
-    for (String cityName : cities) {
-      for (String type : typeOfHosting) {
-        for (String roomType : typeOfRoom) {
-          HostingWithRoom hotel = new HostingWithRoom(cityName, type, roomType, getAverageRating(), 100, rooms);
-          hotels.add(hotel);
-        }
-      }
-    }
+    List<Room> roomsH = createRoomsForHotel();
+    double minPriceH = Room.getMinPrice(roomsH);
 
-    return hotels;
+    // Hoteles
+    hostings.add(new HostingWithRoom(cities.get(0), typeOfHosting.get(0), "Marriott Hotel", getAverageRating(), minPriceH, roomsH));
+    hostings.add(new HostingWithRoom(cities.get(2), typeOfHosting.get(0), "Hilton Garden Inn", getAverageRating(), minPriceH, roomsH));
+    hostings.add(new HostingWithRoom(cities.get(2), typeOfHosting.get(0), "Ritz-Carlton", getAverageRating(), minPriceH, roomsH));
+    hostings.add(new HostingWithRoom(cities.get(3), typeOfHosting.get(0), "Holiday Inn", getAverageRating(), minPriceH, roomsH));
+    hostings.add(new HostingWithRoom(cities.get(4), typeOfHosting.get(0), "Sheraton", getAverageRating(), minPriceH, roomsH));
+
+    List<Room> roomsA = createRoomsForApartment();
+    double minPriceA = Room.getMinPrice(roomsA);
+
+    // Apartamentos
+    hostings.add(new HostingWithRoom(cities.get(0), typeOfHosting.get(1), "Apartamento Luxury", getAverageRating(), minPriceA, roomsA));
+    hostings.add(new HostingWithRoom(cities.get(1), typeOfHosting.get(1), "Apartamento Vista Mar", getAverageRating(), minPriceA, roomsA));
+    hostings.add(new HostingWithRoom(cities.get(2), typeOfHosting.get(1), "Apartamento Moderno", getAverageRating(), minPriceA, roomsA));
+    hostings.add(new HostingWithRoom(cities.get(5), typeOfHosting.get(1), "Apartamento Familiar", getAverageRating(), minPriceA, roomsA));
+    hostings.add(new HostingWithRoom(cities.get(7), typeOfHosting.get(1), "Apartamento en el Centro", getAverageRating(), minPriceA, roomsA));
+
+    List<Room> roomsF = createRoomsForFarm();
+    double minPriceF = Room.getMinPrice(roomsF);
+
+    // Fincas
+    hostings.add(new HostingWithRoom(cities.get(0), typeOfHosting.get(2), "Finca El Paraíso", getAverageRating(), minPriceF, roomsF));
+    hostings.add(new HostingWithRoom(cities.get(1), typeOfHosting.get(2), "Finca La Esperanza", getAverageRating(), minPriceF, roomsF));
+    hostings.add(new HostingWithRoom(cities.get(2), typeOfHosting.get(2), "Finca El Refugio", getAverageRating(), minPriceF, roomsF));
+    hostings.add(new HostingWithRoom(cities.get(4), typeOfHosting.get(2), "Finca Santa Isabel", getAverageRating(), minPriceF, roomsF));
+    hostings.add(new HostingWithRoom(cities.get(6), typeOfHosting.get(2), "Finca Las Palmas", getAverageRating(), minPriceF, roomsF));
+
+    return hostings;
   }
 
+  public List<HostingWithActivity> createHostingWithActivity() {
+    List<String> cities = createCities();
+    List<String> typeOfHosting = createHostingTypes();
+
+    List<HostingWithActivity> hostings = new ArrayList<>();
+
+    List<Activity> activities = createActivityForSunnyDay();
+    double minPrice = Activity.getMinPrice(activities);
+
+    hostings.add(new HostingWithActivity(cities.get(0), typeOfHosting.get(3), "Día de Sol Aventura", getAverageRating(), minPrice, activities));
+    hostings.add(new HostingWithActivity(cities.get(0), typeOfHosting.get(3), "Día de Sol Relax", getAverageRating(), minPrice, activities));
+    hostings.add(new HostingWithActivity(cities.get(2), typeOfHosting.get(3), "Día de Sol Familiar", getAverageRating(), minPrice, activities));
+    hostings.add(new HostingWithActivity(cities.get(3), typeOfHosting.get(3), "Día de Sol Deportivo", getAverageRating(), minPrice, activities));
+    hostings.add(new HostingWithActivity(cities.get(4), typeOfHosting.get(3), "Día de Sol con Spa", getAverageRating(), minPrice, activities));
+
+    return hostings;
+  }
+  public void printHostingWithRooms(List<HostingWithRoom> hotels) {
+    for (HostingWithRoom hotel : hotels) {
+      System.out.println(hotel.printHosting());
+      System.out.println("----");
+    }
+  }
+
+  public void printHostingWithActivities(List<HostingWithActivity> hotels) {
+    for (HostingWithActivity hotel : hotels) {
+      System.out.println(hotel.printHosting());
+      System.out.println("----");
+    }
+  }
   private double getAverageRating() {
-    return 1.0 + (Math.random() * 4.0);
+    double rating = 1.0 + (Math.random() * 4.0);
+    return Math.round(rating * 10.0) / 10.0;
   }
 }

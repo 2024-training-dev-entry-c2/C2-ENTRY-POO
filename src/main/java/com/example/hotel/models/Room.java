@@ -1,5 +1,7 @@
 package com.example.hotel.models;
 
+import java.util.List;
+
 public class Room extends Stay {
   private double pricePerNight;
 
@@ -32,5 +34,17 @@ public class Room extends Stay {
            "  Precio por noche: $" + pricePerNight + "\n" +
            "  Disponibilidad: " + capacityAvailability + "\n" +
            "  Cantidad: " + quantity + "\n";
+  }
+
+  public static double getMinPrice(List<Room> rooms) {
+    double minPrice = Double.MAX_VALUE;
+
+    for (Room room : rooms) {
+      if (room.getPricePerNight() < minPrice) {
+        minPrice = room.getPricePerNight();
+      }
+    }
+
+    return minPrice == Double.MAX_VALUE ? 0.0 : minPrice;
   }
 }

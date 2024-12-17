@@ -31,12 +31,23 @@ public class HostingWithRoom extends Hosting {
 
   @Override
   public String printHosting() {
-    return "  Nombre: " + name + "\n" +
-           "  Calificación: " + rating + "\n" +
-           "  Precio por noche: $" + pricePerNight + "\n" +
-           "  Precio por estadía: $" + pricePerStay + "\n" +
-           "  Habitaciones: " + rooms.size() + "\n" +
-           "-----------------------------------\n" +
-          rooms.toString();
+  String result = "\n********** ALOJAMIENTO **********\n";
+
+    result += "Ciudad: " + city + "\n";
+    result += "Tipo de alojamiento: " + typeOfHousing + "\n";
+    result += "Nombre: " + name + "\n";
+    result += "Calificación: " + rating + "\n";
+    result += "Precio por noche: " + pricePerNight + "\n";
+
+    result += "\n********** HABITACIONES **********\n";
+    int index = 1;
+    for (Room room : rooms) {
+      result += "Habitación " + index + ":\n";
+      result += room.printStay();
+      result += "----\n";
+      index++;
+    }
+
+    return result;
   }
 }
