@@ -1,6 +1,6 @@
 package org.example;
 
-public class Habitacion {
+public class Habitacion implements Reservable {
     public String getTipo() {
         return tipo;
     }
@@ -33,5 +33,14 @@ public class Habitacion {
         this.precio = precio;
         this.disponibles = disponibles;
         this.capacidad = capacidad;
+    }
+
+    @Override
+    public boolean reservar() {
+        if (disponibles > 0) {
+            disponibles--;
+            return true;
+        }
+        return false;
     }
 }
