@@ -1,9 +1,6 @@
 package src;
 
-import src.alojamientos.Apartamento;
-import src.alojamientos.DiaDeSol;
-import src.alojamientos.Finca;
-import src.alojamientos.Hotel;
+import src.alojamientos.*;
 import src.clientes.Cliente;
 import src.habitaciones.Habitacion;
 import src.reservas.Reserva;
@@ -149,8 +146,8 @@ public class Main {
         scanner.close();
     }
 
-    public static void actualizarReserva() {
-
+    /*public static void actualizarReserva() {
+        boolean reservaEncontrada = false;
 
         Scanner scanner = new Scanner(System.in);
 
@@ -162,6 +159,12 @@ public class Main {
         scanner.nextLine();
 
         System.out.println("\n=== Resultado de la búsqueda de reservas ===");
+        for (int i = 0; i < hoteles.length; i++){
+            if()
+        }
+
+
+
 
         // Recorrer el arreglo de reservas
         /*for (int i = 0; i < reservas.length; i++) {
@@ -259,12 +262,143 @@ public class Main {
             }
         }*/
 
-        // Si no se encontró ninguna reserva
-        if (!reservaEncontrada) {
-            System.out.println("No se encontraron reservas asociadas al email ingresado.");
+    //}
+
+    public static void actualizarReserva() {
+        Scanner scanner = new Scanner(System.in);
+
+        // Solicitar los datos para identificar la reserva
+        System.out.print("Ingrese su email: ");
+        String email = scanner.nextLine();
+
+        System.out.print("Ingrese su fecha de nacimiento (dd/mm/yyyy): ");
+        String fechaNacimiento = scanner.nextLine();
+
+        boolean reservaEncontrada = false;
+
+        // Buscar en Hoteles
+        for (int i = 0; i < hoteles.length; i++) {
+            if (hoteles[i] != null) {
+                Reserva reserva = buscarReservaEnAlojamiento(hoteles[i], email, fechaNacimiento);
+                if (reserva != null) {
+                    modificarReserva(reserva, scanner, hoteles[i]);
+                    reservaEncontrada = true;
+                    break;
+                }
+            }
         }
 
+        // Buscar en Apartamentos
+        if (!reservaEncontrada) {
+            for (int i = 0; i < apartamentos.length; i++) {
+                if (apartamentos[i] != null) {
+                    Reserva reserva = buscarReservaEnAlojamiento(apartamentos[i], email, fechaNacimiento);
+                    if (reserva != null) {
+                        modificarReserva(reserva, scanner,apartamentos[i]);
+                        reservaEncontrada = true;
+                        break;
+                    }
+                }
+            }
+        }
 
+        // Buscar en Fincas
+        if (!reservaEncontrada) {
+            for (int i = 0; i < fincas.length; i++) {
+                if (fincas[i] != null) {
+                    Reserva reserva = buscarReservaEnAlojamiento(fincas[i], email, fechaNacimiento);
+                    if (reserva != null) {
+                        modificarReserva(reserva, scanner,fincas[i]);
+                        reservaEncontrada = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Buscar en DiasDeSol
+        if (!reservaEncontrada) {
+            for (int i = 0; i < diasDeSol.length; i++) {
+                if (diasDeSol[i] != null) {
+                    Reserva reserva = buscarReservaEnAlojamiento(diasDeSol[i], email, fechaNacimiento);
+                    if (reserva != null) {
+                        modificarReserva(reserva, scanner,diasDeSol[i]);
+                        reservaEncontrada = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Si no se encontró la reserva
+        if (!reservaEncontrada) {
+            System.out.println("No se encontró ninguna reserva con los datos proporcionados.");
+        }
+    }
+
+
+    // Método para buscar una reserva dentro de un alojamiento específico
+    private static Reserva buscarReservaEnAlojamiento(Alojamiento alojamiento, String email, String fechaNacimiento) {
+        if (alojamiento.getReservas() == null) return null;
+
+        for (Reserva reserva : alojamiento.getReservas()) {
+            if (reserva != null) {
+                Cliente cliente = reserva.getCliente();
+                if (cliente.getEmail().equals(email) && cliente.getFechaNacimiento().equals(fechaNacimiento)) {
+                    return reserva; // Se encontró la reserva
+                }
+            }
+        }
+        return null; // No se encontró
+    }
+
+    // Método para modificar los detalles de una reserva encontrada
+    private static void modificarReserva(Reserva reserva, Scanner scanner,Alojamiento alojamiento) {
+        System.out.println("*****Reserva encontrada******");
+        reserva.mostrarInfoReserva();
+
+        System.out.println("----------------------");
+
+        System.out.print("Quiere un cambio de habitacion[0] o de alojamiento[1]: ");
+        int cambioReserva = scanner.nextInt();
+        scanner.nextLine();
+
+        if(cambioReserva==1){
+            alojamiento.eliminarReserva(reserva.getCliente().getEmail(),reserva.getCliente().getFechaNacimiento());
+            alojamiento.recuperarHabitaciones(reserva.getCantHabitaciones(),obtenerIndiceTipoHabitacion(alojamiento.getTipo()));
+            formularioReserva();
+        } else if (cambioReserva==0) {
+            int mesInicio = reserva.getFechaInicio().getMonthValue();
+            int diaInicio = reserva.getFechaInicio().getDayOfMonth();
+
+            int mesFinalizacion = reserva.getFechaFin().getMonthValue();
+            int diaFinalizacion = reserva.getFechaFin().getDayOfMonth();
+            ConfirmarHabitaciones(alojamiento.getNombre(),mesInicio , diaInicio, mesFinalizacion, diaFinalizacion, 0, 0, reserva.getCantHabitaciones());
+            System.out.println("Ingresa la habitacion que desea (sencilla[0], doble[1], gold[2], premium[3], suite presidencial[4]/penthouse[4]/suite[4]/vip[4])");
+            int nuevaHabitacion = scanner.nextInt();
+            Reserva reserva2 = reserva;
+            alojamiento.eliminarReserva(reserva.getCliente().getEmail(),reserva.getCliente().getFechaNacimiento());
+            alojamiento.recuperarHabitaciones(reserva.getCantHabitaciones(),obtenerIndiceTipoHabitacion(alojamiento.getTipo()));
+            Habitacion h2 = alojamiento.getHabitaciones()[obtenerIndiceTipoHabitacion(alojamiento.getTipo())];
+            reserva2.setHabitacion(h2);
+            alojamiento.agregarReserva(reserva2);
+            alojamiento.restarHabitaciones(reserva2.getCantHabitaciones(),obtenerIndiceTipoHabitacion(alojamiento.getTipo()));
+        }
+
+    }
+
+    private static int obtenerIndiceTipoHabitacion(String tipoHabitacion) {
+        switch (tipoHabitacion) {
+            case "sencilla": return 0;
+            case "doble": return 1;
+            case "gold": return 2;
+            case "premium": return 3;
+            case "suite presidencial":
+            case "penthouse":
+            case "suite":
+            case "vip": return 4;
+            default: return -1; // Tipo no reconocido
+        }
     }
 
 
@@ -302,7 +436,7 @@ public class Main {
         int numHabitaciones = scanner.nextInt();
         scanner.nextLine();
 
-        ConfirmarHabitaciones(nombreHotel, mesInicio, diaInicio, mesfinalizacion, mesfinalizacion, cantAdultos, cantNinos, numHabitaciones);
+        ConfirmarHabitaciones(nombreHotel, mesInicio, diaInicio, mesfinalizacion, diaFinalizacion, cantAdultos, cantNinos, numHabitaciones);
 
     }
 
@@ -432,71 +566,7 @@ public class Main {
 
         }
 
-        /*for (int i = 0; i < nombreAlojamiento.length; i++) {
-            if (alojamiento.equals(nombreAlojamiento[i])) {
-
-                if (!validarFechasDisponibles(fechaInicio, fechaFin, i)) {
-                    System.out.println("No hay disponibilidad para las fechas seleccionadas.");
-                    return;
-                }
-
-                if (cantHabitacionesAlojamiento[i][tipoHabitacion] >= cantidadHabitaciones) {
-                    cantHabitacionesAlojamiento[i][tipoHabitacion] -= cantidadHabitaciones;
-
-                    // Actualizar fechas de disponibilidad
-                    LocalDate fechaInicioActual = fechasDisponibilidad[i][0];
-                    LocalDate fechaFinActual = fechasDisponibilidad[i][1];
-
-                    if (fechaInicio.isAfter(fechaInicioActual) && fechaFin.isBefore(fechaFinActual)) {
-                        // Dividir el rango en dos (antes y después de la reserva)
-                        fechasDisponibilidad[i][0] = fechaFin.plusDays(1); // Nueva fecha de inicio
-                    } else if (fechaInicio.isAfter(fechaInicioActual)) {
-                        // Acortar el rango inicial
-                        fechasDisponibilidad[i][1] = fechaInicio.minusDays(1); // Nueva fecha de fin
-                    } else if (fechaFin.isBefore(fechaFinActual)) {
-                        // Acortar el rango final
-                        fechasDisponibilidad[i][0] = fechaFin.plusDays(1); // Nueva fecha de inicio
-                    } else {
-                        // Reservación cubre todo el rango
-                        fechasDisponibilidad[i][0] = null;
-                        fechasDisponibilidad[i][1] = null;
-                    }
-                    agregarReserva(alojamiento, email, tipoHabitacion, cantidadHabitaciones, horaLlegada, fechaInicio, fechaFin);
-                } else {
-                    System.out.println("--------------------------------");
-                    System.out.println("No hay habitaciones disponibles para este tipo de habitacion");
-                }
-
-            }
-        }*/
-
     }
-
-    /*public static void agregarReserva(String nombreHotel, String email, int tipoHabitacion, int cantidadHabitaciones, String horaLlegada, LocalDate fechaInicio, LocalDate fechaFin) {
-
-        for (int i = 0; i < reservas.length; i++) {
-            // Verificar si la fila está vacía
-            if (reservas[i][0] == null) {
-                reservas[i][0] = nombreHotel;
-                reservas[i][1] = email;
-                String conversorTipoHabitacion = "" + tipoHabitacion;
-                reservas[i][2] = conversorTipoHabitacion;
-                String conversorCantidadHabitaciones = "" + cantidadHabitaciones;
-                reservas[i][3] = conversorCantidadHabitaciones;
-                reservas[i][4] = horaLlegada;
-
-                String conversorFechaInicio = "" + fechaInicio;
-                reservas[i][5] = conversorFechaInicio;
-
-                String conversorFechaFin = "" + fechaFin;
-                reservas[i][6] = conversorFechaFin;
-
-                System.out.println("Se ha realizado la reserva con éxito");
-                return;
-            }
-        }
-    }*/
-
 
     public static void formularioOpcion1() {
         Scanner scanner = new Scanner(System.in);
@@ -579,45 +649,4 @@ public class Main {
             }
         }
     }
-
-
-
-
-   /* private static boolean validarFechasDisponibles(LocalDate fechaInicio, LocalDate fechaFin, int indiceAlojamiento) {
-        LocalDate disponibleDesde = fechasDisponibilidad[indiceAlojamiento][0];
-        LocalDate disponibleHasta = fechasDisponibilidad[indiceAlojamiento][1];
-
-        return !fechaInicio.isBefore(disponibleDesde) && !fechaFin.isAfter(disponibleHasta);
-    }
-
-
-    public static void liberarFechas(int indice, LocalDate fechaInicio, LocalDate fechaFin) {
-        // Verificar si el índice es válido
-
-        // Rango actual de disponibilidad
-        LocalDate fechaInicioActual = fechasDisponibilidad[indice][0];
-        LocalDate fechaFinActual = fechasDisponibilidad[indice][1];
-
-        // Si no hay disponibilidad previa, simplemente establecer el rango liberado
-        if (fechaInicioActual == null && fechaFinActual == null) {
-            fechasDisponibilidad[indice][0] = fechaInicio;
-            fechasDisponibilidad[indice][1] = fechaFin;
-            return;
-        }
-
-        // Verificar si las fechas liberadas son contiguas con el rango actual
-        if (fechaFin.plusDays(1).equals(fechaInicioActual)) {
-            // Las fechas liberadas son inmediatamente antes del rango actual
-            fechasDisponibilidad[indice][0] = fechaInicio;
-        } else if (fechaInicio.minusDays(1).equals(fechaFinActual)) {
-            // Las fechas liberadas son inmediatamente después del rango actual
-            fechasDisponibilidad[indice][1] = fechaFin;
-        } else if (fechaInicio.equals(fechaInicioActual) && fechaFin.equals(fechaFinActual)) {
-            // Restaurar el rango completo
-            fechasDisponibilidad[indice][0] = fechaInicio;
-            fechasDisponibilidad[indice][1] = fechaFin;
-        }
-    }*/
-
-
 }

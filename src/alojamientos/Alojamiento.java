@@ -65,6 +65,32 @@ public abstract class Alojamiento {
         return false;
     }
 
+    public boolean eliminarReserva(String email, String fechaNacimiento) {
+        // Verificar si el arreglo de reservas está inicializado
+        if (this.reservas == null || this.reservas.length == 0) {
+            System.out.println("No hay reservas registradas.");
+            return false;
+        }
+
+        // Buscar la reserva en el arreglo
+        for (int i = 0; i < this.reservas.length; i++) {
+            if (this.reservas[i] != null) { // Evitar NullPointerException
+                Cliente cliente = this.reservas[i].getCliente();
+                if (cliente.getEmail().equals(email) && cliente.getFechaNacimiento().equals(fechaNacimiento)) {
+                    // Eliminar la reserva asignando null
+                    this.reservas[i] = null;
+                    System.out.println("Reserva eliminada con éxito.");
+                    return true;
+                }
+            }
+        }
+
+        // Si no se encontró la reserva
+        System.out.println("No se encontró ninguna reserva con los datos proporcionados.");
+        return false;
+    }
+
+
 
     public void restarHabitaciones(int cantHabitaciones,int tipoHabitacion){
         this.cantHabitaciones[tipoHabitacion]=this.cantHabitaciones[tipoHabitacion]-cantHabitaciones;
@@ -86,7 +112,7 @@ public abstract class Alojamiento {
                 if (cliente.getEmail().equals(email) && cliente.getFechaNacimiento().equals(fechaNacimiento)) {
                     System.out.println("Reserva encontrada:");
                     reserva.mostrarInfoReserva();
-                    return; 
+                    return;
                 }
             }
         }
