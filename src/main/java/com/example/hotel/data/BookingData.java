@@ -132,14 +132,14 @@ public class BookingData {
   }
   public void printHostingWithRooms(List<HostingWithRoom> hotels) {
     for (HostingWithRoom hotel : hotels) {
-      System.out.println(hotel.printHosting());
+      System.out.println(hotel.printHostingWithStay());
       System.out.println("----");
     }
   }
 
   public void printHostingWithActivities(List<HostingWithActivity> hotels) {
     for (HostingWithActivity hotel : hotels) {
-      System.out.println(hotel.printHosting());
+      System.out.println(hotel.printHostingWithStay());
       System.out.println("----");
     }
   }

@@ -63,4 +63,10 @@ public class InputValidator {
       }
     }
   }
+
+  public static void clearBuffer() {
+    if (scanner.hasNextLine()) {
+      scanner.nextLine();
+    }
+  }
 }

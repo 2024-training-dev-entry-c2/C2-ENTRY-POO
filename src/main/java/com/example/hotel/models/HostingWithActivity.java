@@ -34,6 +34,20 @@ public class HostingWithActivity extends Hosting {
     result += "Nombre: " + name + "\n";
     result += "Calificación: " + rating + "\n";
     result += "Precio por día: " + pricePerNight + "\n";
+    result += "Precio por estadía: " + pricePerStay + "\n";
+
+    return result;
+  }
+
+  @Override
+  public String printHostingWithStay() {
+    String result = "\n********** ALOJAMIENTO **********\n";
+
+    result += "Ciudad: " + city + "\n";
+    result += "Tipo de alojamiento: " + typeOfHousing + "\n";
+    result += "Nombre: " + name + "\n";
+    result += "Calificación: " + rating + "\n";
+    result += "Precio por día: " + pricePerNight + "\n";
 
     result += "\n********** ACTIVIDADES **********\n";
     int index = 1;

@@ -48,8 +48,8 @@ public class Menu {
     System.out.println("                  RESERVA DE ALOJAMIENTO                    ");
     System.out.println("============================================================");
 
-    String city = InputValidator.readString("Ingrese la ciudad: ");
-    String housing = InputValidator.readString("Ingrese el alojamiento: ");
+    String city = ChoiseOption.getCity();
+    String housing = ChoiseOption.getHosting();
 
     LocalDate startDate = InputValidator.readLocalDate("Ingrese la fecha de inicio de la reserva (yyyy-MM-dd): ");
 

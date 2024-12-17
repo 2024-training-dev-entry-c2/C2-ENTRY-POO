@@ -31,6 +31,20 @@ public class HostingWithRoom extends Hosting {
 
   @Override
   public String printHosting() {
+    String result = "\n********** ALOJAMIENTO **********\n";
+
+    result += "Ciudad: " + city + "\n";
+    result += "Tipo de alojamiento: " + typeOfHousing + "\n";
+    result += "Nombre: " + name + "\n";
+    result += "Calificación: " + rating + "\n";
+    result += "Precio por noche: " + pricePerNight + "\n";
+    result += "Precio por estadía: " + pricePerStay + "\n";
+
+    return result;
+  }
+
+  @Override
+  public String printHostingWithStay() {
   String result = "\n********** ALOJAMIENTO **********\n";
 
     result += "Ciudad: " + city + "\n";

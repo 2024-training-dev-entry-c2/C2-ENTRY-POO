@@ -19,5 +19,54 @@ public abstract class Hosting {
   public Hosting() {
   }
 
+  public String getCity() {
+    return city;
+  }
+
+  public void setCity(String city) {
+    this.city = city;
+  }
+
+  public String getTypeOfHousing() {
+    return typeOfHousing;
+  }
+
+  public void setTypeOfHousing(String typeOfHousing) {
+    this.typeOfHousing = typeOfHousing;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public double getRating() {
+    return rating;
+  }
+
+  public void setRating(double rating) {
+    this.rating = rating;
+  }
+
+  public double getPricePerNight() {
+    return pricePerNight;
+  }
+
+  public void setPricePerNight(double pricePerNight) {
+    this.pricePerNight = pricePerNight;
+  }
+
+  public double getPricePerStay() {
+    return pricePerStay;
+  }
+
+  public void setPricePerStay(double pricePerStay) {
+    this.pricePerStay = pricePerStay;
+  }
+
   public abstract String printHosting();
+  public abstract String printHostingWithStay();
 }
