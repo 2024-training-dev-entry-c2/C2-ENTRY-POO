@@ -173,7 +173,7 @@ public class Main {
 
     // Leer el tipo de alojamiento
     System.out.println("Ingrese el tipo de alojamiento que desea buscar:");
-    System.out.println("Hotel\nApartamento\nFinca");
+    System.out.println("Hotel | Apartamento | Finca");
     System.out.print("Tipo: ");
     String tipoAlojamiento = scanner.nextLine().trim();
 
@@ -208,7 +208,9 @@ public class Main {
                     alojamiento.tipo,
                     alojamiento.calificacion);
             for (Habitacion habitacion : alojamiento.habitaciones) {
-                System.out.printf("   - %s | Descripción: %s | Precio por noche: $%.2f%n",
+                int i = 1;
+                System.out.printf("   %d. %s | Descripción: %s | Precio por noche: $%.2f%n",
+                        i,
                         habitacion.nombre,
                         habitacion.descripcion,
                         habitacion.precioNoche);
@@ -219,7 +221,87 @@ public class Main {
     if (!encontrado) {
         System.out.println("No se encontraron alojamientos de tipo '" + tipoAlojamiento +
                 "' en la ciudad '" + ciudadEscogida + ". En las fechas seleccionadas, vuelva a intentarlo con parametros diferentes.");
+        return;
     }
+
+ //Leer la opción de reservar
+System.out.print("¿Desea realizar una reserva? \n( 1: Por noches / 2: Día de sol / 3: No, gracias ): ");
+int confirmar = scanner.nextInt();
+
+switch (confirmar) {
+    case 1 -> {
+        System.out.print("Para continuar con la reserva por favor ingrese el nombre del alojamiento: ");
+        scanner.nextLine(); // Limpiar buffer
+        String nombreAlojamiento = scanner.nextLine();
+
+        // Buscar el alojamiento seleccionado
+        Alojamiento alojamientoSeleccionado = null;
+        while (alojamientoSeleccionado == null) {
+            for (Alojamiento alojamiento : alojamientos) {
+                if (alojamiento.nombre.equalsIgnoreCase(nombreAlojamiento)) {
+                    alojamientoSeleccionado = alojamiento;
+                    break;
+                }
+            }
+            if (alojamientoSeleccionado == null) {
+                System.out.println("Alojamiento no encontrado, vuelva a intentarlo.");
+                return;
+            }
+        }
+        System.out.println("Escoja la habitacion en el alojamiento seleccionado: " + alojamientoSeleccionado.nombre);
+        int i = 1;
+        for (Habitacion habitacion : alojamientoSeleccionado.habitaciones) {
+            System.out.printf("   %d. %s | Descripción: %s | Precio por noche: $%.2f  | Disponibles: %d.%n",
+                    i,
+                    habitacion.nombre,
+                    habitacion.descripcion,
+                    habitacion.precioNoche,
+                    habitacion.cantidadDisponible);
+            i++;
+        }
+        System.out.print("Seleccione el número de la habitación que desea reservar: ");
+        int opcionHabitacion = scanner.nextInt() - 1;
+
+        if (opcionHabitacion < 0 || opcionHabitacion >= alojamientoSeleccionado.habitaciones.size()) {
+            System.out.println("Opción no válida.");
+            return;
+        } else {
+            System.out.println("Ingrese su nombre para generar la reserva en la habitación " + alojamientoSeleccionado.habitaciones.get(opcionHabitacion).nombre);
+            scanner.nextLine(); // Limpiar buffer
+            String nombreCliente = scanner.nextLine();
+
+            System.out.println("Ingrese su apellido: " );
+            scanner.nextLine(); // Limpiar buffer
+            String apellidoCliente = scanner.nextLine();
+
+            System.out.println("Ingrese su email: ");
+            scanner.nextLine(); // Limpiar buffer
+            String emailCliente = scanner.nextLine();
+
+            System.out.println("Ingrese su nacionalidad: ");
+            scanner.nextLine(); // Limpiar buffer
+            String nacionalidadCliente = scanner.nextLine();
+            System.out.println("Ingrese su telefono: ");
+            scanner.nextLine(); // Limpiar buffer
+            int telefonoCliente = scanner.nextInt();
+            System.out.println("Ingrese su fecha de nacimiento (yyyy-MM-dd): ");
+            scanner.nextLine(); // Limpiar buffer
+            LocalDate fechaNacimientoCliente = LocalDate.parse(scanner.nextLine());
+
+            Cliente cliente = new Cliente(nombreCliente, apellidoCliente, emailCliente, nacionalidadCliente, telefonoCliente, fechaNacimientoCliente);
+//            Reserva reserva = new Reserva(fechaInicio, fechaFin, adultos, ninos, cliente, alojamientoSeleccionado, ArrayList<Habitacion> List.of(alojamientoSeleccionado.habitaciones.get(opcionHabitacion)));
+        }
+    }
+    case 2 -> {
+        // Lógica para reservar Día de sol
+    }
+    case 3 -> {
+        System.out.println("No se ha realizado ninguna reserva.");
+    }
+    default -> {
+        System.out.println("Opción no válida.");
+    }
+}
 }
 
     public static String obtenerDescripcionHabitacion(int indice) {
