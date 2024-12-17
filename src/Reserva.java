@@ -1,6 +1,6 @@
 import java.util.List;
 
-public class Reserva {
+public class Reserva implements IReserva{
     private String nombreUsuario;
     private String apellidoUsuario;
     private String correoUsuario;

@@ -13,7 +13,6 @@ public abstract class Alojamiento {
     protected boolean incluyeRefrigerio;
     protected Habitacion[] habitaciones;
 
-
     public Alojamiento(String nombreAlojamiento, String ciudadDestino, int maxAdultos, int maxNinos, boolean ofreceDiaDeSol, double calificacion, String actividades, boolean incluyeAlmuerzo, boolean incluyeRefrigerio, Habitacion[] habitaciones) {
         this.nombreAlojamiento = nombreAlojamiento;
         this.ciudadDestino = ciudadDestino;
