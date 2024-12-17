@@ -16,7 +16,7 @@ public class Main {
             System.out.println("3. Salir");
 
             int choice = scanner.nextInt();
-            scanner.nextLine(); // Limpiar buffer
+            scanner.nextLine();
 
             switch (choice) {
                 case 1:
@@ -27,14 +27,10 @@ public class Main {
                     break;
                 case 3:
                     System.out.println("Has salido del aplicativo");
-                    scanner.close();
-                    System.exit(0);
                 default:
                     System.out.println("Opción inválida.");
             }
         }
     }
-
-
 
 }

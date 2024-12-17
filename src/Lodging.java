@@ -20,6 +20,7 @@ public abstract class Lodging implements IReservationService {
         this.roomDescriptions = roomDescriptions;
     }
 
+    //
     @Override
     public boolean checkAvailability(int requiredRooms) {
         return availableRooms >= requiredRooms;
