@@ -28,6 +28,8 @@ public abstract class Lodging {
 
     public abstract boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests);
 
+    public abstract List<String> confirmAvailability(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded);
+
     public abstract void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded);
 
 
@@ -69,6 +71,9 @@ public abstract class Lodging {
         return 0;
     }
 
+    public boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
+        return !start1.isAfter(end2) && !end1.isBefore(start2);
+    }
 
     // Getters y setters
 

@@ -49,9 +49,16 @@ public class DayResort extends Lodging {
         return true;
     }
 
-    private boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
-        return !start1.isAfter(end2) && !end1.isBefore(start2);
+    @Override
+    public List<String> confirmAvailability(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        System.out.println("Descripción: " + description);
+        System.out.println("Actividades: " + activities);
+        System.out.println("Comidas: " + meals);
+        return new ArrayList<>();
     }
+
+
+
 
     @Override
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {

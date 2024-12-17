@@ -200,10 +200,10 @@ public class Main {
                         System.out.println("\n*------------------ Iniciar la Reservación --------------*");
                         System.out.println("Escribe el nombre del alojamiento en que deseas realizar la reserva: ");
                         String lodgingName = input.nextLine();
-                        //List<String> availableRooms = confirmLodging(lodgingName, startDay, endDay, adults , children, roomsRequired);
+                        List<String> availableRooms = confirmLodging(lodgingName, startDate, endDate, adults , children, roomsRequired);
                         List<String> selectedRooms = new ArrayList<>();
 
-                        /*if (!availableRooms.isEmpty()) {
+                        if (!availableRooms.isEmpty()) {
                             System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:\n");
                             int countSelectedRooms = 0;
                             for (String room : availableRooms) {
@@ -230,7 +230,7 @@ public class Main {
 
                                 System.out.println("\nNo hay habitaciones disponibles en este hotel.");
                             }
-                        }*/
+                        }
                         System.out.println("\n¿Confirmas la selección? (Si - No): ");
                         String selection = input.nextLine();
                         if(selection.equalsIgnoreCase("Si")){
@@ -298,22 +298,21 @@ public class Main {
         int totalPeople = adults + children;
 
         for (Lodging lodging : lodgings) {
-            if (lodging instanceof Hotel && category.equalsIgnoreCase("Hotel")) {
-                Hotel hotel = (Hotel) lodging;
-                if (hotel.getCity().equalsIgnoreCase(city) &&
-                        hotel.isAvailable(startDate, endDate, totalPeople, requiredRooms)) {
-                    results.add(hotel);
+            if (lodging.getCity().equalsIgnoreCase(city) &&
+                    lodging.getCategory().equalsIgnoreCase(category)) {
+
+                if (lodging instanceof IRoomReservable) {
+                    IRoomReservable reservable = (IRoomReservable) lodging;
+                    if (reservable.isAvailable(startDate, endDate, totalPeople, requiredRooms)) {
+                        results.add(lodging);
+                    }
+                } else if (lodging.isAvailable(startDate, endDate, totalPeople)) {
+                    results.add(lodging);
                 }
-            } else if (lodging.getCity().equalsIgnoreCase(city) &&
-                    lodging.getCategory().equalsIgnoreCase(category) &&
-                    lodging.isAvailable(startDate, endDate, totalPeople)) {
-                results.add(lodging);
             }
         }
         return results;
     }
-
-
 
     // Method to print the information of the lodgings
     public static void printLodgingInformation(Lodging lodging, LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
@@ -322,49 +321,17 @@ public class Main {
     }
 
 
-
-    // Method for calculating the number of days between two dates
-    public static int calculateDaysBetween(LocalDate startDate, LocalDate endDate) {
-        long days = ChronoUnit.DAYS.between(startDate, endDate);
-
-        return (days == 0) ? 1 : (int) days;
-    }
-
     /* ################################# CONFIRM DATA ################################# */
-    /*
-    public static List<String> confirmLodging(String lodgingName, String startDate, String endDate, int adults, int children, int roomsNeeded) {
-        for (List<String> lodging : lodgings) {
-            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                if (lodging.get(2).equalsIgnoreCase("Hotel")) {
-                    String roomsInfo = lodging.get(7);
-                    String[] roomTypes = roomsInfo.split(";");
-                    List<String> availableRooms = new ArrayList<>();
-
-                    for (String roomType : roomTypes) {
-                        String[] roomDetails = roomType.split("\\|");
-                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
-                        int availableRoomsCount = Integer.parseInt(roomDetails[5]) - reservedRooms;
-
-                        if (availableRoomsCount > 0) {
-                            System.out.println("- Nombre: " + roomDetails[0]);
-                            System.out.println("  Descripción: " + roomDetails[1]);
-                            System.out.println("  Habitaciones disponibles: " + availableRoomsCount);
-                            availableRooms.add(roomDetails[0]);
-                        }
-                    }
-                    return availableRooms;
-                } else if (lodging.get(2).equalsIgnoreCase("Día de sol")) {
-                    System.out.println("Descripción: " + lodging.get(5));
-                    System.out.println("Actividades: " + lodging.get(8));
-                    System.out.println("Comidas: " + lodging.get(9));
-                } else {
-                    System.out.println("Descripción: " + lodging.get(5));
-                }
+    public static List<String> confirmLodging(String lodgingName, LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        for (Lodging lodging : lodgings) {
+            if (lodging.getName().equalsIgnoreCase(lodgingName)) {
+                return lodging.confirmAvailability(startDate, endDate, adults, children, roomsNeeded);
             }
         }
+        System.out.println("No se encontró un alojamiento con el nombre proporcionado.");
         return new ArrayList<>();
     }
-    */
+
     /* ################################# MAKE RESERVATION ################################# */
     /*
     public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime, String lodgingName, String startDate, String endDate, int adults, int children, List<String> selectedRooms, String dayBirth) {

@@ -2,6 +2,8 @@ package com.bookstay.models;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FarmStay extends Lodging{
     private int maxCapacity;
@@ -38,9 +40,19 @@ public class FarmStay extends Lodging{
         return true;
     }
 
-    private boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
-        return !start1.isAfter(end2) && !end1.isBefore(start2);
+    @Override
+    public List<String> confirmAvailability(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        int totalGuests = adults + children;
+
+        if (!isAvailable(startDate, endDate, totalGuests)) {
+            System.out.println("La finca no está disponible para el rango de fechas seleccionado.");
+            return new ArrayList<>();
+        }
+
+        System.out.println("Descripción: " + getDescription());
+        return List.of("Capacidad máxima: " + getMaxCapacity() + " personas.");
     }
+
 
     @Override
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {

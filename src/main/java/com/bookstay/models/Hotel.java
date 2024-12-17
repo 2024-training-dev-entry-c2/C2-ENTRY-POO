@@ -66,6 +66,51 @@ public class Hotel extends Lodging implements IRoomReservable{
     }
 
     @Override
+    public List<String> confirmAvailability(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        List<String> availableRooms = new ArrayList<>();
+
+        int totalGuests = adults + children;
+        int roomsRequired = roomsNeeded > 0 ? roomsNeeded : (int) Math.ceil((double) totalGuests / rooms.get(0).getCapacity());
+
+        System.out.println("Verificando disponibilidad de habitaciones en el Hotel: " + getName());
+
+        for (Room room : rooms) {
+            int reservedRooms = countReservedRooms(room.getType(), startDate, endDate);
+            int availableRoomsCount = room.getTotalRooms() - reservedRooms;
+
+            if (availableRoomsCount > 0) {
+                System.out.println("- Nombre: " + room.getType());
+                System.out.println("  Descripción: " + room.getDescription());
+                System.out.println("  Habitaciones disponibles: " + availableRoomsCount);
+                availableRooms.add(room.getType());
+            }
+        }
+
+        if (availableRooms.size() >= roomsRequired) {
+            return availableRooms;
+        } else {
+            System.out.println("No hay suficientes habitaciones disponibles para el rango de fechas seleccionado.");
+            return new ArrayList<>();
+        }
+    }
+
+    private int countReservedRooms(String roomType, LocalDate startDate, LocalDate endDate) {
+        int reservedCount = 0;
+
+        for (Reservation reservation : getReservations()) {
+            for (Room room : reservation.getRooms()) {
+                if (room.getType().equals(roomType) && datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, endDate)) {
+                    reservedCount++;
+                }
+            }
+        }
+        return reservedCount;
+    }
+
+
+
+
+    @Override
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
         double pricePerNight = calculatePrice(adults, children, 1, roomsNeeded);
         long days = ChronoUnit.DAYS.between(startDate, endDate);
@@ -147,4 +192,9 @@ class Room {
     public int getCapacity() {
         return capacity;
     }
+
+    public int getTotalRooms() {
+        return totalRooms;
+    }
+
 }
