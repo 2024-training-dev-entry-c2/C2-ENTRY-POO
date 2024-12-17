@@ -56,6 +56,12 @@ abstract class Alojamiento {
             System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
         }
     }
+    public void mostrarHabitacionCambio(){
+        System.out.println("Seleccionar Habitacion");
+        for (int i = 0; i < habitaciones.size(); i++){
+            System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo());
+        }
+    }
 
     public double calcularPrecio(int diaInicio, int diaFin, int cantidadHabitaciones, double precioHabitacion) {
         int noches = diaFin - diaInicio + 1;

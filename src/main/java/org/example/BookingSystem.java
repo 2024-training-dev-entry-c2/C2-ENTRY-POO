@@ -9,7 +9,8 @@ import java.util.*;
 
 class BookingSystem {
     static List<Alojamiento> alojamientos = new ArrayList<>();
-    private List<Reserva> reservas= new ArrayList<>();;
+    static List<Reserva> reservas = new ArrayList<>();
+    ;
     private List<String> ciudades = new ArrayList<>();
 
     private List<String> tipos = new ArrayList<>();
@@ -42,6 +43,7 @@ class BookingSystem {
         mostrarCiudades();
         mostrarTiposAlojamiento();
         int opcionConfirmarAlojamiento = -1;
+        int menuSeleccionada = -1;
         int fechaInicio = -1;
         int fechaFin = -1;
         int cantidadAdultos = -1;
@@ -55,72 +57,96 @@ class BookingSystem {
         String fechaNacimiento = "";
         int hora = -1;
 
+        int seleccionCiudad = -1;
+        int seleccionTipo = -1;
+        int seleccionAlojamiento = -1;
+        int habitacionSeleccionada = -1;
+
+        int step = 0;
         while (true) {
-            int seleccionCiudad = seleccionarOpcion(scanner, "Seleccionar ciudad:", ciudades);
-            if (seleccionCiudad == -1) break;
-
-            int seleccionTipo = seleccionarOpcion(scanner, "Seleccionar Tipo de Alojamiento:", tipos);
-            if (seleccionTipo == -1) break;
-
-//            int fechaInicio = obtenerEntradaValida(scanner, "Ingrese el día de inicio del hospedaje: ");
+            switch (step) {
+                case 0:
+                    menuSeleccionada = seleccionarOpcionMenu(scanner, "___Bienvenido a Booking Hotel___", new String[]{"Consultar y reservar", "Autenticar y Actualizar"});
+                    step = (menuSeleccionada == 0) ? 1 : (menuSeleccionada == 1 ? 9 : 0);
+                    break;
+                case 1:
+                    seleccionCiudad = seleccionarOpcion(scanner, "Seleccionar ciudad:", ciudades);
+                    step = validarSeleccion(seleccionCiudad, step);
+                    break;
+                case 2:
+                    seleccionTipo = seleccionarOpcion(scanner, "Seleccionar Tipo de Alojamiento:", tipos);
+                    step = validarSeleccion(seleccionTipo, step);
+                    break;
+                case 3:
+                    //            int fechaInicio = obtenerEntradaValida(scanner, "Ingrese el día de inicio del hospedaje: ");
 //            int fechaFin = obtenerEntradaValida(scanner, "Ingrese el día de finalización del hospedaje: ");
 //            int cantidadAdultos = obtenerEntradaValida(scanner, "Ingrese la cantidad de adultos: ");
 //            int cantidadNinos = obtenerEntradaValida(scanner, "Ingrese la cantidad de niños: ");
 //            int cantidadHabitaciones = obtenerEntradaValida(scanner, "Ingrese la cantidad de habitaciones: ");
-            //                    System.out.println(opcionesEncontrada);
-            fechaInicio = 1;
-            fechaFin = 5;
-            cantidadAdultos = 2;
-            cantidadNinos = 1;
-            cantidadHabitaciones = 3;
-
-            if (fechaInicio >= fechaFin) {
-                System.out.println("Has ingresado fechas incorrectas");
-            } else {
-                filtrarAlojamiento(ciudades.get(seleccionCiudad), tipos.get(seleccionTipo),
-                        fechaInicio, fechaFin, cantidadAdultos, cantidadNinos, cantidadHabitaciones);
-            }
-            int seleccionAlojamiento = seleccionarOpcion(scanner, "Selecciona Alojamiento:", alojamientosfiltradosTxt);
-            if (seleccionTipo == -1) break;
-
-            confirmarHabitaciones(1, cantidadHabitaciones, fechaInicio, fechaFin);
-            int habitacionSeleccionada = obtenerEntradaValida(scanner, alojamientos.get(seleccionAlojamiento).getHabitaciones().size());
-
-//            System.out.println(alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)).getHabitaciones().get(habitacionSeleccionada).getTipo());
-
-            int opcionMenuReserva = seleccionarOpcionMenu(scanner, "Proceso a seguir:", new String[]{"Hacer Reservacion", "Volver Atras", "volver a consultar alojamiento", "volver a menu inicial"});
-
-//            nombre = obtenerEntradaValidaTexto(scanner, "Escriba su nombre: ");
+                    fechaInicio = 1;
+                    fechaFin = 5;
+                    cantidadAdultos = 2;
+                    cantidadNinos = 1;
+                    cantidadHabitaciones = 3;
+                    if (fechaInicio >= fechaFin) {
+                        System.out.println("Has ingresado fechas incorrectas");
+                    } else {
+                        filtrarAlojamiento(ciudades.get(seleccionCiudad), tipos.get(seleccionTipo),
+                                fechaInicio, fechaFin, cantidadAdultos, cantidadNinos, cantidadHabitaciones);
+                    }
+                case 4:
+                    seleccionAlojamiento = seleccionarOpcion(scanner, "Selecciona Alojamiento:", alojamientosfiltradosTxt);
+                    step = (seleccionAlojamiento == -1) ? 2 : 5;
+                    break;
+                case 5:
+                    confirmarHabitaciones(1, cantidadHabitaciones, fechaInicio, fechaFin);
+                    habitacionSeleccionada = obtenerEntradaValida(scanner, alojamientos.get(seleccionAlojamiento).getHabitaciones().size());
+                    step = (habitacionSeleccionada == -1) ? 4 : 6;
+                    break;
+                case 6:
+                    int opcionMenuReserva = seleccionarOpcionMenu(scanner, "Proceso a seguir:", new String[]{"Hacer Reservacion", "Volver Atras", "volver a consultar alojamiento", "volver a menu inicial"});
+                    step= stepTostep(opcionMenuReserva,step);
+                case 7:
+                    //            nombre = obtenerEntradaValidaTexto(scanner, "Escriba su nombre: ");
 //            apellido = obtenerEntradaValidaTexto(scanner, "Escriba su apellido: ");
 //            fechaNacimiento = obtenerEntradaValidaTexto(scanner, "Escriba su Fecha de Nacimiento dd/MM/yyyy : ");
 //            nacionalidad = obtenerEntradaValidaTexto(scanner, "Escriba su Nacionalidad: ");
 //            email = obtenerEntradaValidaTexto(scanner, "Escriba su email: ");
 //            telefono = obtenerEntradaValida(scanner, "Escriba su telefono: ");
 //            hora = obtenerEntradaValida(scanner, "Escriba la hora de llegada: ");
-            nombre = "Martin";
-            apellido = "Par";
-            fechaNacimiento = "123";
-            nacionalidad = "CO";
-            email = "@gmail";
-            telefono = 123456789;
-            hora = 12;
 
-            Reserva reserva = new Reserva(nombre, email,fechaNacimiento, alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)),alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)).getHabitaciones().get(habitacionSeleccionada) );
-            if (reserva.confirmar(hora,cantidadHabitaciones,alojamientosFiltrados.get(seleccionAlojamiento))) {
-                reservas.add(reserva);
-                System.out.println("Reserva realizada con éxito: \n" + reserva.toString());
-            } else {
-                System.out.println("No se pudo realizar la reserva.");
+                    nombre = "Martin";
+                    apellido = "Par";
+                    fechaNacimiento = "123";
+                    nacionalidad = "CO";
+                    email = "@gmail";
+                    telefono = 123456789;
+                    hora = 12;
+                    if (hora >= 0 && hora <= 24) {
+                        step++;
+                    } else {
+                        System.out.println("algun dato esta mal, reescriba nuevamente los datos");
+                    }
+                    break;
+                case 8:
+                    Reserva reserva = new Reserva(nombre, email, fechaNacimiento, alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)), alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)).getHabitaciones().get(habitacionSeleccionada));
+                    if (reserva.confirmar(hora, cantidadHabitaciones, alojamientosFiltrados.get(seleccionAlojamiento))) {
+                        reservas.add(reserva);
+                        System.out.println("Reserva realizada con éxito: \n" + reserva.toString());
+                        step = 0;
+                    } else {
+                        System.out.println("No se pudo realizar la reserva.");
+                    }
+
+                    break;
+                case 9:
+                    int opcionAutenticar = seleccionarOpcionMenu(scanner, "Proceso a seguir:", new String[]{"Autenticar"});
+
+                    autenticarYActualizarReserva();
+                    step = 0;
+                    break;
 
             }
-
-
-
-            int opcionAutenticar = seleccionarOpcionMenu(scanner, "Proceso a seguir:", new String[]{"Autenticar"});
-
-
-
-
 
         }
     }
@@ -133,7 +159,6 @@ class BookingSystem {
             }
         }
     }
-
     private void mostrarTiposAlojamiento() {
         tipos.clear();
         for (Alojamiento alojamiento : alojamientos) {
@@ -142,7 +167,6 @@ class BookingSystem {
             }
         }
     }
-
     public void filtrarAlojamiento(String ciudad, String tipoAlojamiento, int fechaInicio, int fechaFin,
                                    int cantidadAdultos, int cantidadNinos, int cantidadHabitaciones) {
         System.out.println("Alojamientos disponibles en " + ciudad + ":");
@@ -169,7 +193,6 @@ class BookingSystem {
             System.out.println("No se encontraron alojamientos en la ciudad seleccionada.");
         }
     }
-
     public static void confirmarHabitaciones(int indexAlojamiento, int cantidadHabitaciones, int diaInicio, int diaFinal) {
         System.out.println("-------------------------------------------------------------------------------------");
         System.out.println("Alojamiento seleccionado: ");
@@ -178,13 +201,61 @@ class BookingSystem {
         alojamientos.get(indexAlojamiento).mostrarHabitaciones(cantidadHabitaciones, diaInicio, diaFinal);
 
     }
+    public void autenticarYActualizarReserva() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ingrese su email para autenticarse:");
+        String email = scanner.nextLine();
 
-    
+        Reserva reservaEncontrada = null;
+        for (Reserva reserva : reservas) {
+            if (reserva.getEmailCliente().equalsIgnoreCase(email)) {
+                reservaEncontrada = reserva;
+                break;
+            }
+        }
+
+        if (reservaEncontrada == null) {
+            System.out.println("No se encontró ninguna reserva asociada a este email.");
+            return;
+        }
+
+        System.out.println("Reserva encontrada: " + reservaEncontrada);
+        System.out.println("Seleccione una opción para actualizar:");
+        System.out.println("1. Cambiar de habitación");
+        System.out.println("2. Cancelar reserva");
+        int opcion = scanner.nextInt();
+        scanner.nextLine();
+
+        if (opcion == 1) {
+            Alojamiento alojamiento = reservaEncontrada.getAlojamiento();
+            alojamiento.mostrarHabitacionCambio();
+            System.out.println("Seleccione la nueva habitación:");
+            int nuevaHabitacionSeleccionada = scanner.nextInt() - 1;
+
+            if (nuevaHabitacionSeleccionada >= 0 && nuevaHabitacionSeleccionada < alojamiento.getHabitaciones().size()) {
+                Habitacion nuevaHabitacion = alojamiento.getHabitaciones().get(nuevaHabitacionSeleccionada);
+                if (nuevaHabitacion.reservar()) {
+                    reservaEncontrada.getHabitacion().cancelar();
+                    reservaEncontrada.setHabitacion(nuevaHabitacion);
+                    System.out.println("Habitación actualizada con éxito." + reservaEncontrada);
+                    System.out.println();
+                } else {
+                    System.out.println("No hay disponibilidad en la habitación seleccionada.");
+                }
+            } else {
+                System.out.println("Selección inválida.");
+            }
+        } else if (opcion == 2) {
+            reservas.remove(reservaEncontrada);
+            System.out.println("Reserva cancelada con éxito.");
+        } else {
+            System.out.println("Opción inválida.");
+        }
+    }
     public int seleccionarOpcion(Scanner scanner, String mensaje, List<String> opciones) {
         mostrarOpciones(mensaje, opciones);
         return obtenerEntradaValida(scanner, opciones.size());
     }
-
     public void mostrarOpciones(String mensaje, List<String> opciones) {
         System.out.println("-----------------------------------");
         System.out.println(mensaje);
@@ -193,12 +264,10 @@ class BookingSystem {
         }
         System.out.println((opciones.size() + 1) + ". Volver");
     }
-
     public static int seleccionarOpcionMenu(Scanner scanner, String mensaje, String[] opciones) {
         mostrarOpcionesMenu(mensaje, opciones);
         return obtenerEntradaValida(scanner, opciones.length);
     }
-
     public static void mostrarOpcionesMenu(String mensaje, String[] opciones) {
         System.out.println(mensaje);
         for (int i = 0; i < opciones.length; i++) {
@@ -206,7 +275,6 @@ class BookingSystem {
         }
         System.out.println((opciones.length + 1) + ". Volver");
     }
-
     static public int obtenerEntradaValida(Scanner scanner, int maxOption) {
         int opcion = -1;
         while (true) {
@@ -227,7 +295,6 @@ class BookingSystem {
             }
         }
     }
-
     public int obtenerEntradaValida(Scanner scanner, String mensaje) {
         int opcion;
         while (true) {
@@ -244,7 +311,6 @@ class BookingSystem {
             }
         }
     }
-
     public static String obtenerEntradaValidaTexto(Scanner scanner, String mensaje) {
         String opcion;
         while (true) {
@@ -261,5 +327,30 @@ class BookingSystem {
             }
         }
     }
+    private static int validarSeleccion(int seleccion, int pasoActual) {
+        return (seleccion == -1) ? pasoActual - 1 : pasoActual + 1;
+    }
+    private int stepTostep(int opcionMenuReserva, int step) {
 
+        switch (opcionMenuReserva) {
+            case 0:
+                 step++; // Hacer Reservacion
+                break;
+            case 1:
+                 step--; // Volver Atras
+                break;
+            case 2:
+                 step = 1; // Volver a consultar alojamiento
+                break;
+            case 3:
+                step = 0; // Volver a menu inicial
+                break;
+            default:
+                System.out.println("Opción inválida, intenta de nuevo.");
+
+                break;
+
+        }
+        return step;
+    }
 }

@@ -24,6 +24,11 @@ public class Habitacion implements Reservable {
     private String tipo;
     private String descripcion;
     private double precio;
+
+    public void setDisponibles(int disponibles) {
+        this.disponibles = disponibles;
+    }
+
     private int disponibles;
     private int capacidad;
 
@@ -42,5 +47,8 @@ public class Habitacion implements Reservable {
             return true;
         }
         return false;
+    }
+    public void cancelar() {
+        disponibles++;
     }
 }
