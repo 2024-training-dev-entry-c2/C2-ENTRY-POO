@@ -16,6 +16,19 @@ public class Apartamento extends Alojamiento {
         this.cantHabitaciones = new int[5];
     }
 
+    public Apartamento(String nombre, String ciudad, double calificacion, String tipo, Habitacion[] habitaciones, Reserva[] reservas, int[] cantHabitaciones) {
+        this.nombre = nombre;
+        this.ciudad = ciudad;
+        this.calificacion = calificacion;
+        this.tipo = "hotel";
+        this.habitaciones =  habitaciones;
+        this.reservas =  reservas;
+        this.cantHabitaciones =  cantHabitaciones ;
+    }
+
+    public Apartamento() {
+    }
+
     @Override
     public double calcularPrecioBase(int numHabitaciones) {
         this.precio = this.obtenerPrecioHabitacionMasBarata()*numHabitaciones;

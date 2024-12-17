@@ -133,7 +133,7 @@ public class Main {
                     formularioConfirmacionHabitaciones();
                     break;
                 case 3:
-                    //formularioReserva();
+                    formularioReserva();
                     break;
                 case 4:
                     //actualizarReserva();
