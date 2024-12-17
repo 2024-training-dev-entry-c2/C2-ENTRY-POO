@@ -44,6 +44,30 @@ public abstract class Alojamiento {
         return precioMinimo;
     }
 
+    public boolean agregarReserva(Reserva nuevaReserva) {
+        // Verificar si el arreglo de reservas está inicializado
+        if (this.reservas == null) {
+            this.reservas = new Reserva[99]; // Inicializamos con un máximo de 99 reservas
+        }
+
+        // Buscar una posición libre en el arreglo
+        for (int i = 0; i < this.reservas.length; i++) {
+            if (this.reservas[i] == null) {
+                this.reservas[i] = nuevaReserva; // Agregar la reserva
+                System.out.println("Reserva agregada con éxito.");
+                return true; // Se agregó correctamente
+            }
+        }
+
+        // Si no hay espacio disponible
+        System.out.println("No hay espacio disponible para más reservas.");
+        return false;
+    }
+
+
+    public void restarHabitaciones(int cantHabitaciones,int tipoHabitacion){
+        this.cantHabitaciones[tipoHabitacion]=this.cantHabitaciones[tipoHabitacion]-cantHabitaciones;
+    }
 
     // get y set
     public String getNombre() {

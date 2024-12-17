@@ -4,7 +4,9 @@ import src.alojamientos.Apartamento;
 import src.alojamientos.DiaDeSol;
 import src.alojamientos.Finca;
 import src.alojamientos.Hotel;
+import src.clientes.Cliente;
 import src.habitaciones.Habitacion;
+import src.reservas.Reserva;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -136,7 +138,7 @@ public class Main {
                     formularioReserva();
                     break;
                 case 4:
-                    //actualizarReserva();
+                    actualizarReserva();
                     break;
                 default:
                     System.out.println("Opción no válida. Por favor, intenta de nuevo.");
@@ -147,9 +149,8 @@ public class Main {
         scanner.close();
     }
 
-    /*public static void actualizarReserva() {
+    public static void actualizarReserva() {
 
-        boolean reservaEncontrada = false;
 
         Scanner scanner = new Scanner(System.in);
 
@@ -163,7 +164,7 @@ public class Main {
         System.out.println("\n=== Resultado de la búsqueda de reservas ===");
 
         // Recorrer el arreglo de reservas
-        for (int i = 0; i < reservas.length; i++) {
+        /*for (int i = 0; i < reservas.length; i++) {
             // Verificar si el correo electrónico coincide y la fila no está vacía
             if (reservas[i][1] != null && reservas[i][1].equals(email)) {
                 reservaEncontrada = true;
@@ -256,7 +257,7 @@ public class Main {
 
                 break;
             }
-        }
+        }*/
 
         // Si no se encontró ninguna reserva
         if (!reservaEncontrada) {
@@ -264,7 +265,7 @@ public class Main {
         }
 
 
-    }*/
+    }
 
 
     public static void formularioConfirmacionHabitaciones() {
@@ -306,8 +307,6 @@ public class Main {
     }
 
     public static void ConfirmarHabitaciones(String nombreHotel, int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion, int cantAdultos, int cantNinos, int numHabitaciones) {
-
-
         for (int i = 0; i < hoteles.length; i++) {
 
             if (nombreHotel.equals(hoteles[i].getNombre())) {
@@ -321,41 +320,10 @@ public class Main {
             }
 
         }
-
-
-        /*for (int i = 0; i < nombreAlojamiento.length; i++) {
-            if (nombreHotel.equals(nombreAlojamiento[i])) {
-
-                if (!validarFechasDisponibles(fechaInicio, fechaFin, i)) {
-                    System.out.println("No hay disponibilidad para las fechas seleccionadas.");
-                    return;
-                }
-
-                System.out.println("*** Habitaciones disponibles en " + nombreHotel + " ***");
-                for (int j = 0; j < cantHabitacionesAlojamiento[i].length; j++) {
-                    if (cantHabitacionesAlojamiento[i][j] >= numHabitaciones) {
-                        // Obtener detalles de la habitación del arreglo `habitaciones`
-                        for (String[] habitacion : habitaciones) {
-                            if (tipoAlojamiento[i].equals(habitacion[0]) && obtenerIndiceTipoHabitacion(habitacion[1]) == j) {
-                                // Mostrar detalles de la habitación
-                                System.out.println("=== Habitación " + habitacion[1] + " ===");
-                                System.out.println("Características: " + habitacion[2]);
-                                System.out.println("Extras: " + habitacion[3]);
-                                System.out.println("Precio: $" + habitacion[4]);
-                                System.out.println("--------------------------------");
-                            }
-                        }
-                    }
-                }
-                return;
-            }
-        }*/
-
-
     }
 
 
-    /*public static void formularioReserva() {
+    public static void formularioReserva() {
         Scanner scanner = new Scanner(System.in);
 
         System.out.println("=== Formulario de Reserva ===");
@@ -396,6 +364,8 @@ public class Main {
         System.out.print("Ingrese el nombre del alojamiento: ");
         String alojamiento = scanner.nextLine();
 
+        System.out.print("Ingrese su fecha de nacimiento: ");
+        String fechaNacimiento = scanner.nextLine();
 
         int tipoHabitacion = 0;
         System.out.print("Ingrese el tipo de habitacion que busca (sencilla[0], doble[1], gold[2], premium[3], suite presidencial[4]/penthouse[4]/suite[4]/vip[4]): ");
@@ -406,16 +376,63 @@ public class Main {
         int cantidadHabitaciones = scanner.nextInt();
         scanner.nextLine(); // Limpia el buffer de nueva línea
 
-        reservarHabitacion(nombre, apellido, email, nacionalidad, telefono, mesInicio, diaInicio, mesfinalizacion, diaFinalizacion, horaLlegada, alojamiento, tipoHabitacion, cantidadHabitaciones);
+        reservarHabitacion(nombre, apellido, email, nacionalidad, telefono, mesInicio, diaInicio, mesfinalizacion, diaFinalizacion, horaLlegada,fechaNacimiento ,alojamiento, tipoHabitacion, cantidadHabitaciones);
 
-    }*/
+    }
 
-    /*public static void reservarHabitacion(String nombre, String apellido, String email, String nacionalidad, String telefono, int mesInicio, int diaInicio, int mesfinalizacion, int diaFinalizacion, String horaLlegada, String alojamiento, int tipoHabitacion, int cantidadHabitaciones) {
+    public static void reservarHabitacion(String nombre, String apellido, String email, String nacionalidad, String telefono, int mesInicio, int diaInicio, int mesfinalizacion, int diaFinalizacion, String horaLlegada,String fechaNacimiento,String alojamiento, int tipoHabitacion, int cantidadHabitaciones) {
 
         LocalDate fechaInicio = LocalDate.of(2024, mesInicio, diaInicio);
         LocalDate fechaFin = LocalDate.of(2024, mesfinalizacion, diaFinalizacion);
 
-        for (int i = 0; i < nombreAlojamiento.length; i++) {
+        for (int i = 0; i < hoteles.length; i++) {
+
+            if (alojamiento.equals(hoteles[i].getNombre())) {
+                int[] cantHabitaciones = hoteles[i].getCantHabitaciones();
+                Habitacion[] habitaciones = hoteles[i].getHabitaciones();
+                if (cantHabitaciones[tipoHabitacion] >= cantidadHabitaciones) {
+                    Habitacion habitacionAux = habitaciones[tipoHabitacion];
+                    Cliente cliente = new Cliente(nombre, apellido, email, nacionalidad, telefono, horaLlegada, fechaNacimiento);
+                    Reserva reserva = new Reserva(cliente, habitacionAux, cantidadHabitaciones, fechaInicio, fechaFin);
+                    hoteles[i].agregarReserva(reserva); // Método para agregar la reserva
+                    hoteles[i].restarHabitaciones(cantidadHabitaciones,tipoHabitacion);
+                }
+            } else if (alojamiento.equals(apartamentos[i].getNombre())) {
+                int[] cantHabitaciones = apartamentos[i].getCantHabitaciones();
+                Habitacion[] habitaciones = apartamentos[i].getHabitaciones();
+                if (cantHabitaciones[tipoHabitacion] >= cantidadHabitaciones) {
+                    Habitacion habitacionAux = habitaciones[tipoHabitacion];
+                    Cliente cliente = new Cliente(nombre, apellido, email, nacionalidad, telefono, horaLlegada, fechaNacimiento);
+                    Reserva reserva = new Reserva(cliente, habitacionAux, cantidadHabitaciones, fechaInicio, fechaFin);
+                    apartamentos[i].agregarReserva(reserva);
+                    apartamentos[i].restarHabitaciones(cantidadHabitaciones,tipoHabitacion);
+                }
+            } else if (alojamiento.equals(fincas[i].getNombre())) {
+                int[] cantHabitaciones = fincas[i].getCantHabitaciones();
+                Habitacion[] habitaciones = fincas[i].getHabitaciones();
+                if (cantHabitaciones[tipoHabitacion] >= cantidadHabitaciones) {
+                    Habitacion habitacionAux = habitaciones[tipoHabitacion];
+                    Cliente cliente = new Cliente(nombre, apellido, email, nacionalidad, telefono, horaLlegada, fechaNacimiento);
+                    Reserva reserva = new Reserva(cliente, habitacionAux, cantidadHabitaciones, fechaInicio, fechaFin);
+                    fincas[i].agregarReserva(reserva);
+                    fincas[i].restarHabitaciones(cantidadHabitaciones,tipoHabitacion);
+                }
+            } else if (alojamiento.equals(diasDeSol[i].getNombre())) {
+                int[] cantHabitaciones = diasDeSol[i].getCantHabitaciones();
+                Habitacion[] habitaciones = diasDeSol[i].getHabitaciones();
+                if (cantHabitaciones[tipoHabitacion] >= cantidadHabitaciones) {
+                    Habitacion habitacionAux = habitaciones[tipoHabitacion];
+                    Cliente cliente = new Cliente(nombre, apellido, email, nacionalidad, telefono, horaLlegada, fechaNacimiento);
+                    Reserva reserva = new Reserva(cliente, habitacionAux, cantidadHabitaciones, fechaInicio, fechaFin);
+                    diasDeSol[i].agregarReserva(reserva);
+                    diasDeSol[i].restarHabitaciones(cantidadHabitaciones,tipoHabitacion);
+                }
+            }
+
+
+        }
+
+        /*for (int i = 0; i < nombreAlojamiento.length; i++) {
             if (alojamiento.equals(nombreAlojamiento[i])) {
 
                 if (!validarFechasDisponibles(fechaInicio, fechaFin, i)) {
@@ -451,9 +468,9 @@ public class Main {
                 }
 
             }
-        }
+        }*/
 
-    }*/
+    }
 
     /*public static void agregarReserva(String nombreHotel, String email, int tipoHabitacion, int cantidadHabitaciones, String horaLlegada, LocalDate fechaInicio, LocalDate fechaFin) {
 
