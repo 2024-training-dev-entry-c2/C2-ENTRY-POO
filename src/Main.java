@@ -187,6 +187,13 @@ public class Main {
     System.out.println();
     LocalDate fechaFin = LocalDate.parse(scanner.nextLine());
 
+    //Leer cantidad de personas
+    System.out.print("Ingrese la cantidad de adultos: ");
+    int adultos = scanner.nextInt();
+
+    System.out.print("Ingrese la cantidad de niños: ");
+    int ninos = scanner.nextInt();
+
     // Buscar coincidencias
     boolean encontrado = false;
 
