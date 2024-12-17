@@ -1,5 +1,7 @@
 package com.example.hotel.models;
 
+import java.util.List;
+
 public abstract class Hosting {
   protected String city;
   protected String typeOfHousing;
@@ -7,13 +9,16 @@ public abstract class Hosting {
   protected double rating;
   protected double pricePerNight;
   protected double pricePerStay;
+  protected List<Stay> stays;
 
-  public Hosting(String city, String typeOfHousing, String name, double rating, double pricePerNight) {
+  public Hosting(String city, String typeOfHousing, String name, double rating, double pricePerNight, double pricePerStay, List<Stay> stays) {
     this.city = city;
     this.typeOfHousing = typeOfHousing;
     this.name = name;
     this.rating = rating;
     this.pricePerNight = pricePerNight;
+    this.pricePerStay = pricePerStay;
+    this.stays = stays;
   }
 
   public Hosting() {
@@ -65,6 +70,14 @@ public abstract class Hosting {
 
   public void setPricePerStay(double pricePerStay) {
     this.pricePerStay = pricePerStay;
+  }
+
+  public List<Stay> getStays() {
+    return stays;
+  }
+
+  public void setStays(List<Stay> stays) {
+    this.stays = stays;
   }
 
   public abstract String printHosting();

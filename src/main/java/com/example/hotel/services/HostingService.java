@@ -2,12 +2,13 @@ package com.example.hotel.services;
 
 import com.example.hotel.inputHandler.InputValidator;
 import com.example.hotel.models.*;
+import com.example.hotel.services.interfaces.IHostingService;
 
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
-public class HostingService {
+public class HostingService implements IHostingService {
   public Hosting getHotelByCityAndHosting(List<Hosting> hostings, String city, String hostingType) {
     System.out.println("Listado de hospedajes:");
 
@@ -28,7 +29,8 @@ public class HostingService {
     int selection;
     while (true) {
       try {
-        selection = InputValidator.readInt("Escribe el número del hospedaje que deseas seleccionar (1-" + (index - 1) + "): ");
+        System.out.println("Escribe el número del hospedaje que deseas seleccionar (1-" + (index - 1) + "): ");
+        selection = InputValidator.readInt("");
 
         if (selection > 0 && selection < index) {
           int currentIndex = 1;
@@ -50,12 +52,12 @@ public class HostingService {
     }
   }
 
-  public static List<Hosting> updatePriceHotel(List<Room> rooms, List<Hosting> hostings, int daysBetween) {
+  public List<Hosting> updatePriceHotel(List<Stay> rooms, List<Hosting> hostings, int daysBetween) {
     for (Hosting hosting : hostings) {
       String hotelName = hosting.getName();
       double minPrice = Double.MAX_VALUE;
 
-      for (Room room : rooms) {
+      for (Stay room : rooms) {
           double roomPrice = room.getPricePerNight();
           minPrice = Math.min(minPrice, roomPrice);
       }
@@ -67,8 +69,8 @@ public class HostingService {
     return hostings;
   }
 
-  public Hosting createDesiredAccommodation(List<Room> rooms, List<Hosting> hostings, String city, String housingType, LocalDate startDate, LocalDate endDate,
-                                                        int numberOfAdults, int numberOfChildren, int numberOfRooms) {
+  public Hosting createDesiredAccommodation(List<Stay> rooms, List<Hosting> hostings, String city, String housingType, LocalDate startDate, LocalDate endDate,
+                                            int numberOfAdults, int numberOfChildren, int numberOfRooms) {
     long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
 
     List<Hosting> hostingsNow = updatePriceHotel(rooms, hostings, (int) daysBetween);
@@ -124,34 +126,19 @@ public class HostingService {
     }
 
     System.out.println("Precio total del hotel después de ajustes: $" + totalPrice);
-    hosting.setPricePerNight(totalPrice);
+    hosting.setPricePerStay(totalPrice);
   }
 
-  public void calculatePriceWithRooms(Hosting hosting, List<Room> rooms, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
+  public void calculatePriceWithStays(Hosting hosting, List<Stay> stays, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
     double price = 0;
 
-    for (Room room : rooms) {
-      price += room.getPricePerNight() * room.getQuantity();
+    for (Stay stay : stays) {
+      price += stay.getPricePerNight() * stay.getQuantity();
     }
     hosting.setPricePerNight(price);
 
     System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    System.out.println("        *** Precio total con precio de habitaciones ***");
-    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-
-    calculatePrice(hosting, startDate, endDate, numberOfRooms);
-  }
-
-  public void calculatePriceWithActivities(Hosting hosting, List<Activity> activities, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
-    double price = 0;
-
-    for (Activity activity : activities) {
-      price += activity.getPricePerDay() * activity.getCapacityAvailability();
-    }
-    hosting.setPricePerNight(price);
-
-    System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    System.out.println("        *** Precio total con precio de actividades ***");
+    System.out.println("        *** Precio total con precio de estadias ***");
     System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
     calculatePrice(hosting, startDate, endDate, numberOfRooms);

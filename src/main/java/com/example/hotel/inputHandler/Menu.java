@@ -2,10 +2,9 @@ package com.example.hotel.inputHandler;
 
 import com.example.hotel.data.BookingData;
 import com.example.hotel.models.*;
-import com.example.hotel.services.ActivityService;
 import com.example.hotel.services.HostingService;
 import com.example.hotel.services.ReserveService;
-import com.example.hotel.services.RoomService;
+import com.example.hotel.services.StayService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,14 +13,12 @@ import java.util.List;
 
 public class Menu {
   private static BookingData bookingData = new BookingData();
-  private static List<Room> rooms = null;
-  private static List<Activity> activities = null;
-  private static List<Hosting> hostings = null;
+  private List<Stay> stays = new ArrayList<>();
+  private static List<Hosting> hostings = new ArrayList<>();
   private static List<Reserve> reservations = new ArrayList<>();
   private static HostingService hostingService = new HostingService();
-  private static RoomService roomService = new RoomService();
+  private static StayService stayService = new StayService();
   private static ReserveService reserveService = new ReserveService();
-  private static ActivityService activityService = new ActivityService();
 
   public int showOptions() {
     System.out.println("\n============================================================");
@@ -90,21 +87,13 @@ public class Menu {
     int numberOfRooms = InputValidator.readInt("Ingrese el número de habitaciones: ");
 
 
-    List<Room> rooms = bookingData.createRooms();
-    List<Activity> activities = bookingData.createActivities()
-      ;
+    stays = bookingData.createStay();
     List<Hosting> hostingWithRooms = bookingData.createHostingWithRoomOrActivity(housing);
 
-    Hosting hosting = hostingService.createDesiredAccommodation(rooms, hostingWithRooms, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
-    List<Room> selectedRooms = roomService.confirmRooms(rooms, hosting.getName(), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+    Hosting hosting = hostingService.createDesiredAccommodation(stays, hostingWithRooms, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+    List<Stay> selectedStays = stayService.confirmStays(stays, hosting.getName(), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
 
-    hostingService.calculatePriceWithRooms(hosting, selectedRooms, startDate, endDate, numberOfRooms);
-
-    if (housing.equals("Dia de Sol")) {
-      List<Activity> selectedActivities = activityService.confirmActivities(activities, hosting.getName(), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
-      hostingService.calculatePriceWithActivities(hosting, selectedActivities, startDate, endDate, numberOfRooms);
-    }
-
+    hostingService.calculatePriceWithStays(hosting, selectedStays, startDate, endDate, numberOfRooms);
 
     System.out.println("\n============================================================");
     System.out.println("                DATOS DE LA PERSONA TITULAR                 ");
@@ -117,7 +106,7 @@ public class Menu {
     String phone = InputValidator.readString("Ingrese el número de teléfono: ");
     LocalTime arrivalTime = InputValidator.readLocalTime("Ingrese la hora de llegada (HH:mm): ");
 
-    Reserve reservation = reserveService.createReservation(hosting, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalTime, startDate, endDate);
+    Reserve reservation = reserveService.createReservation(hosting, selectedStays, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalTime, startDate, endDate);
 
     reserveService.getReservation(reservation);
     reserveService.addReservations(reservations, reservation);
@@ -154,24 +143,30 @@ public class Menu {
         System.out.println("                   MODIFICAR HABITACIÓN(ES)                 ");
         System.out.println("============================================================");
 
-        Room selectedRoom = reserveService.selectedRoom(reservation);
-        String hotelName = reservation.getHosting().getName();
+        Stay selectedStay = reserveService.selectedRoom(reservation);
+        String hostingName = reservation.getHosting().getName();
 
-        List<Room> availableRooms = new ArrayList<>();
-        for (Room room : rooms) {
-          String roomHotelName = room.getHostingName();
-          if (hotelName.equals(roomHotelName)) {
-            availableRooms.add(room);
+        List<Stay> availableStays = new ArrayList<>();
+
+        if (stays != null) {
+          for (Stay stay : stays) {
+            String stayHostingName = stay.getHostingName();
+            if (hostingName.equals(stayHostingName)) {
+              availableStays.add(stay);
+            }
           }
+        } else {
+          System.out.println("Error: No hay estancias disponibles para modificar.");
+          return;
         }
 
-        Room newRoom = roomService.getRoomsForHousing(availableRooms, hotelName);
+        Stay newRoom = stayService.getStaysForHousing(availableStays, hostingName);
 
         int newQuantity = InputValidator.readInt("Ingresa la nueva cantidad de habitaciones para esta reserva: " );
 
         newRoom.setQuantity(newQuantity);
 
-        Reserve updatedReservation = reserveService.updateRoomInReservation(reservation, selectedRoom, newRoom);
+        Reserve updatedReservation = reserveService.updateRoomInReservation(reservation, selectedStay, newRoom);
 
         reserveService.getReservation(updatedReservation);
 

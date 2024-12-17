@@ -6,17 +6,17 @@ import java.time.LocalTime;
 import java.util.List;
 
 public class Reserve {
-  Client client;
-  Hosting hosting;
-  int numberOfRooms;
-  int numberOfAdults;
-  int numberOfChildren;
-  LocalDate startDate;
-  LocalDate endDate;
-  LocalTime arrivalTime;
-  List<Room> selectedRooms;
+  private Client client;
+  private Hosting hosting;
+  private int numberOfRooms;
+  private int numberOfAdults;
+  private int numberOfChildren;
+  private LocalDate startDate;
+  private LocalDate endDate;
+  private LocalTime arrivalTime;
+  private List<Stay> selectedStays;
 
-  public Reserve(Client client, Hosting hosting, int numberOfRooms, int numberOfAdults, int numberOfChildren, LocalDate startDate, LocalDate endDate, LocalTime arrivalTime, List<Room> selectedRooms) {
+  public Reserve(Client client, Hosting hosting, int numberOfRooms, int numberOfAdults, int numberOfChildren, LocalDate startDate, LocalDate endDate, LocalTime arrivalTime, List<Stay> selectedStays) {
     this.client = client;
     this.hosting = hosting;
     this.numberOfRooms = numberOfRooms;
@@ -25,7 +25,7 @@ public class Reserve {
     this.startDate = startDate;
     this.endDate = endDate;
     this.arrivalTime = arrivalTime;
-    this.selectedRooms = selectedRooms;
+    this.selectedStays = selectedStays;
   }
 
   public Reserve() {
@@ -95,12 +95,12 @@ public class Reserve {
     this.arrivalTime = arrivalTime;
   }
 
-  public List<Room> getSelectedRooms() {
-    return selectedRooms;
+  public List<Stay> getSelectedStays() {
+    return selectedStays;
   }
 
-  public void setSelectedRooms(List<Room> selectedRooms) {
-    this.selectedRooms = selectedRooms;
+  public void setSelectedStays(List<Stay> selectedStays) {
+    this.selectedStays = selectedStays;
   }
 
   public String printReservation() {

@@ -1,25 +1,39 @@
 package com.example.hotel.models;
 
 public class Stay {
-  protected String typeOfRoom;
-  protected String description;
-  protected int capacityAvailability;
-  protected int quantity;
+  private String hostingName;
+  private String typeOfRoom;
+  private String description;
+  private double pricePerNight;
+  private int capacityAvailability;
+  private int quantity;
 
-  public Stay(String typeOfRoom, String description, int capacityAvailability, int quantity) {
+  public Stay(String hostingName, String typeOfRoom, String description, double pricePerNight, int capacityAvailability, int quantity) {
+    this.hostingName = hostingName;
     this.typeOfRoom = typeOfRoom;
     this.description = description;
+    this.pricePerNight = pricePerNight;
     this.capacityAvailability = capacityAvailability;
     this.quantity = quantity;
   }
 
-  public Stay(String typeOfRoom, String description, int capacityAvailability) {
+  public Stay(String hostingName, String typeOfRoom, String description, double pricePerNight, int capacityAvailability) {
+    this.hostingName = hostingName;
     this.typeOfRoom = typeOfRoom;
     this.description = description;
+    this.pricePerNight = pricePerNight;
     this.capacityAvailability = capacityAvailability;
   }
 
   public Stay() {
+  }
+
+  public String getHostingName() {
+    return hostingName;
+  }
+
+  public void setHostingName(String hostingName) {
+    this.hostingName = hostingName;
   }
 
   public String getTypeOfRoom() {
@@ -36,6 +50,14 @@ public class Stay {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public double getPricePerNight() {
+    return pricePerNight;
+  }
+
+  public void setPricePerNight(double pricePerNight) {
+    this.pricePerNight = pricePerNight;
   }
 
   public int getCapacityAvailability() {
@@ -55,8 +77,9 @@ public class Stay {
   }
 
   public String printStay() {
-    return "  Tipo de habitación: " + typeOfRoom + "\n" +
+    return "  Tipo de habitación o actividad: " + typeOfRoom + "\n" +
            "  Descripción: " + description + "\n" +
+           "  Precio por noche: $" + pricePerNight  + "\n" +
            "  Disponibilidad: " + capacityAvailability + "\n" +
            "  Cantidad: " + quantity + "\n";
   }

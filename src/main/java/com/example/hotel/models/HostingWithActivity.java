@@ -3,26 +3,11 @@ package com.example.hotel.models;
 import java.util.List;
 
 public class HostingWithActivity extends Hosting {
-  List<Activity> activities;
-
-  public HostingWithActivity(String city, String typeOfHousing, String name, double rating, double pricePerNight, List<Activity> activities) {
-    super(city, typeOfHousing, name, rating, pricePerNight);
-    this.activities = activities;
-  }
-
-  public HostingWithActivity(List<Activity> activities) {
-    this.activities = activities;
+  public HostingWithActivity(String city, String typeOfHousing, String name, double rating, double pricePerNight, double pricePerStay, List<Stay> stays) {
+    super(city, typeOfHousing, name, rating, pricePerNight, pricePerStay, stays);
   }
 
   public HostingWithActivity() {
-  }
-
-  public List<Activity> getActivities() {
-    return activities;
-  }
-
-  public void setActivities(List<Activity> activities) {
-    this.activities = activities;
   }
 
   @Override
@@ -41,6 +26,7 @@ public class HostingWithActivity extends Hosting {
 
   @Override
   public String printHostingWithStay() {
+
     String result = "\n********** ALOJAMIENTO **********\n";
 
     result += "Ciudad: " + city + "\n";
@@ -51,7 +37,7 @@ public class HostingWithActivity extends Hosting {
 
     result += "\n********** ACTIVIDADES **********\n";
     int index = 1;
-    for (Activity activity : activities) {
+    for (Stay activity : stays) {
       result += activity.printStay();
       result += "----\n";
       index++;

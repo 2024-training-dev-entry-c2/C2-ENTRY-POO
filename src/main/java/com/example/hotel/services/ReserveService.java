@@ -4,20 +4,21 @@ import com.example.hotel.inputHandler.InputValidator;
 import com.example.hotel.models.Client;
 import com.example.hotel.models.Hosting;
 import com.example.hotel.models.Reserve;
-import com.example.hotel.models.Room;
+import com.example.hotel.models.Stay;
+import com.example.hotel.services.interfaces.IReserveService;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReserveService {
+public class ReserveService implements IReserveService {
   private static List<Reserve> reservations = new ArrayList<>();
 
-  public Reserve createReservation(Hosting hosting, List<Room> rooms, int numberOfRooms, int numberOfAdults, int numberOfChildren, String name, String lastName, String email, String nationality, String phone, LocalTime arrivalTime, LocalDate startDate, LocalDate endDate) {
+  public Reserve createReservation(Hosting hosting, List<Stay> stays, int numberOfRooms, int numberOfAdults, int numberOfChildren, String name, String lastName, String email, String nationality, String phone, LocalTime arrivalTime, LocalDate startDate, LocalDate endDate) {
     Client client = new Client(name, lastName, email, nationality, phone);
 
-    Reserve reservation = new Reserve(client, hosting,  numberOfRooms, numberOfAdults, numberOfChildren, startDate, endDate, arrivalTime, rooms);
+    Reserve reservation = new Reserve(client, hosting,  numberOfRooms, numberOfAdults, numberOfChildren, startDate, endDate, arrivalTime, stays);
 
     System.out.println("\n============================================================");
     System.out.println("          ¡RESERVA REALIZADA CON ÉXITO!");
@@ -60,14 +61,14 @@ public class ReserveService {
     System.out.println("============================================================");
 
     System.out.println("\n============================================================");
-    System.out.println("                  HABITACIONES RESERVADAS                   ");
+    System.out.println("                    ESTADIAS RESERVADAS                   ");
     System.out.println("============================================================");
 
-    for (Room room : reservation.getSelectedRooms()) {
-      System.out.println("Tipo de habitación: " + room.getTypeOfRoom());
-      System.out.println("Descripción: " + room.getDescription());
-      System.out.println("Precio por noche: $" + room.getPricePerNight());
-      System.out.println("Cantidad: " + room.getQuantity());
+    for (Stay stay : reservation.getSelectedStays()) {
+      System.out.println("Tipo de habitación o actividad: " + stay.getTypeOfRoom());
+      System.out.println("Descripción: " + stay.getDescription());
+      System.out.println("Precio por noche: $" + stay.getPricePerNight());
+      System.out.println("Cantidad: " + stay.getQuantity());
       System.out.println("----------------------------");
     }
   }
@@ -108,7 +109,7 @@ public class ReserveService {
     int selectedReservation;
     while (true) {
       try {
-        selectedReservation = InputValidator.readInt("Escribe el número de la reserva que deseas seleccionar (1-\" + filteredReservations.size() + \"): ");
+        selectedReservation = InputValidator.readInt("Escribe el número de la reserva que deseas seleccionar (1-" + filteredReservations.size() + "):  ");
 
         if (selectedReservation > 0 && selectedReservation <= filteredReservations.size()) {
           return filteredReservations.get(selectedReservation - 1);
@@ -176,7 +177,7 @@ public class ReserveService {
     }
   }
 
-  public Room selectedRoom(Reserve reservation) {
+  public Stay selectedRoom(Reserve reservation) {
     System.out.println("\n============================================================");
     System.out.println("                Información del hotel:");
     System.out.println("============================================================");
@@ -191,26 +192,26 @@ public class ReserveService {
     System.out.println("               Habitaciones reservadas:");
     System.out.println("============================================================");
 
-    List<Room> rooms = new ArrayList<>();
+    List<Stay> stays = new ArrayList<>();
 
-    for (Room room : reservation.getSelectedRooms()) {
-      rooms.add(room);
+    for (Stay stay : reservation.getSelectedStays()) {
+      stays.add(stay);
 
-      System.out.println("Tipo de habitación: " + room.getTypeOfRoom());
-      System.out.println("Descripción: " + room.getDescription());
-      System.out.println("Precio por noche: $" + room.getPricePerNight());
-      System.out.println("Cantidad: " + room.getQuantity());
+      System.out.println("Tipo de habitación: " + stay.getTypeOfRoom());
+      System.out.println("Descripción: " + stay.getDescription());
+      System.out.println("Precio por noche: $" + stay.getPricePerNight());
+      System.out.println("Cantidad: " + stay.getQuantity());
       System.out.println("----------------------------");
     }
 
-    int selectedRoom;
+    int selectedStay;
 
     while (true) {
       try {
-        selectedRoom = InputValidator.readInt("Escribe el número de la habitación que deseas seleccionar (1-\" + rooms.size() + \"): ");
-
-        if (selectedRoom > 0 && selectedRoom <= rooms.size()) {
-          return rooms.get(selectedRoom - 1);
+        System.out.println("Escribe el número de la estadia que deseas seleccionar (1-" + stays.size() + "): ");
+        selectedStay = InputValidator.readInt("" );
+        if (selectedStay > 0 && selectedStay <= stays.size()) {
+          return stays.get(selectedStay - 1);
         } else {
           System.out.println("El número ingresado está fuera del rango. Inténtalo de nuevo.");
         }
@@ -221,13 +222,13 @@ public class ReserveService {
     }
   }
 
-  public Reserve updateRoomInReservation(Reserve reservation, Room oldRoom, Room newRoom) {
-    for (Room room : reservation.getSelectedRooms()) {
-      if (room.getTypeOfRoom().equals(oldRoom.getTypeOfRoom())) {
-        room.setTypeOfRoom(newRoom.getTypeOfRoom());
-        room.setDescription(newRoom.getDescription());
-        room.setPricePerNight(newRoom.getPricePerNight());
-        room.setQuantity(newRoom.getQuantity());
+  public Reserve updateRoomInReservation(Reserve reservation, Stay oldStay, Stay newStay) {
+    for (Stay stay : reservation.getSelectedStays()) {
+      if (stay.getTypeOfRoom().equals(oldStay.getTypeOfRoom())) {
+        stay.setTypeOfRoom(newStay.getTypeOfRoom());
+        stay.setDescription(newStay.getDescription());
+        stay.setPricePerNight(newStay.getPricePerNight());
+        stay.setQuantity(newStay.getQuantity());
         break;
       }
     }
