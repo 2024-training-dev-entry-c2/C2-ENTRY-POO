@@ -20,7 +20,7 @@ public abstract class Alojamiento {
 
     public abstract double calcularDescuentoOAumento(int diaInicio, int diaFinalizacion);
 
-    public abstract void mostrarInformacionAlojamiento(int numHabitacione, int diaInicio, int diaFinalizacion);
+    public abstract void mostrarInformacionAlojamiento(int numHabitaciones, int diaInicio, int diaFinalizacion);
 
     public abstract void mostrarInformacionHabitaciones();
 

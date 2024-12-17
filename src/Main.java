@@ -342,27 +342,7 @@ public class Main {
         // Si no se encuentra el hotel
         System.out.println("El hotel '" + nombreHotel + "' no existe en la base de datos.");
     }
-
-    private static int obtenerIndiceTipoHabitacion(String tipoHabitacion) {
-        switch (tipoHabitacion) {
-            case "sencilla":
-                return 0;
-            case "doble":
-                return 1;
-            case "gold":
-                return 2;
-            case "premium":
-                return 3;
-            case "suite presidencial":
-            case "penthouse":
-            case "suite":
-            case "vip":
-                return 4;
-            default:
-                return -1; // Tipo no reconocido
-        }
-    }
-
+    
 
     public static void formularioReserva() {
         Scanner scanner = new Scanner(System.in);
@@ -523,9 +503,6 @@ public class Main {
         int cantNinos = scanner.nextInt();
         scanner.nextLine();
 
-
-
-
         System.out.print("Ingrese el numero de habitaciones que busca: ");
         int numHabitaciones = scanner.nextInt();
         scanner.nextLine();
@@ -548,135 +525,41 @@ public class Main {
             for (int i = 0; i < hoteles.length; i++) {
                 int[] cantHabitaciones = hoteles[i].getCantHabitaciones();
                 if(ciudad.equals(hoteles[i].getCiudad()) && ((cantHabitaciones[0]>=numHabitaciones) || (cantHabitaciones[1]>=numHabitaciones) || (cantHabitaciones[2]>=numHabitaciones) || (cantHabitaciones[3]>=numHabitaciones) || (cantHabitaciones[4]>=numHabitaciones))){
-                    hoteles[i].mostrarInformacionAlojamiento(, , );
+                    hoteles[i].mostrarInformacionAlojamiento(numHabitaciones,diaInicio,diaFinalizacion);
                 }
             }
         }else if(alojamiento.equals("apartamento")){
-            for (int i = 0; i < apartamentos.length; i++) {}
+            for (int i = 0; i < apartamentos.length; i++) {
+                int[] cantHabitaciones = apartamentos[i].getCantHabitaciones();
+                if(ciudad.equals(apartamentos[i].getCiudad()) && ((cantHabitaciones[0]>=numHabitaciones) || (cantHabitaciones[1]>=numHabitaciones) || (cantHabitaciones[2]>=numHabitaciones) || (cantHabitaciones[3]>=numHabitaciones) || (cantHabitaciones[4]>=numHabitaciones))){
+                    apartamentos[i].mostrarInformacionAlojamiento(numHabitaciones,diaInicio,diaFinalizacion);
+                }
+            }
         }else if(alojamiento.equals("finca")){
-            for (int i = 0; i < fincas.length; i++) {}
+            for (int i = 0; i < fincas.length; i++) {
+                int[] cantHabitaciones = fincas[i].getCantHabitaciones();
+                if(ciudad.equals(fincas[i].getCiudad()) && ((cantHabitaciones[0]>=numHabitaciones) || (cantHabitaciones[1]>=numHabitaciones) || (cantHabitaciones[2]>=numHabitaciones) || (cantHabitaciones[3]>=numHabitaciones) || (cantHabitaciones[4]>=numHabitaciones))){
+                    fincas[i].mostrarInformacionAlojamiento(numHabitaciones,diaInicio,diaFinalizacion);
+                }
+            }
         }else if(alojamiento.equals("dia de sol")){
-            for (int i = 0; i < diasDeSol.length; i++) {}
-        }
-
-
-        for (int i = 0; i < cantHabitacionesAlojamiento.length; i++) {
-            if (cantHabitacionesAlojamiento[i][tipoHabitacion] >= numHabitaciones && ciudad.equals(ciudadAlojamiento[i]) && alojamiento.equals(tipoAlojamiento[i])) {
-                if (validarFechasDisponibles(fechaInicio, fechaFin, i)) {
-                    double precioBaseHabitacion = obtenerPrecioBase(alojamiento);
-                    double[] preciosTotales = CalcularTotalYDescuentosOAumentos(precioBaseHabitacion, diaInicio, diaFinalizacion, numHabitaciones);
-
-                    System.out.println("Alojamiento: " + nombreAlojamiento[i]);
-                    System.out.println("Calificación: " + calificacionAlojamiento[i]);
-                    System.out.println("Precio por noche: " + preciosTotales[0]);
-                    System.out.println("Precio total (días): " + preciosTotales[1]);
-                    System.out.println("-------------------");
+            for (int i = 0; i < diasDeSol.length; i++) {
+                int[] cantHabitaciones = diasDeSol[i].getCantHabitaciones();
+                if(ciudad.equals(diasDeSol[i].getCiudad()) && ((cantHabitaciones[0]>=numHabitaciones) || (cantHabitaciones[1]>=numHabitaciones) || (cantHabitaciones[2]>=numHabitaciones) || (cantHabitaciones[3]>=numHabitaciones) || (cantHabitaciones[4]>=numHabitaciones))){
+                    diasDeSol[i].mostrarInformacionAlojamiento(numHabitaciones,diaInicio,diaFinalizacion);
                 }
             }
         }
     }
 
 
-    private static void mostrarAlojamientosConDiaDeSol(String ciudad, String alojamiento, LocalDate fechaInicio, LocalDate fechaFin, int diaInicio, int diaFinalizacion, int numHabitaciones) {
-        System.out.println("Alojamientos con servicio de día de sol en " + ciudad + ":");
-        for (int i = 0; i < ciudadAlojamiento.length; i++) {
-            if (ciudad.equals(ciudadAlojamiento[i])) {
-                for (int j = 0; j < habitaciones.length; j++) {
-                    if (habitaciones[j][0].equals("dia de sol") && alojamiento.equals(tipoAlojamiento[i]) && validarFechasDisponibles(fechaInicio, fechaFin, i)) {
-                        double precioBaseHabitacion = obtenerPrecioBase(alojamiento);
-                        double[] preciosTotales = CalcularTotalYDescuentosOAumentos(precioBaseHabitacion, diaInicio, diaFinalizacion, numHabitaciones);
-                        System.out.println("Nombre: " + nombreAlojamiento[i]);
-                        System.out.println("Tipo: " + tipoAlojamiento[i]);
-                        System.out.println("Actividades: " + habitaciones[j][2]);
-                        System.out.println("Incluye: " + habitaciones[j][3]);
-                        System.out.println("Precio: " + preciosTotales[0]);
-                        System.out.println("Precio Aumento o descuento: " + preciosTotales[1]);
-                        System.out.println("-------------------");
-                        break;
-                    }
-                }
-            }
-        }
-    }
 
-    private static double obtenerPrecioBase(String tipoAlojamiento) {
-        switch (tipoAlojamiento) {
-            case "hotel":
-                return precioAlojamientos[0];
-            case "apartamento":
-                return precioAlojamientos[1];
-            case "finca":
-                return precioAlojamientos[2];
-            case "dia de sol":
-                return precioAlojamientos[3];
-            default:
-                return 0;
-        }
-    }
 
-    public static double[] CalcularTotalYDescuentosOAumentos(double precioBaseHabitacion, int diaInicio, int diaFinalizacion, int numHabitaciones) {
-        double precioTotal = 0;
-        double descuentoOAumento = 0;
-
-        precioTotal = precioBaseHabitacion * numHabitaciones;
-
-        if (diaInicio >= 26 && diaFinalizacion <= 31) {
-            descuentoOAumento = precioTotal * 0.15;
-            descuentoOAumento = precioTotal + descuentoOAumento;
-        } else if (diaInicio >= 10 && diaFinalizacion <= 15) {
-            descuentoOAumento = precioTotal * 0.1;
-            descuentoOAumento = precioTotal + descuentoOAumento;
-        } else if (diaInicio >= 5 && diaFinalizacion <= 10) {
-            descuentoOAumento = precioTotal * 0.08;
-            descuentoOAumento = precioTotal - descuentoOAumento;
-        }
-
-        double[] total = {precioTotal, descuentoOAumento};
-
-        return total;
-
-    }
-
-    private static boolean validarFechasDisponibles(LocalDate fechaInicio, LocalDate fechaFin, int indiceAlojamiento) {
+   /* private static boolean validarFechasDisponibles(LocalDate fechaInicio, LocalDate fechaFin, int indiceAlojamiento) {
         LocalDate disponibleDesde = fechasDisponibilidad[indiceAlojamiento][0];
         LocalDate disponibleHasta = fechasDisponibilidad[indiceAlojamiento][1];
 
         return !fechaInicio.isBefore(disponibleDesde) && !fechaFin.isAfter(disponibleHasta);
-    }
-
-    public static int convertirStringAInt(String str) {
-        int resultado = 0;
-        boolean esNegativo = false;
-        int inicio = 0;
-
-        // Comprobar si el número es negativo
-        if (str.charAt(0) == '-') {
-            esNegativo = true;
-            inicio = 1; // Saltar el primer carácter
-        }
-
-        // Recorrer cada carácter del String
-        for (int i = inicio; i < str.length(); i++) {
-            char c = str.charAt(i);
-
-            // Convertir el carácter a su valor numérico
-            int digito = c - '0'; // '0' en ASCII es 48, por lo tanto '5' - '0' = 5
-
-            // Validar que el carácter sea un dígito
-            if (digito < 0 || digito > 9) {
-                throw new IllegalArgumentException("El String contiene caracteres no numéricos.");
-            }
-
-            // Agregar el dígito al resultado final
-            resultado = resultado * 10 + digito;
-        }
-
-        // Si era un número negativo, cambiar el signo
-        if (esNegativo) {
-            resultado = -resultado;
-        }
-
-        return resultado;
     }
 
 
@@ -706,7 +589,7 @@ public class Main {
             fechasDisponibilidad[indice][0] = fechaInicio;
             fechasDisponibilidad[indice][1] = fechaFin;
         }
-    }
+    }*/
 
 
 }
