@@ -3,13 +3,13 @@ package src.habitaciones;
 public class Habitacion implements IHabitacion{
 
     private String nombre;
-    private String descripcion;
+    private String caracteristicas;
     private String extras;
     private double precio;
 
-    public Habitacion(String nombre, String descripcion, String extras, double precio) {
+    public Habitacion(String nombre, String caracteristicas, String extras, double precio) {
         this.nombre = nombre;
-        this.descripcion = descripcion;
+        this.caracteristicas = caracteristicas;
         this.extras = extras;
         this.precio = precio;
     }
@@ -17,6 +17,10 @@ public class Habitacion implements IHabitacion{
     @Override
     public void mostrarInfoHbatiacion() {
         System.out.println("=== Habitación " + this.nombre + " ===");
+        System.out.println("Características: " + this.caracteristicas);
+        System.out.println("Extras: " + this.extras);
+        System.out.println("Precio: $" + this.precio);
+        System.out.println("--------------------------------");
     }
 
     public String getNombre() {
@@ -27,14 +31,13 @@ public class Habitacion implements IHabitacion{
         this.nombre = nombre;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public String getCaracteristicas() {
+        return caracteristicas;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setCaracteristicas(String caracteristicas) {
+        this.caracteristicas = caracteristicas;
     }
-
 
     public double getPrecio() {
         return precio;
