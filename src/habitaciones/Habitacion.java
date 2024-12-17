@@ -15,7 +15,7 @@ public class Habitacion implements IHabitacion{
     }
 
     @Override
-    public void mostrarInfoHbatiacion() {
+    public void mostrarInfoHabatiacion() {
         System.out.println("=== Habitación " + this.nombre + " ===");
         System.out.println("Características: " + this.caracteristicas);
         System.out.println("Extras: " + this.extras);

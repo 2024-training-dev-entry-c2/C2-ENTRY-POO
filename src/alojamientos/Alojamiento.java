@@ -11,18 +11,40 @@ public abstract class Alojamiento {
     protected String tipo;
     protected Habitacion[] habitaciones;
     protected Reserva[] reservas;
+    protected double precio;
+    protected double precioTotal;
+
 
     //metodos abstractos
-    public abstract double calcularPrecioBase();
+    public abstract double calcularPrecioBase(int numHabitaciones);
 
-    public abstract double calcularDescuentoOAumento();
+    public abstract double calcularDescuentoOAumento(int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion);
 
     public abstract void mostrarInformacionAlojamiento();
 
     public abstract void mostrarInformacionHabitaciones();
 
     //metodos concretos
-    //
+    public double obtenerPrecioHabitacionMasBarata() {
+        // Verificar si el arreglo está vacío o nulo
+        if (habitaciones == null || habitaciones.length == 0) {
+            System.out.println("No hay habitaciones disponibles.");
+            return -1; // Retornar -1 como valor indicativo de que no hay habitaciones
+        }
+
+        double precioMinimo = Double.MAX_VALUE; // Iniciar con el valor máximo posible
+
+        // Recorrer el arreglo de habitaciones
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion != null && habitacion.getPrecio() < precioMinimo) {
+                precioMinimo = habitacion.getPrecio();
+            }
+        }
+
+        return precioMinimo;
+    }
+
+
     // get y set
     public String getNombre() {
         return nombre;
