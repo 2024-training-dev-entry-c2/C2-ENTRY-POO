@@ -14,7 +14,15 @@ public class Habitacion {
     }
 
     public boolean tieneDisponibilidad(int cantidad) {
-        return disponibles >= cantidad;
+        return this.disponibles >= cantidad;
+    }
+
+    public void reducirDisponibilidad(int cantidad) {
+        this.disponibles -= cantidad;
+    }
+
+    public String getTipo() {
+        return tipo;
     }
 
     public void mostrarDetalles() {
@@ -23,5 +31,9 @@ public class Habitacion {
 
     public double getPrecio() {
         return precio;
+    }
+
+    public int getDisponibles() { // Nuevo método
+        return disponibles;
     }
 }

@@ -21,8 +21,10 @@ public class Hotel extends Alojamiento {
 
     @Override
     public void mostrarDetalles() {
-        System.out.printf("Hotel: %s, Ciudad: %s, Calificación: %.1f, Precio por noche: %.2f\n", getNombre(), getCiudad(), getCalificacion(), getPrecioPorNoche());
-        System.out.printf("Día de Sol: %b, Actividades: %s, Almuerzo incluido: %b, Refrigerio incluido: %b\n", diaDeSol, actividades, incluyeAlmuerzo, incluyeRefrigerio);
+        System.out.printf("Hotel: %s, Ciudad: %s, Calificación: %.1f, Precio por noche: %.2f\n",
+                getNombre(), getCiudad(), getCalificacion(), getPrecioPorNoche());
+        System.out.printf("Día de Sol: %b, Actividades: %s, Almuerzo incluido: %b, Refrigerio incluido: %b\n",
+                diaDeSol, actividades, incluyeAlmuerzo, incluyeRefrigerio);
         System.out.println("Habitaciones Disponibles:");
         for (Habitacion habitacion : habitaciones) {
             habitacion.mostrarDetalles();
@@ -30,7 +32,9 @@ public class Hotel extends Alojamiento {
     }
 
     public boolean cumpleCriterios(String ciudad, boolean filtrarDiaDeSol, int cantidadHabitaciones) {
-        return getCiudad().equalsIgnoreCase(ciudad) && (!filtrarDiaDeSol || diaDeSol) && hayHabitacionesDisponibles(cantidadHabitaciones);
+        return getCiudad().equalsIgnoreCase(ciudad) &&
+                (!filtrarDiaDeSol || diaDeSol) &&
+                hayHabitacionesDisponibles(cantidadHabitaciones);
     }
 
     private boolean hayHabitacionesDisponibles(int cantidad) {
@@ -54,18 +58,19 @@ public class Hotel extends Alojamiento {
         System.out.println("\nHabitaciones disponibles:");
         boolean disponible = false;
 
-        // Recorre todas las habitaciones para verificar disponibilidad
         for (Habitacion habitacion : habitaciones) {
             if (habitacion.tieneDisponibilidad(cantidadHabitaciones)) {
                 disponible = true;
-                habitacion.mostrarDetalles(); // Muestra detalles de la habitación disponible
+                habitacion.mostrarDetalles();
             }
         }
 
-        // Si no hay habitaciones disponibles
         if (!disponible) {
             System.out.println("No hay habitaciones disponibles que cumplan con la cantidad solicitada.");
         }
     }
 
+    public List<Habitacion> getHabitaciones() { // Nuevo método
+        return habitaciones;
+    }
 }

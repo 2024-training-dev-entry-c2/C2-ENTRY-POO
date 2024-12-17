@@ -34,4 +34,14 @@ public class VerReserva {
             }
         }
     }
+
+    public Reserva buscarReservaPorEmail(String email) {
+        for (Reserva reserva : reservas) {
+            if (reserva != null && reserva.getEmailCliente().equalsIgnoreCase(email)) {
+                return reserva;
+            }
+        }
+        return null;
+    }
+
 }
