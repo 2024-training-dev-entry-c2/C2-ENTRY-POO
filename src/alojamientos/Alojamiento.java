@@ -1,21 +1,25 @@
 package src.alojamientos;
 
+import src.habitaciones.Habitacion;
+import src.reservas.Reserva;
+
 public abstract class Alojamiento {
 
     protected String nombre;
     protected String ciudad;
     protected double calificacion;
     protected String tipo;
-
+    protected Habitacion[] habitaciones;
+    protected Reserva[] reservas;
 
     //metodos abstractos
     public abstract double calcularPrecioBase();
 
     public abstract double calcularDescuentoOAumento();
 
-    public abstract String mostrarInformacionAlojamiento();
+    public abstract void mostrarInformacionAlojamiento();
 
-    public abstract String mostrarInformacionHabitaciones();
+    public abstract void mostrarInformacionHabitaciones();
 
     //metodos concretos
     //
@@ -51,5 +55,23 @@ public abstract class Alojamiento {
     public void setTipo(String tipo) {
         this.tipo = tipo;
     }
+
+    public Habitacion[] getHabitaciones() {
+        return habitaciones;
+    }
+
+    public void setHabitaciones(Habitacion[] habitaciones) {
+        this.habitaciones = habitaciones;
+    }
+
+    public Reserva[] getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(Reserva[] reservas) {
+        this.reservas = reservas;
+    }
+
+
 
 }

@@ -1,5 +1,8 @@
 package src.alojamientos;
 
+import src.habitaciones.Habitacion;
+import src.reservas.Reserva;
+
 public class Apartamento extends Alojamiento {
 
 
@@ -8,6 +11,8 @@ public class Apartamento extends Alojamiento {
         this.ciudad =ciudad;
         this.calificacion=calificacion;
         this.tipo="apartamento";
+        this.habitaciones = new Habitacion[5];
+        this.reservas = new Reserva[99];
     }
 
     @Override
@@ -21,12 +26,17 @@ public class Apartamento extends Alojamiento {
     }
 
     @Override
-    public String mostrarInformacionAlojamiento() {
-        return "";
+    public void mostrarInformacionAlojamiento() {
+        System.out.println("Alojamiento: " + this.nombre);
+        System.out.println("Calificación: " + this.calificacion);
+        System.out.println("Tipo: " + this.tipo);
+        //System.out.println("Precio por noche: " + preciosTotales[0]);
+        //System.out.println("Precio total (días): " + preciosTotales[1]);
+        System.out.println("-------------------");
     }
 
     @Override
-    public String mostrarInformacionHabitaciones() {
-        return "";
+    public void mostrarInformacionHabitaciones() {
+
     }
 }

@@ -23,7 +23,14 @@ public class Reserva {
     }
 
     public void mostrarInfoReserva(){
-        
+        System.out.println("Reserva encontrada:");
+        System.out.println("Cliente: " + this.cliente.getNombre() +" "+ this.cliente.getApellido());
+        System.out.println("Habitacion: " + habitacion.getNombre());
+        System.out.println("Cantidad de habitaciones: " + this.cantHabitaciones);
+        System.out.println("Hora de llegada: " + this.cliente.getHoraLlegada());
+        System.out.println("Fecha de inicio: " + this.fechaInicio);
+        System.out.println("Fecha de fin: " + this.fechaFin);
+        System.out.println("-------------------");
     }
 
     public Cliente getCliente() {
