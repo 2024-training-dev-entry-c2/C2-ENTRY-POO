@@ -7,6 +7,7 @@ public abstract class Alojamiento {
     protected double calificacion;
     protected String tipo;
 
+
     //metodos abstractos
     public abstract double calcularPrecioBase();
 
