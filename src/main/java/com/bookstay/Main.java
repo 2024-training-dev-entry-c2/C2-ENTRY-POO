@@ -1,16 +1,12 @@
 package com.bookstay;
 
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.time.LocalTime;
+import java.util.*;
 
 public class Main {
-    // Global variables
-    static List<List<String>> lodgings = new ArrayList<>();
-    static List<List<String>> reservations = new ArrayList<>();
+    //Global variables
+    static List<Lodging> lodgings = new ArrayList<>();
 
     public static void main(String[] args) {
         initializeData();
@@ -19,107 +15,108 @@ public class Main {
 
     /* ############################### INITIALIZE DATA ############################### */
     public static void initializeData() {
-        // Lodging structure: [Name, City, Category, Rating, Price, Description, MaxPeople, Rooms, Activities, Meals, ReservationData]
-        // Room structure: " Name | Description | Price | MaxAdults | MaxChildren | Quantily "
+        // Hotels
+        Hotel hotel1 = new Hotel("Hotel Mar Azul", "Cartagena", 4.9, "Hotel frente al mar con excelentes comodidades");
+        hotel1.addRoom("Habitación Estándar", "La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.", 200000.0, 2, 8);
+        hotel1.addRoom("Suite Familiar", "Amplia suite con 2 habitaciones, sala de estar y balcón con vista al mar.", 500000.0, 4, 5);
+        hotel1.addRoom("Suite Premium", "Suite de lujo con jacuzzi, cama king size y minibar gratuito.", 750000.0, 2, 3);
+        hotel1.addRoom("Habitación Económica", "Habitación compacta con todas las comodidades básicas.", 150000.0, 2, 10);
+        hotel1.addRoom("Habitación Doble Deluxe", "Habitación espaciosa con 2 camas dobles y escritorio de trabajo.", 300000.0, 4, 6);
+        lodgings.add(hotel1);
 
-        // Hoteles
-        addLodging("Hotel Mar Azul", "Cartagena", "Hotel", "4.9", "",
-                "Hotel frente al mar con excelentes comodidades", "",
-                "Habitación Estándar|La habitación estándar cuenta con 1 cama queen, aire acondicionado, minibar, baño privado y TV de pantalla plana.|200000|2|1|10;" +
-                        "Habitación Deluxe|La habitación deluxe tiene cama king, balcón con vista al mar, cafetera, y servicio de habitaciones las 24 horas.|400000|2|2|5;" +
-                        "Suite|La suite incluye una sala de estar separada, jacuzzi, minibar surtido, y vistas panorámicas al océano.|800000|2|2|3;" +
-                        "Junior Suite|Habitación amplia con sofá cama, jacuzzi, minibar y vistas al mar.|600000|2|2|4;" +
-                        "Presidential Suite|Suite de lujo con varias habitaciones, jacuzzi privado, y vistas completas al océano.|1200000|4|2|2",
-                "", "", "");
+        Hotel hotel2 = new Hotel("Hotel Vista Sierra", "Medellín", 4.8, "Hotel moderno en la zona alta de Medellín con vistas a la ciudad");
+        hotel2.addRoom("Habitación Estándar", "Habitación cómoda con decoración contemporánea.", 180000.0, 2, 10);
+        hotel2.addRoom("Suite Ejecutiva", "Suite con escritorio, mini sala y acceso a gimnasio privado.", 400000.0, 2, 5);
+        hotel2.addRoom("Suite Presidencial", "La habitación más exclusiva del hotel con spa privado.", 900000.0, 2, 2);
+        hotel2.addRoom("Habitación Doble", "Habitación con 2 camas individuales y baño compartido.", 160000.0, 2, 7);
+        hotel2.addRoom("Habitación Junior Suite", "Habitación intermedia con balcón y vista panorámica.", 350000.0, 3, 4);
+        lodgings.add(hotel2);
 
-        addLodging("Hotel Los Andes", "Bogotá", "Hotel", "4.6", "",
-                "Hotel moderno con vistas a la ciudad", "",
-                "Habitación Estándar|Una opción económica y cómoda con una cama queen, baño privado y TV por cable.|200000|2|1|10;" +
-                        "Habitación Deluxe|Amplia habitación con cama king, vistas a la ciudad y minibar incluido.|400000|2|2|5;" +
-                        "Suite|La suite cuenta con una sala de estar privada, jacuzzi, y escritorio para trabajo.|800000|2|2|3;" +
-                        "Habitación Familiar|Habitación grande con cama queen, sofá cama, baño privado y área de estar.|500000|4|2|6;" +
-                        "Presidential Suite|Gran suite con varias habitaciones, jacuzzi privado y vistas panorámicas.|1200000|4|3|2",
-                "", "", "");
+        Hotel hotel3 = new Hotel("Hotel Central Park", "Bogotá", 4.6, "Hotel en el corazón financiero de Bogotá");
+        hotel3.addRoom("Habitación Individual", "Habitación ideal para viajeros de negocios.", 220000.0, 1, 15);
+        hotel3.addRoom("Habitación Doble", "Habitación elegante con 2 camas y baño privado.", 300000.0, 2, 10);
+        hotel3.addRoom("Suite Lujo", "Suite con servicios de oficina y sala de reuniones.", 600000.0, 4, 5);
+        hotel3.addRoom("Habitación Premium", "Confort y espacio con servicio a la habitación incluido.", 400000.0, 2, 8);
+        hotel3.addRoom("Habitación Económica", "Espacio compacto con desayuno incluido.", 180000.0, 2, 12);
+        lodgings.add(hotel3);
 
-        addLodging("Hotel Bahia Blanca", "Santa Marta", "Hotel", "4.7", "",
-                "Hotel cerca de la playa con piscina y spa", "",
-                "Habitación Estándar|Habitación con cama king, TV por cable, aire acondicionado y baño privado.|250000|2|1|12;" +
-                        "Habitación Deluxe|Habitación con vistas al mar, minibar y jacuzzi privado.|500000|2|2|6;" +
-                        "Suite Presidencial|Suite amplia con sala de estar, jacuzzi, y vistas al océano.|1000000|2|2|2;" +
-                        "Habitación Superior|Con cama queen, minibar y baño privado, ideal para estancias largas.|300000|2|1|8;" +
-                        "Habitación Conectada|Habitaciones comunicadas para familias grandes, con 2 camas queen y 2 baños privados.|550000|4|2|5",
-                "", "", "");
+        Hotel hotel4 = new Hotel("Hotel Paraíso Natural", "Santa Marta", 5.0, "Hotel boutique ecológico junto a la playa Tayrona");
+        hotel4.addRoom("Cabaña Estándar", "Cabaña con techo de palma y decoración natural.", 250000.0, 2, 6);
+        hotel4.addRoom("Cabaña Familiar", "Amplia cabaña para grupos familiares.", 500000.0, 6, 4);
+        hotel4.addRoom("Suite de Lujo", "Suite con vistas inigualables al océano.", 800000.0, 2, 3);
+        hotel4.addRoom("Habitación Deluxe", "Habitación con terraza privada y hamaca.", 350000.0, 2, 8);
+        hotel4.addRoom("Cabaña Eco", "Cabaña rústica con paneles solares.", 200000.0, 2, 5);
+        lodgings.add(hotel4);
 
-        addLodging("Hotel Mirador del Valle", "Medellín", "Hotel", "4.8", "",
-                "Hotel con una vista espectacular de la ciudad", "",
-                "Habitación Estándar|Habitación con cama queen, escritorio y baño privado.|220000|2|1|8;" +
-                        "Habitación Deluxe|Habitación con vistas a las montañas, minibar y cafetera.|400000|2|2|4;" +
-                        "Suite|Suite con salón independiente, jacuzzi y minibar.|850000|2|2|3;" +
-                        "Junior Suite|Habitación más espaciosa con sofá cama, jacuzzi, y minibar.|600000|2|2|4;" +
-                        "Suite Presidencial|Suite con varias habitaciones, jacuzzi privado y vistas panorámicas de la ciudad.|1500000|4|3|2",
-                "", "", "");
+        Hotel hotel5 = new Hotel("Hotel Real Colonial", "Villa de Leyva", 4.7, "Hotel de arquitectura colonial con encanto histórico");
+        hotel5.addRoom("Habitación Colonial", "Habitación con decoración antigua y balcón.", 280000.0, 2, 8);
+        hotel5.addRoom("Suite Colonial", "Suite con chimenea y sala de estar privada.", 550000.0, 4, 5);
+        hotel5.addRoom("Habitación Doble Colonial", "Amplia habitación con 2 camas dobles.", 350000.0, 4, 6);
+        hotel5.addRoom("Habitación Individual", "Ideal para una persona, cómoda y funcional.", 200000.0, 1, 10);
+        hotel5.addRoom("Habitación Familiar", "Habitación amplia para familias pequeñas.", 400000.0, 4, 7);
+        lodgings.add(hotel5);
 
-        addLodging("Hotel Costa Dorada", "Cartagena", "Hotel", "4.5", "",
-                "Hotel frente a la playa con restaurante y gimnasio", "",
-                "Habitación Estándar|Habitación con cama queen, aire acondicionado, TV por cable y baño privado.|200000|2|1|10;" +
-                        "Habitación Deluxe|Habitación con vistas al mar, minibar y escritorio.|400000|2|2|6;" +
-                        "Suite Familiar|Suite con 2 habitaciones, sala de estar y vista al océano.|600000|4|2|4;" +
-                        "Habitación Ejecutiva|Con cama king, escritorio de trabajo y minibar.|450000|2|2|5;" +
-                        "Suite Presidencial|Gran suite con sala de estar, jacuzzi y vistas completas al mar.|1200000|4|3|2",
-                "", "", "");
+        // Apartments
+        Apartment apartment1 = new Apartment("Apartamento Playa", "Cartagena", 4.7, "Apartamento moderno con vista al océano, 3 habitaciones, 2 baños.", 5, 500000.0);
+        Apartment apartment2 = new Apartment("Apartamento Loft Centro", "Bogotá", 4.5, "Loft espacioso ubicado en el centro de la ciudad, ideal para negocios.", 2, 300000.0);
+        Apartment apartment3 = new Apartment("Apartamento Familiar Medellín", "Medellín", 4.6, "Apartamento amplio para familias con zona de juegos.", 6, 400000.0);
+        Apartment apartment4 = new Apartment("Penthouse Vista Mar", "Santa Marta", 4.9, "Penthouse de lujo con jacuzzi privado y vista al mar.", 4, 800000.0);
+        Apartment apartment5 = new Apartment("Apartamento Colonial Centro", "Villa de Leyva", 4.8, "Apartamento de estilo colonial con patio interior.", 3, 350000.0);
 
-        // Apartaments
-        addLodging("Apartamento Playa", "Cartagena", "Apartamento", "4.7", "500000",
-                "Apartamento moderno con vista al océano, 4 habitaciones, 3 baños", "6", "", "", "", "");
+        lodgings.add(apartment1);
+        lodgings.add(apartment2);
+        lodgings.add(apartment3);
+        lodgings.add(apartment4);
+        lodgings.add(apartment5);
 
-        addLodging("Apartamento Mirador", "Bogotá", "Apartamento", "4.6", "350000",
-                "Apartamento con vistas panorámicas de la ciudad", "4", "", "", "", "");
-
-        addLodging("Apartamento Acapulco", "Cartagena", "Apartamento", "4.8", "600000",
-                "Apartamento con vista al mar y piscina privada, 3 habitaciones, 2 baños", "5", "", "", "", "");
-
-        addLodging("Apartamento Pinares", "Santa Marta", "Apartamento", "4.5", "400000",
-                "Apartamento de lujo con terraza privada", "8", "", "", "", "");
-
-        addLodging("Apartamento Estrella", "Medellín", "Apartamento", "4.7", "550000",
-                "Apartamento moderno con acceso a gimnasio y piscina", "4", "", "", "", "");
 
         // Farm Stays
-        addLodging("Finca El Bosque", "Armenia", "Finca", "4.8", "800000",
-                "Finca tranquila rodeada de bosque, 6 habitaciones, 4 baños", "10", "", "", "", "");
+        FarmStay farmStay1 = new FarmStay("Finca El Bosque", "Armenia", 4.8, "Finca tranquila rodeada de bosque", 10, 800000.0);
+        FarmStay farmStay2 = new FarmStay("Finca El Lago", "Guatapé", 4.9, "Finca con lago privado y zona de pesca.", 8, 900000.0);
+        FarmStay farmStay3 = new FarmStay("Finca Montaña Viva", "Manizales", 4.7, "Finca en la montaña con vistas espectaculares.", 12, 1000000.0);
+        FarmStay farmStay4 = new FarmStay("Finca Las Palmeras", "Cali", 4.6, "Finca con piscina y zona BBQ.", 15, 950000.0);
+        FarmStay farmStay5 = new FarmStay("Finca El Refugio", "Pereira", 4.8, "Finca rodeada de naturaleza y tranquilidad.", 10, 850000.0);
 
-        addLodging("Finca Los Pinos", "Pereira", "Finca", "4.9", "900000",
-                "Finca con vistas a la montaña y espacios amplios, 8 habitaciones, 6 baños", "12", "", "", "", "");
-
-        addLodging("Finca Valle Verde", "Manizales", "Finca", "4.6", "750000",
-                "Finca ideal para retiros y actividades al aire libre", "8", "", "", "", "");
-
-        addLodging("Finca El Paraíso", "Caldas", "Finca", "4.7", "850000",
-                "Finca en un valle tranquilo rodeado de naturaleza, 10 habitaciones, 8 baños", "14", "", "", "", "");
-
-        addLodging("Finca Los Robles", "Quindío", "Finca", "4.8", "950000",
-                "Finca con senderos ecológicos y vista panorámica", "10", "", "", "", "");
+        lodgings.add(farmStay1);
+        lodgings.add(farmStay2);
+        lodgings.add(farmStay3);
+        lodgings.add(farmStay4);
+        lodgings.add(farmStay5);
 
         // Day Resorts
-        addLodging("Día de Sol Caribe", "San Andrés", "Día de sol", "5.0", "200000",
-                "Disfruta del sol, playa y actividades acuáticas", "4", "", "Snorkeling, paseos en bote, kayak, yoga en la playa", "Almuerzo con platos típicos, cena a la carta", "");
+        DayResort dayResort1 = new DayResort("Día de Sol Caribe", "San Andrés", 5.0, "Disfruta del sol, playa y actividades acuáticas", 200000.0);
+        dayResort1.addActivity("Snorkeling");
+        dayResort1.addActivity("Paseos en bote");
+        dayResort1.addMeal("Almuerzo con platos típicos");
+        dayResort1.addMeal("Cena a la carta");
+        lodgings.add(dayResort1);
 
-        addLodging("Día de Sol Tulum", "Tulum", "Día de sol", "4.9", "220000",
-                "Un día de sol con actividades en la Riviera Maya", "2", "", "Tour en cenotes, paseos en bicicleta, actividades acuáticas", "Comida mexicana tradicional, bebidas incluidas", "");
 
-        addLodging("Día de Sol Santa Marta", "Santa Marta", "Día de sol", "5.0", "180000",
-                "Relájate en la playa con actividades acuáticas", "6", "", "Surf, paddleboard, snorkeling, caminatas", "Almuerzo buffet, cena en restaurante exclusivo", "");
+        DayResort dayResort2 = new DayResort("Aventura en la Sierra", "Sierra Nevada", 4.8, "Naturaleza y actividades extremas", 250000.0);
+        dayResort2.addActivity("Escalada");
+        dayResort2.addActivity("Senderismo");
+        dayResort2.addMeal("Almuerzo campestre");
+        lodgings.add(dayResort2);
 
-        addLodging("Día de Sol Cartagena", "Cartagena", "Día de sol", "4.8", "150000",
-                "Disfruta del sol en las playas más bellas", "5", "", "Bicicross, deportes acuáticos, yoga", "Comida local, bebidas tropicales", "");
+        DayResort dayResort3 = new DayResort("Día Relax Spa", "Bogotá", 4.7, "Spa urbano con tratamientos relajantes", 180000.0);
+        dayResort3.addActivity("Masaje relajante");
+        dayResort3.addActivity("Piscina climatizada");
+        dayResort3.addMeal("Té y snacks saludables");
+        lodgings.add(dayResort3);
 
-        addLodging("Día de Sol Isla Barú", "Cartagena", "Día de sol", "4.9", "210000",
-                "Un día de sol con todas las comodidades frente al mar", "8", "", "Kayak, excursión a la isla, pesca", "Comida caribeña, cócteles", "");
+        DayResort dayResort4 = new DayResort("Parque Aventura", "Medellín", 4.6, "Diversión familiar con actividades recreativas", 220000.0);
+        dayResort4.addActivity("Tirolesa");
+        dayResort4.addActivity("Paseos en cuatrimoto");
+        dayResort4.addMeal("Parrillada familiar");
+        lodgings.add(dayResort4);
+
+        DayResort dayResort5 = new DayResort("Resort Lago Azul", "Guatapé", 4.9, "Día de relajación junto al lago", 200000.0);
+        dayResort5.addActivity("Kayak");
+        dayResort5.addActivity("Paseos en lancha");
+        dayResort5.addMeal("Almuerzo buffet");
+        lodgings.add(dayResort5);
     }
 
-    public static void addLodging(String name, String city, String category, String rating, String price, String description, String maxPeople, String rooms, String activities, String meals, String reservationData) {
-        lodgings.add(Arrays.asList(name, city, category, rating, price, description, maxPeople, rooms, activities, meals, reservationData));
-    }
 
     /* ################################# PRINT MENU ################################# */
     public static void showMenu(){
@@ -157,6 +154,7 @@ public class Main {
                         System.out.println("Escribe el día inicial de la estadía (YYYY-MM-dd): ");
                     }
                     String startDay = input.nextLine();
+                    LocalDate startDate = LocalDate.parse( startDay );
                     String endDay;
                     if(category.equalsIgnoreCase("Día de Sol")){
                         endDay = startDay;
@@ -164,6 +162,8 @@ public class Main {
                         System.out.println("Escribe el día final de la estadía (YYYY-MM-dd): ");
                         endDay = input.nextLine();
                     }
+                    LocalDate endDate = LocalDate.parse( endDay );
+
                     System.out.println("Cantidad de adultos: ");
                     int adults = input.nextInt();
                     input.nextLine();
@@ -180,15 +180,15 @@ public class Main {
                         roomsRequired = 0;
                     }
 
-                    List<List<String>> results = searchLodgings(city, category, startDay, endDay, adults, children, roomsRequired);
+                    List<Lodging> results = searchLodgings(city, category, startDate , endDate, adults, children, roomsRequired);
                     if(results.isEmpty()){
                         System.out.println("\nNo se han encontrado resultados a la búsqueda.");
                         System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
                         break;
                     }
                     System.out.println("\nLos resultados obtenidos en la búsqueda son: \n");
-                    for(List<String> result : results){
-                        printLodgingInformation(result, startDay, endDay, roomsRequired, adults, children);
+                    for(Lodging result : results){
+                        printLodgingInformation(result, startDate, endDate, roomsRequired, adults, children);
                     }
 
                     System.out.println("\n¿Deseas hacer una reservación? (Si - No)");
@@ -198,10 +198,10 @@ public class Main {
                         System.out.println("\n*------------------ Iniciar la Reservación --------------*");
                         System.out.println("Escribe el nombre del alojamiento en que deseas realizar la reserva: ");
                         String lodgingName = input.nextLine();
-                        List<String> availableRooms = confirmLodging(lodgingName, startDay, endDay, adults , children, roomsRequired);
+                        List<String> availableRooms = confirmLodging(lodgingName, startDate, endDate, adults , children, roomsRequired);
                         List<String> selectedRooms = new ArrayList<>();
 
-                        if (!availableRooms.isEmpty()) {
+                        if (!availableRooms.isEmpty() && category.equalsIgnoreCase("Hotel")) {
                             System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:\n");
                             int countSelectedRooms = 0;
                             for (String room : availableRooms) {
@@ -248,7 +248,7 @@ public class Main {
                             System.out.println("Hora de llegada (HH:mm): ");
                             String arrivalTime = input.nextLine();
 
-                            String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDay, endDay, adults, children, selectedRooms, dayBirth);
+                            String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDate, endDate, adults, children, selectedRooms, LocalDate.parse(dayBirth));
                             System.out.println(reservationMessage);
                         }else{
                             System.out.println("\nProceso de reserva cancelado.");
@@ -266,7 +266,7 @@ public class Main {
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
                     String dayBirth = input.nextLine();
 
-                    String reservationInfo = consultReservations(email, dayBirth);
+                    String reservationInfo = consultReservations(email, LocalDate.parse(dayBirth));
                     System.out.println(reservationInfo);
                     break;
                 case 3:
@@ -276,7 +276,7 @@ public class Main {
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
                     String modDayBirth = input.nextLine();
 
-                    modifyReservation(modEmail, modDayBirth);
+                    modifyReservation(modEmail, LocalDate.parse(modDayBirth));
                     break;
                 case 0:
                     System.out.println("\n¡Gracias por usar nuestros servicios!\n");
@@ -291,283 +291,133 @@ public class Main {
     }
 
     /* ################################# SEARCH DATA ################################# */
-    public static List<List<String>> searchLodgings(String city, String category, String startDate, String endDate, int adults, int children, int roomsNeeded) {
-        List<List<String>> results = new ArrayList<>();
-        for (List<String> lodging : lodgings) {  // Check each lodging on the list
-            String lodgingCity = lodging.get(1);
-            String lodgingCategory = lodging.get(2);
+    public static List<Lodging> searchLodgings(String city, String category, LocalDate startDate, LocalDate endDate, int adults, int children, int requiredRooms) {
+        List<Lodging> results = new ArrayList<>();
+        int totalPeople = adults + children;
 
-            if (lodgingCity.equalsIgnoreCase(city) && lodgingCategory.equalsIgnoreCase(category)) {
-                int totalPeople = adults + children;
+        for (Lodging lodging : lodgings) {
+            if (lodging.getCity().equalsIgnoreCase(city) &&
+                    lodging.getCategory().equalsIgnoreCase(category)) {
 
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    String roomsInfo = lodging.get(7);
-                    String[] roomTypes = roomsInfo.split(";");
-                    int roomsAvailable = 0;
-
-                    for (String roomType : roomTypes) { // Validate which room types are valid and how many are available
-                        String[] roomDetails = roomType.split("\\|");
-                        int maxAdults = Integer.parseInt(roomDetails[3]);
-                        int maxChildren = Integer.parseInt(roomDetails[4]);
-                        int roomCount = Integer.parseInt(roomDetails[5]);
-
-                        // Calculate currently reserved rooms for this room type
-                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
-
-                        if (totalPeople <= (maxAdults + maxChildren) && (roomCount - reservedRooms) > 0) {
-                            roomsAvailable += (roomCount - reservedRooms);
-                        }
-                    }
-
-                    if (roomsAvailable >= roomsNeeded) {
+                if (lodging instanceof IRoomReservable) {
+                    IRoomReservable reservable = (IRoomReservable) lodging;
+                    if (reservable.isAvailable(startDate, endDate, totalPeople, requiredRooms)) {
                         results.add(lodging);
                     }
-                } else {
-                    int maxPeople = Integer.parseInt(lodging.get(6));
-                    int reservedCapacity = countReservedCapacity(lodging.get(10), startDate, endDate);
-
-                    if ((totalPeople + reservedCapacity) <= maxPeople) {
-                        results.add(lodging);
-                    }
+                } else if (lodging.isAvailable(startDate, endDate, totalPeople)) {
+                    results.add(lodging);
                 }
             }
         }
         return results;
     }
 
-    // Auxiliary method to count how many reserved rooms there are of that type in the hotel
-    private static int countReservedRooms(String reservationData, String roomType, String startDate, String endDate) {
-        if (reservationData.isEmpty()) return 0;
-        int reservedCount = 0;
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        String[] reservations = reservationData.split(";");
-
-        for (String reservation : reservations) {
-            String[] details = reservation.split(",");
-            if (details.length > 8 && details[7].equalsIgnoreCase(roomType)) {
-                LocalDate reservationStart = LocalDate.parse(details[3]);
-                LocalDate reservationEnd = LocalDate.parse(details[4]);
-
-                if (datesOverlap(start, end, reservationStart, reservationEnd)) {
-                    reservedCount++;
-                }
-            }
-        }
-        return reservedCount;
-    }
-
-    // Auxiliary method to count how many spaces are reserved in the other types of accommodation: Farm Stay, Apartment and Day Resort.
-    private static int countReservedCapacity(String reservationData, String startDate, String endDate) {
-        if (reservationData.isEmpty()) return 0;
-        int totalReserved = 0;
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-        String[] reservations = reservationData.split(";");
-
-        for (String reservation : reservations) {
-            String[] details = reservation.split(",");
-            if (details.length > 6) {
-                LocalDate reservationStart = LocalDate.parse(details[3]);
-                LocalDate reservationEnd = LocalDate.parse(details[4]);
-
-                if (datesOverlap(start, end, reservationStart, reservationEnd)) {
-                    totalReserved += Integer.parseInt(details[5]) + Integer.parseInt(details[6]);
-                }
-            }
-        }
-        return totalReserved;
-    }
-
-    // Auxiliary method to check if dates cross between reservations
-    private static boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
-        return (start1.isBefore(end2) || start1.equals(end2)) && (end1.isAfter(start2) || end1.equals(start2));
-    }
-
     // Method to print the information of the lodgings
-    public static void printLodgingInformation(List<String> lodging, String startDate, String endDate, int roomsNeeded, int adults, int children) {
-        System.out.println("+----------------------------------+");
-        System.out.println(lodging.get(0));  // Lodging name
-        System.out.println("Calificación: " + lodging.get(3));  // Rating
-
-        float pricePerNight = 0;
-        float baseTotalPrice = 0;
-        float adjustment = calculateDiscountOrIncrement(startDate, endDate);
-
-        long days = calculateDaysBetween(startDate, endDate); // Asegura que nunca sea 0 días
-
-        if (lodging.get(2).equalsIgnoreCase("Hotel")) {
-            String roomsInfo = lodging.get(7);
-            String[] roomTypes = roomsInfo.split(";");
-            int lowerPrice = Integer.MAX_VALUE;
-
-            for (String roomType : roomTypes) {
-                String[] roomDetails = roomType.split("\\|");
-                int roomPrice = Integer.parseInt(roomDetails[2]);
-                if (roomPrice < lowerPrice) {
-                    lowerPrice = roomPrice;
-                }
-            }
-            pricePerNight = lowerPrice * roomsNeeded;
-            baseTotalPrice = pricePerNight * roomsNeeded * days;
-
-        } else if (lodging.get(2).equalsIgnoreCase("Día de sol")) {
-            int totalPeople = adults + children;
-            pricePerNight = Float.parseFloat(lodging.get(4));
-            baseTotalPrice = pricePerNight * totalPeople;
-
-            System.out.println("Actividades incluidas: " + lodging.get(8));
-            System.out.println("Meriendas incluidas: " + lodging.get(9));
-
-        } else {
-            pricePerNight = Float.parseFloat(lodging.get(4));
-            baseTotalPrice = pricePerNight * days;
-        }
-
-        float adjustedTotalPrice = baseTotalPrice + (baseTotalPrice * adjustment);
-        if(lodging.get(2).equalsIgnoreCase("Día de sol")){
-            System.out.println("Precio por persona: " + pricePerNight);
-        }else{
-            System.out.println("Precio por noche: " + pricePerNight);
-        }
-        System.out.println("Precio base total: " + baseTotalPrice);
-        if (adjustment > 0) {
-            System.out.println("Ajuste: Incremento de " + adjustment * 100 + "%");
-        } else if (adjustment < 0) {
-            System.out.println("Ajuste: Descuento de " + Math.abs(adjustment * 100) + "%");
-        } else {
-            System.out.println("Ajuste: Sin cambios.");
-        }
-        System.out.println("Precio total: " + adjustedTotalPrice);
-        System.out.println("+----------------------------------+\n");
+    public static void printLodgingInformation(Lodging lodging, LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        lodging.printDetails(startDate, endDate, adults, children, roomsNeeded);
+        System.out.println("+------------------------------------+\n");
     }
 
-    // Method for calculating increase or discount in price of lodging
-    public static float calculateDiscountOrIncrement(String startDate, String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-
-        LocalDate range1Start = LocalDate.of(start.getYear(), start.getMonth(), 5);
-        LocalDate range1End = LocalDate.of(start.getYear(), start.getMonth(), 10);
-        LocalDate range2Start = LocalDate.of(start.getYear(), start.getMonth(), 10);
-        LocalDate range2End = LocalDate.of(start.getYear(), start.getMonth(), 15);
-        LocalDate range3Start = LocalDate.of(start.getYear(), start.getMonth(), 26);
-        LocalDate range3End = LocalDate.of(start.getYear(), start.getMonth(), 31);
-
-        // Calculate intersection days for each range
-        long daysInRange1 = calculateIntersectionDays(start, end, range1Start, range1End);
-        long daysInRange2 = calculateIntersectionDays(start, end, range2Start, range2End);
-        long daysInRange3 = calculateIntersectionDays(start, end, range3Start, range3End);
-
-        // Determine the range with the largest intersection
-        if (daysInRange1 >= daysInRange2 && daysInRange1 >= daysInRange3) {
-            return -0.08f;
-        } else if (daysInRange2 >= daysInRange1 && daysInRange2 >= daysInRange3) {
-            return 0.10f;
-        } else if (daysInRange3 > 0) {
-            return 0.15f;
-        }
-        return 0;
-    }
-
-    // Auxiliary method for calculating the number of days of intersection between two date ranges
-    private static long calculateIntersectionDays(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
-        LocalDate maxStart = start1.isAfter(start2) ? start1 : start2;
-        LocalDate minEnd = end1.isBefore(end2) ? end1 : end2;
-
-        if (maxStart.isBefore(minEnd) || maxStart.equals(minEnd)) {
-            return ChronoUnit.DAYS.between(maxStart, minEnd) + 1;
-        }
-        return 0;
-    }
-
-    // Method for calculating the number of days between two dates
-    public static long calculateDaysBetween(String startDate, String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
-
-        long days = ChronoUnit.DAYS.between(start, end);
-        return (days == 0) ? 1 : days;
-    }
 
     /* ################################# CONFIRM DATA ################################# */
-    public static List<String> confirmLodging(String lodgingName, String startDate, String endDate, int adults, int children, int roomsNeeded) {
-        for (List<String> lodging : lodgings) {
-            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                if (lodging.get(2).equalsIgnoreCase("Hotel")) {
-                    String roomsInfo = lodging.get(7);
-                    String[] roomTypes = roomsInfo.split(";");
-                    List<String> availableRooms = new ArrayList<>();
-
-                    for (String roomType : roomTypes) {
-                        String[] roomDetails = roomType.split("\\|");
-                        int reservedRooms = countReservedRooms(lodging.get(10), roomDetails[0], startDate, endDate);
-                        int availableRoomsCount = Integer.parseInt(roomDetails[5]) - reservedRooms;
-
-                        if (availableRoomsCount > 0) {
-                            System.out.println("- Nombre: " + roomDetails[0]);
-                            System.out.println("  Descripción: " + roomDetails[1]);
-                            System.out.println("  Habitaciones disponibles: " + availableRoomsCount);
-                            availableRooms.add(roomDetails[0]);
-                        }
-                    }
-                    return availableRooms;
-                } else if (lodging.get(2).equalsIgnoreCase("Día de sol")) {
-                    System.out.println("Descripción: " + lodging.get(5));
-                    System.out.println("Actividades: " + lodging.get(8));
-                    System.out.println("Comidas: " + lodging.get(9));
-                } else {
-                    System.out.println("Descripción: " + lodging.get(5));
-                }
+    public static List<String> confirmLodging(String lodgingName, LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        for (Lodging lodging : lodgings) {
+            if (lodging.getName().equalsIgnoreCase(lodgingName)) {
+                return lodging.confirmAvailability(startDate, endDate, adults, children, roomsNeeded);
             }
         }
+        System.out.println("No se encontró un alojamiento con el nombre proporcionado.");
         return new ArrayList<>();
     }
 
     /* ################################# MAKE RESERVATION ################################# */
-    public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime, String lodgingName, String startDate, String endDate, int adults, int children, List<String> selectedRooms, String dayBirth) {
-        for (List<String> lodging : lodgings) {
-            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                StringBuilder reservationData = new StringBuilder(lodging.get(10));
-                for (String room : selectedRooms) {
-                    reservationData.append(firstName).append(",").append(lastName).append(",").append(email).append(",").append(startDate).append(",").append(endDate)
-                            .append(",").append(adults).append(",").append(children).append(",").append(room).append(";");
+    public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime,
+                                         String lodgingName, LocalDate startDate, LocalDate endDate, int adults, int children, List<String> selectedRooms,
+                                         LocalDate birthDate) {
+
+        for (Lodging lodging : lodgings) {
+            if (lodging.getName().equalsIgnoreCase(lodgingName)) {
+                int totalGuests = adults + children;
+                List<Room> reservedRooms = new ArrayList<>();
+
+                if (lodging instanceof Hotel hotel) {
+                    for (String roomEntry : selectedRooms) {
+                        String[] roomDetails = roomEntry.split(" x");
+                        String roomType = roomDetails[0].trim();
+                        int quantityRequested = Integer.parseInt(roomDetails[1]);
+
+                        Room room = hotel.getRooms().stream()
+                                .filter(r -> r.getType().equalsIgnoreCase(roomType))
+                                .findFirst()
+                                .orElse(null);
+
+                        if (room == null) {
+                            return "No se pudo realizar la reserva. No existe el tipo de habitación '" + roomType + "'.";
+                        }
+
+                        int reservedCount = hotel.countReservedRooms(room, hotel.getReservations(), startDate, endDate);
+                        int availableRooms = room.getTotalRooms() - reservedCount;
+
+                        if (availableRooms < quantityRequested) {
+                            return "No se pudo realizar la reserva. No hay suficientes habitaciones disponibles del tipo '" + roomType + "'.";
+                        }
+
+                        for (int i = 0; i < quantityRequested; i++) {
+                            reservedRooms.add(room);
+                        }
+                    }
+
+                    if (reservedRooms.isEmpty()) {
+                        return "No se pudo realizar la reserva. Las habitaciones seleccionadas no están disponibles.";
+                    }
                 }
-                lodging.set(10, reservationData.toString());
-                reservations.add(Arrays.asList(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDate, endDate, String.valueOf(adults), String.valueOf(children), selectedRooms.toString(), dayBirth));
-                return "Se ha realizado la reserva con éxito.";
+
+                if (lodging instanceof DayResort && !startDate.isEqual(endDate)) {
+                    return "Las reservas en un Día de Sol solo se permiten por un día.";
+                }
+
+                Reservation reservation = new Reservation(
+                        firstName, lastName, birthDate, email, Integer.parseInt(phoneNumber), nationality,
+                        startDate, endDate, LocalTime.parse(arrivalTime), adults, children, reservedRooms);
+
+                lodging.addReservation(reservation);
+                return "Se ha realizado la reserva con éxito en " + lodging.getName() + ":\n" + reservation;
             }
         }
+
         return "No se pudo realizar la reserva. El alojamiento no está disponible.";
     }
 
+
     //Method to consult the reservations
-    public static String consultReservations(String email, String dayBirth) {
+    public static String consultReservations(String email, LocalDate birthDate) {
         StringBuilder result = new StringBuilder();
         boolean found = false;
 
-        for (List<String> reservation : reservations) {
-            if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
-                found = true;
+        for (Lodging lodging : lodgings) {
+            for (Reservation reservation : lodging.getReservations()) {
+                if (reservation.getEmail().equalsIgnoreCase(email) && reservation.getBirthDay().equals(birthDate)) {
+                    found = true;
 
-                String lodgingName = reservation.get(6);
-                String lodgingCategory = getLodgingCategory(lodgingName);
+                    result.append("\n*---------------- Detalles de la Reservación ----------------*\n")
+                          .append("Nombre: ").append(reservation.getName()).append(" ").append(reservation.getLastname()).append("\n")
+                          .append("Correo: ").append(reservation.getEmail()).append("\n")
+                          .append("Alojamiento: ").append(lodging.getName()).append("\n")
+                          .append("Categoría: ").append(lodging.getCategory()).append("\n")
+                          .append("Fecha de llegada: ").append(reservation.getStartDate()).append("\n")
+                          .append("Fecha de salida: ").append(reservation.getEndDate()).append("\n");
 
-                result.append("\n*---------------- Detalles de la Reservación ----------------*\n")
-                        .append("Nombre: ").append(reservation.get(0)).append(" ").append(reservation.get(1)).append("\n")
-                        .append("Correo: ").append(reservation.get(2)).append("\n")
-                        .append("Alojamiento: ").append(lodgingName).append("\n")
-                        .append("Categoría: ").append(lodgingCategory).append("\n")
-                        .append("Fecha de llegada: ").append(reservation.get(7)).append("\n")
-                        .append("Fecha de salida: ").append(reservation.get(8)).append("\n");
+                    if (lodging instanceof IRoomReservable) {
+                        result.append("Habitaciones reservadas: \n");
+                        for (Room room : reservation.getRooms()) {
+                            result.append("  - ").append(room.getType()).append("\n");
+                        }
+                    }
 
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    result.append("Habitaciones reservadas: ").append(reservation.get(11)).append("\n");
+                    result.append("Hora de llegada: ").append(reservation.getArrivedTime()).append("\n")
+                          .append("Nacionalidad: ").append(reservation.getNationality()).append("\n")
+                          .append("Teléfono: ").append(reservation.getNumberPhone()).append("\n");
                 }
-
-                result.append("Hora de llegada: ").append(reservation.get(5)).append("\n")
-                        .append("Nacionalidad: ").append(reservation.get(3)).append("\n")
-                        .append("Teléfono: ").append(reservation.get(4)).append("\n");
             }
         }
 
@@ -578,89 +428,48 @@ public class Main {
         return result.toString();
     }
 
-    // Auxiliary method for obtaining the category of a lodging by name
-    private static String getLodgingCategory(String lodgingName) {
-        for (List<String> lodging : lodgings) {
-            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                return lodging.get(2); // Índice de la categoría
-            }
-        }
-        return "Desconocida"; // Si no se encuentra
-    }
 
     /* ################################# MODIFY RESERVATION ################################# */
-    public static void modifyReservation(String email, String dayBirth) {
+    public static void modifyReservation(String email, LocalDate birthDate) {
         Scanner input = new Scanner(System.in);
         boolean found = false;
 
-        for (List<String> reservation : reservations) {
-            if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
-                found = true;
+        for (Lodging lodging : lodgings) {
+            for (Reservation reservation : lodging.getReservations()) {
+                if (reservation.getEmail().equalsIgnoreCase(email) && reservation.getBirthDay().equals(birthDate)) {
+                    found = true;
 
-                String lodgingName = reservation.get(6);
-                String lodgingCategory = getLodgingCategory(lodgingName);
+                    System.out.println("\n*---------------- Detalles de la Reservación ----------------*\n");
+                    System.out.println("Alojamiento actual: " + lodging.getName());
+                    System.out.println("Categoría: " + lodging.getCategory());
 
-                System.out.println("\n*---------------- Detalles de la Reservación ----------------*\n");
-                System.out.println("Alojamiento actual: " + lodgingName);
-                System.out.println("Categoría: " + lodgingCategory);
-
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    System.out.println("Habitaciones reservadas: " + reservation.get(11));
-                }
-
-                System.out.println("\n¿Qué deseas modificar?");
-
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    System.out.println("1: Cambio de habitación");
-                }
-                System.out.println("2: Cambio de alojamiento");
-
-                int choice = input.nextInt();
-                input.nextLine();
-
-                if (choice == 1 && lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    System.out.println("\nHabitaciones actuales: " + reservation.get(11));
-                    System.out.println("Indica el tipo y la cantidad de habitación(es) que deseas cambiar (ejemplo: 'Habitación Estándar x1'): ");
-                    String oldRoomEntry = input.nextLine();
-
-                    String[] oldRoomDetails = oldRoomEntry.split(" x");
-                    String oldRoomType = oldRoomDetails[0].trim();
-                    int quantityToChange = Integer.parseInt(oldRoomDetails[1]);
-
-                    String currentRooms = reservation.get(11);
-                    int currentCount = getRoomCount(currentRooms, oldRoomType);
-
-                    if (quantityToChange > currentCount) {
-                        System.out.println("Error: No tienes suficientes habitaciones de este tipo reservadas para cambiar.");
-                        return;
-                    }
-
-                    for (List<String> lodging : lodgings) {
-                        if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                            System.out.println("Habitaciones disponibles:");
-                            String[] roomDetails = lodging.get(7).split(";");
-                            for (String room : roomDetails) {
-                                String[] details = room.split("\\|");
-                                System.out.println("- " + details[0] + " (Capacidad: " + details[3] + " adultos, " + details[4] + " niños)");
-                            }
-
-                            System.out.println("Selecciona la nueva habitación (ejemplo: 'Habitación Deluxe'): ");
-                            String newRoomType = input.nextLine();
-
-                            // Update reserved rooms
-                            String updatedRooms = updateRoomEntry(currentRooms, oldRoomType, newRoomType, quantityToChange);
-                            reservation.set(11, updatedRooms);
-
-                            System.out.println("\nHabitaciones actualizadas con éxito.\n Nuevas habitaciones reservadas: " + updatedRooms);
-                            return;
+                    if (lodging instanceof IRoomReservable hotel) {
+                        System.out.println("Habitaciones reservadas: ");
+                        for (Room room : reservation.getRooms()) {
+                            System.out.println("- " + room.getType());
                         }
                     }
-                } else if (choice == 2) {
-                    reservations.remove(reservation);
-                    System.out.println("\nReservación eliminada. Por favor, crea una nueva reservación.");
-                    return;
-                } else {
-                    System.out.println("\nOpción no válida o no aplicable para esta categoría.");
+
+                    System.out.println("\n¿Qué deseas modificar?");
+                    if (lodging instanceof IRoomReservable) {
+                        System.out.println("1: Cambio de habitación");
+                    }
+                    System.out.println("2: Cambio de alojamiento");
+
+                    int choice = input.nextInt();
+                    input.nextLine();
+
+                    if (choice == 1 && lodging instanceof IRoomReservable hotel) {
+                        changeRoom(reservation, lodging, input);
+                        return;
+                    } else if (choice == 2) {
+                        lodging.getReservations().remove(reservation);
+                        System.out.println("\nReservación eliminada. Por favor, crea una nueva reservación.");
+                        return;
+                    } else {
+                        System.out.println("\nOpción no válida o no aplicable para esta categoría.");
+                        return;
+                    }
                 }
             }
         }
@@ -669,46 +478,65 @@ public class Main {
             System.out.println("No se encontró ninguna reservación con los datos proporcionados.");
         }
     }
-
-    // Auxiliary method for counting rooms of a specific type
-    private static int getRoomCount(String currentRooms, String roomType) {
-        currentRooms = currentRooms.replace("[", "").replace("]", "").trim();
-        String[] roomEntries = currentRooms.split(", ");
-        for (String entry : roomEntries) {
-            if (entry.startsWith(roomType)) {
-                String[] parts = entry.split(" x");
-                return Integer.parseInt(parts[1]);
-            }
-        }
-        return 0;
-    }
-
-
-    // Auxiliary method for updating reserved rooms
-    private static String updateRoomEntry(String currentRooms, String oldRoomType, String newRoomType, int quantityToChange) {
-        StringBuilder updatedRooms = new StringBuilder();
-        currentRooms = currentRooms.replace("[", "").replace("]", "").trim();
-        String[] roomEntries = currentRooms.split(", ");
-
-        for (String entry : roomEntries) {
-            if (entry.startsWith(oldRoomType)) {
-                String[] parts = entry.split(" x");
-                int currentCount = Integer.parseInt(parts[1]);
-                int remainingCount = currentCount - quantityToChange;
-
-                if (remainingCount > 0) {
-                    updatedRooms.append(oldRoomType).append(" x").append(remainingCount).append(", ");
-                }
-                updatedRooms.append(newRoomType).append(" x").append(quantityToChange).append(", ");
-            } else {
-                updatedRooms.append(entry).append(", ");
-            }
+    private static void changeRoom(Reservation reservation, Lodging hotel, Scanner input) {
+        System.out.println("\nHabitaciones actuales:");
+        for (Room room : reservation.getRooms()) {
+            System.out.println("- " + room.getType());
         }
 
-        if (updatedRooms.length() > 0) {
-            updatedRooms.setLength(updatedRooms.length() - 2);
+        System.out.println("Indica el tipo de habitación que deseas cambiar (ejemplo: 'Suite'): ");
+        String oldRoomType = input.nextLine();
+
+        List<Room> currentRooms = reservation.getRooms();
+        long count = currentRooms.stream()
+                .filter(room -> room.getType().equalsIgnoreCase(oldRoomType))
+                .count();
+
+        if (count == 0) {
+            System.out.println("No tienes habitaciones del tipo '" + oldRoomType + "' reservadas.");
+            return;
         }
 
-        return "[" + updatedRooms.toString() + "]";
+        System.out.println("Habitaciones disponibles:");
+        Hotel hotell = (Hotel) hotel;
+        List<Room> availableRooms = hotell.getRooms().stream()
+                .filter(room -> room.getType().equalsIgnoreCase(oldRoomType) ||
+                        room.isAvailable(hotel.getReservations(), reservation.getStartDate(), reservation.getEndDate()))
+                .toList();
+
+        for (Room room : availableRooms) {
+            System.out.println("- " + room.getType() + " (Capacidad: " + room.getCapacity() + ", Precio: $" + room.getPricePerNight() + ")");
+        }
+
+        System.out.println("Selecciona el nuevo tipo de habitación: ");
+        String newRoomType = input.nextLine();
+
+        Room newRoom = availableRooms.stream()
+                .filter(room -> room.getType().equalsIgnoreCase(newRoomType))
+                .findFirst()
+                .orElse(null);
+
+        if (newRoom == null) {
+            System.out.println("La habitación seleccionada no está disponible.");
+            return;
+        }
+
+        Room roomToReplace = currentRooms.stream()
+                .filter(room -> room.getType().equalsIgnoreCase(oldRoomType))
+                .findFirst()
+                .orElse(null);
+
+        if (roomToReplace == null) {
+            System.out.println("No se encontró una habitación del tipo '" + oldRoomType + "' para cambiar.");
+            return;
+        }
+
+        currentRooms.remove(roomToReplace);
+        currentRooms.add(newRoom);
+
+        System.out.println("Cambio de habitación realizado con éxito.");
+        System.out.println("Nuevas habitaciones reservadas: ");
+        currentRooms.forEach(room -> System.out.println("- " + room.getType()));
     }
 }
+
