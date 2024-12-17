@@ -1,12 +1,13 @@
 package src;
 
-public class Hotel extends Alojamiento{
+public class DiaDeSol extends Alojamiento{
 
-    public Hotel(String nombre, String ciudad, double calificacion, String tipo) {
+
+    public DiaDeSol(String nombre, String ciudad, double calificacion, String tipo) {
         this.nombre = nombre;
         this.ciudad =ciudad;
         this.calificacion=calificacion;
-        this.tipo="hotel";
+        this.tipo="dia de sol";
     }
 
     @Override
