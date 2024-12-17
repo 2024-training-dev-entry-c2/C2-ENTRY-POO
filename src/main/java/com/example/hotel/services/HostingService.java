@@ -1,10 +1,7 @@
 package com.example.hotel.services;
 
 import com.example.hotel.inputHandler.InputValidator;
-import com.example.hotel.models.Hosting;
-import com.example.hotel.models.HostingWithActivity;
-import com.example.hotel.models.HostingWithRoom;
-import com.example.hotel.models.Room;
+import com.example.hotel.models.*;
 
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -140,6 +137,21 @@ public class HostingService {
 
     System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
     System.out.println("        *** Precio total con precio de habitaciones ***");
+    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+    calculatePrice(hosting, startDate, endDate, numberOfRooms);
+  }
+
+  public void calculatePriceWithActivities(Hosting hosting, List<Activity> activities, LocalDate startDate, LocalDate endDate, int numberOfRooms) {
+    double price = 0;
+
+    for (Activity activity : activities) {
+      price += activity.getPricePerDay() * activity.getCapacityAvailability();
+    }
+    hosting.setPricePerNight(price);
+
+    System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+    System.out.println("        *** Precio total con precio de actividades ***");
     System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
     calculatePrice(hosting, startDate, endDate, numberOfRooms);

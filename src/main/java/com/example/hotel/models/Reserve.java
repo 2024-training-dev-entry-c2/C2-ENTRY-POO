@@ -3,37 +3,32 @@ package com.example.hotel.models;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Reserve {
-  Hosting hosting;
   Client client;
+  Hosting hosting;
   int numberOfRooms;
   int numberOfAdults;
   int numberOfChildren;
   LocalDate startDate;
   LocalDate endDate;
   LocalTime arrivalTime;
+  List<Room> selectedRooms;
 
-  public Reserve(Hosting hosting, Client client, int numberOfRooms, int numberOfAdults, int numberOfChildren, LocalDate startDate, LocalDate endDate, LocalTime arrivalTime) {
-    this.hosting = hosting;
+  public Reserve(Client client, Hosting hosting, int numberOfRooms, int numberOfAdults, int numberOfChildren, LocalDate startDate, LocalDate endDate, LocalTime arrivalTime, List<Room> selectedRooms) {
     this.client = client;
+    this.hosting = hosting;
     this.numberOfRooms = numberOfRooms;
     this.numberOfAdults = numberOfAdults;
     this.numberOfChildren = numberOfChildren;
     this.startDate = startDate;
     this.endDate = endDate;
     this.arrivalTime = arrivalTime;
+    this.selectedRooms = selectedRooms;
   }
 
   public Reserve() {
-  }
-
-  public Hosting getHosting() {
-    return hosting;
-  }
-
-  public void setHosting(Hosting hosting) {
-    this.hosting = hosting;
   }
 
   public Client getClient() {
@@ -42,6 +37,14 @@ public class Reserve {
 
   public void setClient(Client client) {
     this.client = client;
+  }
+
+  public Hosting getHosting() {
+    return hosting;
+  }
+
+  public void setHosting(Hosting hosting) {
+    this.hosting = hosting;
   }
 
   public int getNumberOfRooms() {
@@ -90,6 +93,14 @@ public class Reserve {
 
   public void setArrivalTime(LocalTime arrivalTime) {
     this.arrivalTime = arrivalTime;
+  }
+
+  public List<Room> getSelectedRooms() {
+    return selectedRooms;
+  }
+
+  public void setSelectedRooms(List<Room> selectedRooms) {
+    this.selectedRooms = selectedRooms;
   }
 
   public String printReservation() {

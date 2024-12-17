@@ -98,16 +98,34 @@ public class BookingData {
     List<Activity> activities = new ArrayList<>();
 
     activities.add(new Activity("Finca El Paraíso del Sol", activityTypes.get(0), "Picnic al aire libre con vista a las montañas y opciones de comida local, incluye almuerzo tipo picnic con bebidas frescas.", 200, 8));
-    activities.add(new Activity("Hacienda Los Senderos Dorados", activityTypes.get(1), "Cabalgata tranquila por senderos de pasto, ideal para principiantes y amantes de los caballos, incluye refrigerio ligero durante la actividad.", 250, 5));
-    activities.add(new Activity("Casa Campestre Vista Verde", activityTypes.get(2), "Caminata guiada por el campo con paradas en miradores naturales y paisajes únicos, incluye almuerzo campestre con productos frescos.", 180, 12));
-    activities.add(new Activity("Reserva Natural Cielo Azul", activityTypes.get(3), "Observación de aves con binoculares y guía especializado, incluyendo especies nativas, incluye café y galletas al inicio.", 220, 6));
-    activities.add(new Activity("Recreo Sol y Brisa", activityTypes.get(4), "Juegos al aire libre como voleibol, fútbol y juegos de equipo para todas las edades, incluye bebidas hidratantes y frutas.", 120, 15));
+    activities.add(new Activity("Finca El Paraíso del Sol", activityTypes.get(1), "Cabalgata tranquila por senderos de pasto, ideal para principiantes y amantes de los caballos, incluye refrigerio ligero durante la actividad.", 250, 5));
+    activities.add(new Activity("Finca El Paraíso del Sol", activityTypes.get(2), "Caminata guiada por el campo con paradas en miradores naturales y paisajes únicos, incluye almuerzo campestre con productos frescos.", 180, 12));
+    activities.add(new Activity("Finca El Paraíso del Sol", activityTypes.get(3), "Observación de aves con binoculares y guía especializado, incluyendo especies nativas, incluye café y galletas al inicio.", 220, 6));
+    activities.add(new Activity("Finca El Paraíso del Sol", activityTypes.get(4), "Juegos al aire libre como voleibol, fútbol y juegos de equipo para todas las edades, incluye bebidas hidratantes y frutas.", 120, 15));
 
-    activities.add(new Activity("Estancia El Refugio del Arte", activityTypes.get(0), "Taller de pintura al aire libre con paisajes naturales como inspiración, incluye materiales de pintura y refrigerio.", 190, 10));
-    activities.add(new Activity("EcoLodge Pedal y Sol", activityTypes.get(1), "Paseo en bicicleta por rutas ecológicas con estaciones de descanso y paisajes naturales, incluye alquiler de bicicleta y casco.", 230, 7));
-    activities.add(new Activity("Lago Tranquilo Lodge", activityTypes.get(2), "Pesca recreativa en lago tranquilo, ideal para relajarse, incluye caña de pescar, carnada y una bebida refrescante.", 200, 9));
-    activities.add(new Activity("Retiro Amanecer Dorado", activityTypes.get(3), "Yoga al amanecer en un mirador natural con instructor certificado, incluye esterilla y agua purificada.", 180, 8));
-    activities.add(new Activity("Finca Las Aguas Cristalinas", activityTypes.get(4), "Natación en piscina natural con áreas de descanso y acceso a cascadas cercanas, incluye toallas y refrigerio.", 210, 10));
+    activities.add(new Activity("Hacienda Los Senderos Dorados", activityTypes.get(0), "Picnic al aire libre con vista a las montañas y opciones de comida local, incluye almuerzo tipo picnic con bebidas frescas.", 200, 8));
+    activities.add(new Activity("Hacienda Los Senderos Dorados", activityTypes.get(1), "Cabalgata tranquila por senderos de pasto, ideal para principiantes y amantes de los caballos, incluye refrigerio ligero durante la actividad.", 250, 5));
+    activities.add(new Activity("Hacienda Los Senderos Dorados", activityTypes.get(2), "Caminata guiada por el campo con paradas en miradores naturales y paisajes únicos, incluye almuerzo campestre con productos frescos.", 180, 12));
+    activities.add(new Activity("Hacienda Los Senderos Dorados", activityTypes.get(3), "Observación de aves con binoculares y guía especializado, incluyendo especies nativas, incluye café y galletas al inicio.", 220, 6));
+    activities.add(new Activity("Hacienda Los Senderos Dorados", activityTypes.get(4), "Juegos al aire libre como voleibol, fútbol y juegos de equipo para todas las edades, incluye bebidas hidratantes y frutas.", 120, 15));
+
+    activities.add(new Activity("Casa Campestre Vista Verde", activityTypes.get(0), "Picnic al aire libre con vista a las montañas y opciones de comida local, incluye almuerzo tipo picnic con bebidas frescas.", 200, 8));
+    activities.add(new Activity("Casa Campestre Vista Verde", activityTypes.get(1), "Cabalgata tranquila por senderos de pasto, ideal para principiantes y amantes de los caballos, incluye refrigerio ligero durante la actividad.", 250, 5));
+    activities.add(new Activity("Casa Campestre Vista Verde", activityTypes.get(2), "Caminata guiada por el campo con paradas en miradores naturales y paisajes únicos, incluye almuerzo campestre con productos frescos.", 180, 12));
+    activities.add(new Activity("Casa Campestre Vista Verde", activityTypes.get(3), "Observación de aves con binoculares y guía especializado, incluyendo especies nativas, incluye café y galletas al inicio.", 220, 6));
+    activities.add(new Activity("Casa Campestre Vista Verde", activityTypes.get(4), "Juegos al aire libre como voleibol, fútbol y juegos de equipo para todas las edades, incluye bebidas hidratantes y frutas.", 120, 15));
+
+    activities.add(new Activity("Reserva Natural Cielo Azul", activityTypes.get(0), "Picnic al aire libre con vista a las montañas y opciones de comida local, incluye almuerzo tipo picnic con bebidas frescas.", 200, 8));
+    activities.add(new Activity("Reserva Natural Cielo Azul", activityTypes.get(1), "Cabalgata tranquila por senderos de pasto, ideal para principiantes y amantes de los caballos, incluye refrigerio ligero durante la actividad.", 250, 5));
+    activities.add(new Activity("Reserva Natural Cielo Azul", activityTypes.get(2), "Caminata guiada por el campo con paradas en miradores naturales y paisajes únicos, incluye almuerzo campestre con productos frescos.", 180, 12));
+    activities.add(new Activity("Reserva Natural Cielo Azul", activityTypes.get(3), "Observación de aves con binoculares y guía especializado, incluyendo especies nativas, incluye café y galletas al inicio.", 220, 6));
+    activities.add(new Activity("Reserva Natural Cielo Azul", activityTypes.get(4), "Juegos al aire libre como voleibol, fútbol y juegos de equipo para todas las edades, incluye bebidas hidratantes y frutas.", 120, 15));
+
+    activities.add(new Activity("Recreo Sol y Brisa", activityTypes.get(0), "Picnic al aire libre con vista a las montañas y opciones de comida local, incluye almuerzo tipo picnic con bebidas frescas.", 200, 8));
+    activities.add(new Activity("Recreo Sol y Brisa", activityTypes.get(1), "Cabalgata tranquila por senderos de pasto, ideal para principiantes y amantes de los caballos, incluye refrigerio ligero durante la actividad.", 250, 5));
+    activities.add(new Activity("Recreo Sol y Brisa", activityTypes.get(2), "Caminata guiada por el campo con paradas en miradores naturales y paisajes únicos, incluye almuerzo campestre con productos frescos.", 180, 12));
+    activities.add(new Activity("Recreo Sol y Brisa", activityTypes.get(3), "Observación de aves con binoculares y guía especializado, incluyendo especies nativas, incluye café y galletas al inicio.", 220, 6));
+    activities.add(new Activity("Recreo Sol y Brisa", activityTypes.get(4), "Juegos al aire libre como voleibol, fútbol y juegos de equipo para todas las edades, incluye bebidas hidratantes y frutas.", 120, 15));
 
     return activities;
   }
@@ -119,10 +137,10 @@ public class BookingData {
     List<Hosting> hostings = new ArrayList<>();
 
     List<Room> rooms = createRooms();
+    List<Activity> activities = createActivities();
 
     // Hoteles
     if (typeHosting.equals(typeOfHosting.get(0))) {
-      // Aquí pasas el nombre del hotel al obtener el precio mínimo
       hostings.add(new HostingWithRoom(cities.get(0), typeOfHosting.get(0), "Marriott Hotel", getAverageRating(), 100, rooms));
       hostings.add(new HostingWithRoom(cities.get(1), typeOfHosting.get(0), "Hilton Garden Inn", getAverageRating(), 100, rooms));
       hostings.add(new HostingWithRoom(cities.get(2), typeOfHosting.get(0), "Holiday Inn", getAverageRating(), 100, rooms));
@@ -146,10 +164,11 @@ public class BookingData {
 
     // Actividades (Día de Sol)
     if (typeHosting.equals(typeOfHosting.get(3))) {
-      List<Activity> activities = createActivities();
       hostings.add(new HostingWithActivity(cities.get(0), typeOfHosting.get(3), "Finca El Paraíso del Sol", getAverageRating(), 100 , activities));
       hostings.add(new HostingWithActivity(cities.get(1), typeOfHosting.get(3), "Hacienda Los Senderos Dorados", getAverageRating(), 100, activities));
       hostings.add(new HostingWithActivity(cities.get(2), typeOfHosting.get(3), "Casa Campestre Vista Verde", getAverageRating(), 100, activities));
+      hostings.add(new HostingWithActivity(cities.get(2), typeOfHosting.get(3), "Reserva Natural Cielo Azul", getAverageRating(), 100, activities));
+      hostings.add(new HostingWithActivity(cities.get(3), typeOfHosting.get(3), "Recreo Sol y Brisa", getAverageRating(), 100, activities));
     }
 
     return hostings;

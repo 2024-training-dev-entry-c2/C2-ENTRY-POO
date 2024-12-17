@@ -1,17 +1,28 @@
 package com.example.hotel.inputHandler;
 
 import com.example.hotel.data.BookingData;
-import com.example.hotel.models.Hosting;
-import com.example.hotel.models.HostingWithActivity;
-import com.example.hotel.models.HostingWithRoom;
-import com.example.hotel.models.Room;
+import com.example.hotel.models.*;
+import com.example.hotel.services.ActivityService;
 import com.example.hotel.services.HostingService;
+import com.example.hotel.services.ReserveService;
 import com.example.hotel.services.RoomService;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
+  private static BookingData bookingData = new BookingData();
+  private static List<Room> rooms = null;
+  private static List<Activity> activities = null;
+  private static List<Hosting> hostings = null;
+  private static List<Reserve> reservations = new ArrayList<>();
+  private static HostingService hostingService = new HostingService();
+  private static RoomService roomService = new RoomService();
+  private static ReserveService reserveService = new ReserveService();
+  private static ActivityService activityService = new ActivityService();
+
   public int showOptions() {
     System.out.println("\n============================================================");
     System.out.println("                BIENVENIDO A LA APLICACIÓN                 ");
@@ -53,9 +64,6 @@ public class Menu {
   }
 
   public void makeReservation() {
-    HostingService hostingService = new HostingService();
-  RoomService roomService = new RoomService();
-
     System.out.println("\n============================================================");
     System.out.println("                  RESERVA DE ALOJAMIENTO                    ");
     System.out.println("============================================================");
@@ -81,8 +89,10 @@ public class Menu {
     int numberOfChildren = InputValidator.readInt("Ingrese el número de niños: ");
     int numberOfRooms = InputValidator.readInt("Ingrese el número de habitaciones: ");
 
-    BookingData bookingData = new BookingData();
+
     List<Room> rooms = bookingData.createRooms();
+    List<Activity> activities = bookingData.createActivities()
+      ;
     List<Hosting> hostingWithRooms = bookingData.createHostingWithRoomOrActivity(housing);
 
     Hosting hosting = hostingService.createDesiredAccommodation(rooms, hostingWithRooms, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
@@ -90,21 +100,27 @@ public class Menu {
 
     hostingService.calculatePriceWithRooms(hosting, selectedRooms, startDate, endDate, numberOfRooms);
 
+    if (housing.equals("Dia de Sol")) {
+      List<Activity> selectedActivities = activityService.confirmActivities(activities, hosting.getName(), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+      hostingService.calculatePriceWithActivities(hosting, selectedActivities, startDate, endDate, numberOfRooms);
+    }
+
+
     System.out.println("\n============================================================");
     System.out.println("                DATOS DE LA PERSONA TITULAR                 ");
     System.out.println("============================================================");
 
     String name = InputValidator.readString("Ingrese el nombre: ");
-
     String lastName = InputValidator.readString("Ingrese el apellido: ");
-
     String email = InputValidator.readString("Ingrese el email: ");
-
     String nationality = InputValidator.readString("Ingrese la nacionalidad: ");
-
     String phone = InputValidator.readString("Ingrese el número de teléfono: ");
+    LocalTime arrivalTime = InputValidator.readLocalTime("Ingrese la hora de llegada (HH:mm): ");
 
-    // LOGICA
+    Reserve reservation = reserveService.createReservation(hosting, selectedRooms, numberOfRooms, numberOfAdults, numberOfChildren, name, lastName, email, nationality, phone, arrivalTime, startDate, endDate);
+
+    reserveService.getReservation(reservation);
+    reserveService.addReservations(reservations, reservation);
 
     System.out.println("\n============================================================");
     System.out.println("                ¡GRACIAS POR ELEGIRNOS!                     ");
@@ -119,6 +135,7 @@ public class Menu {
 
     String email = InputValidator.readString("\nIngrese el email para buscar la reserva: ");
 
+    Reserve reservation = reserveService.selectedReservation(reservations, email);
 
     System.out.println("\n------------------------------------------------------------");
     System.out.println("                     ¿QUÉ DESEAS HACER?                     ");
@@ -137,12 +154,37 @@ public class Menu {
         System.out.println("                   MODIFICAR HABITACIÓN(ES)                 ");
         System.out.println("============================================================");
 
+        Room selectedRoom = reserveService.selectedRoom(reservation);
+        String hotelName = reservation.getHosting().getName();
+
+        List<Room> availableRooms = new ArrayList<>();
+        for (Room room : rooms) {
+          String roomHotelName = room.getHostingName();
+          if (hotelName.equals(roomHotelName)) {
+            availableRooms.add(room);
+          }
+        }
+
+        Room newRoom = roomService.getRoomsForHousing(availableRooms, hotelName);
+
+        int newQuantity = InputValidator.readInt("Ingresa la nueva cantidad de habitaciones para esta reserva: " );
+
+        newRoom.setQuantity(newQuantity);
+
+        Reserve updatedReservation = reserveService.updateRoomInReservation(reservation, selectedRoom, newRoom);
+
+        reserveService.getReservation(updatedReservation);
+
         break;
       case 2:
         System.out.println("\n============================================================");
         System.out.println("                   MODIFICAR ALOJAMIENTO                   ");
         System.out.println("============================================================");
 
+        reserveService.removeReservation(reservations, reservation);
+        reserveService.printReservations(reservations, email);
+
+        makeReservation();
         break;
       case 3:
         System.out.println("\n============================================================");

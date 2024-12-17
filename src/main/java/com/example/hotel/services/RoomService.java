@@ -65,7 +65,7 @@ public class RoomService {
     long daysBetween = (endDate.toEpochDay() - startDate.toEpochDay());
 
     System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-    System.out.println("       *** Confirmación de Habitaciones para el Hotel: " + hostingName + " ***");
+    System.out.println("       *** Confirmación de Habitaciones para el alojamiento: " + hostingName + " ***");
     System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
     List<Room> selectedRooms = new ArrayList<>();
@@ -152,5 +152,4 @@ public class RoomService {
 
     return summary;
   }
-
 }

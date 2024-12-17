@@ -18,6 +18,9 @@ public class Activity extends Stay {
     this.hostingName = hostingName;
   }
 
+  public Activity() {
+  }
+
   public Activity(double pricePerDay) {
     this.pricePerDay = pricePerDay;
   }
