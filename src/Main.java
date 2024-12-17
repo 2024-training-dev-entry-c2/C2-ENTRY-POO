@@ -174,8 +174,6 @@ public class Main {
                 for (int i = 0; i < alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones().length; i++) {
                     System.out.println((i + 1) + ". " + alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones()[i].getTiposDeHabitaciones());
                 }
-//                alojamientos[hotelSeleccionadoPorUsuarioIndex].mostrarHabitacionesDisponibles();
-
 
                 // almaceno la cantidad de habitaciones que el usuario ingreso
                 String[] habitacionesSeleccionadas = new String[cantidadHabitaciones];
@@ -225,7 +223,7 @@ public class Main {
                 System.out.println("Ingrese la hora de llegada (HH:mm):");
                 horaLlegadaUsuario = scanner.nextLine();
 
-                reservarAlojamiento(nombreUsuario, apellidoUsuario, correoUsuario, nacionalidadUsuario, telefonoUsuario, horaLlegadaUsuario, habitacionesSeleccionadas, nacimientoUsuario);
+                reservarAlojamiento(nombreUsuario, apellidoUsuario, correoUsuario, nacionalidadUsuario, telefonoUsuario, horaLlegadaUsuario, habitacionesSeleccionadas, nacimientoUsuario, inicioEstadia, finEstadia);
 
             } else {
             System.out.println("La reserva no se realizó.");
@@ -282,11 +280,11 @@ public class Main {
     }
 
     // METODO PARA GUARDAR DATOS DEL USUARIO Y HACER LA RESERVA
-    public static void reservarAlojamiento(String nombreUsuario, String apellidoUsuario, String correoUsuario, String nacionalidadUsuario, int telefonoUsuario, String horaLlegadaUsuario, String[] habitacionesSeleccionadas, String nacimientoUsuario) {
+    public static void reservarAlojamiento(String nombreUsuario, String apellidoUsuario, String correoUsuario, String nacionalidadUsuario, int telefonoUsuario, String horaLlegadaUsuario, String[] habitacionesSeleccionadas, String nacimientoUsuario, LocalDate inicioEstadia, LocalDate finEstadia) {
 
         // Crear la reserva
         Reserva reserva = new Reserva(nombreUsuario, apellidoUsuario, correoUsuario, nacionalidadUsuario, telefonoUsuario,
-                horaLlegadaUsuario, habitacionesSeleccionadas, nacimientoUsuario);
+                horaLlegadaUsuario, habitacionesSeleccionadas, nacimientoUsuario, inicioEstadia, finEstadia);
 
         reservas[reservaCount] = reserva;
         // Confirmar la reserva
@@ -298,6 +296,10 @@ public class Main {
     // METODO PARA LA GESTION Y ACTUALIZACION DE LAS RESERVAS
     public static void actualizarReserva() {
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Estas seguro que quieres actualizar la reserva?");
+        System.out.println("************************************************");
+        alojamientos[hotelSeleccionadoPorUsuarioIndex].mostrarInfo(reservas[reservaCount].getInicioEstadia(), reservas[reservaCount].getFinEstadia());
+        System.out.println("************************************************");
 
         System.out.println("Ingrese su correo electrónico para autenticar su reserva:");
         String correo = scanner.nextLine();

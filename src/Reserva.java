@@ -1,4 +1,4 @@
-import java.util.List;
+import java.time.LocalDate;
 
 public class Reserva implements IReserva{
     private String nombreUsuario;
@@ -8,10 +8,12 @@ public class Reserva implements IReserva{
     private int telefonoUsuario;
     private String horaLlegadaUsuario;
     private String nacimientoUsuario;
-    private String[] habitacionesSeleccionadas;  // Lista de habitaciones reservadas
+    private String[] habitacionesSeleccionadas;
+    private LocalDate inicioEstadia;
+    private LocalDate finEstadia;
 
     public Reserva(String nombreUsuario, String apellidoUsuario, String correoUsuario, String nacionalidadUsuario,
-                   int telefonoUsuario, String horaLlegadaUsuario, String[] habitacionesSeleccionadas, String nacimientoUsuario) {
+                   int telefonoUsuario, String horaLlegadaUsuario, String[] habitacionesSeleccionadas, String nacimientoUsuario, LocalDate inicioEstadia, LocalDate finEstadia) {
         this.nombreUsuario = nombreUsuario;
         this.apellidoUsuario = apellidoUsuario;
         this.correoUsuario = correoUsuario;
@@ -20,6 +22,8 @@ public class Reserva implements IReserva{
         this.horaLlegadaUsuario = horaLlegadaUsuario;
         this.habitacionesSeleccionadas = habitacionesSeleccionadas;
         this.nacimientoUsuario = nacimientoUsuario;
+        this.inicioEstadia = inicioEstadia;
+        this.finEstadia = finEstadia;
     }
 
     public String getNombreUsuario() {
@@ -42,6 +46,14 @@ public class Reserva implements IReserva{
         return nacimientoUsuario;
     }
 
+    public LocalDate getFinEstadia() {
+        return finEstadia;
+    }
+
+    public LocalDate getInicioEstadia() {
+        return inicioEstadia;
+    }
+
     @Override
     public String toString() {
         StringBuilder infoReserva = new StringBuilder();
@@ -57,4 +69,5 @@ public class Reserva implements IReserva{
         }
         return infoReserva.toString();
     }
+
 }

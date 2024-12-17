@@ -110,6 +110,8 @@ public abstract class Alojamiento {
     // metodo abstracto que debe ser implementado por las clases hijas
     public abstract void mostrarInfo(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas, int adultos, int ninos, boolean incluyeAlmuerzo, boolean incluyeRefrigerio);
 
+    public abstract void mostrarInfo(LocalDate inicioEstadia, LocalDate finEstadia);
+
     // metodo para calcular el precio total de la estadía
     public double calcularPrecioTotal(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas) {
         // Calculando los días de estadía
