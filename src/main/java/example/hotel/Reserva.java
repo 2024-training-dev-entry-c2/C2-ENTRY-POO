@@ -1,6 +1,6 @@
 package example.hotel;
 
-public class Reserva implements Reservable {
+public class Reserva implements IReservable {
     private int id;
     private Alojamiento alojamiento;
     private Habitacion habitacion;
