@@ -201,7 +201,7 @@ public class Main {
                         List<String> availableRooms = confirmLodging(lodgingName, startDate, endDate, adults , children, roomsRequired);
                         List<String> selectedRooms = new ArrayList<>();
 
-                        if (!availableRooms.isEmpty()) {
+                        if (!availableRooms.isEmpty() && category.equalsIgnoreCase("Hotel")) {
                             System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:\n");
                             int countSelectedRooms = 0;
                             for (String room : availableRooms) {
@@ -266,8 +266,8 @@ public class Main {
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
                     String dayBirth = input.nextLine();
 
-                    //String reservationInfo = consultReservations(email, dayBirth);
-                    //System.out.println(reservationInfo);
+                    String reservationInfo = consultReservations(email, LocalDate.parse(dayBirth));
+                    System.out.println(reservationInfo);
                     break;
                 case 3:
                     System.out.println("\n*-------------------- Modificar Reservación ----------------*");
@@ -276,7 +276,7 @@ public class Main {
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
                     String modDayBirth = input.nextLine();
 
-                    //modifyReservation(modEmail, modDayBirth);
+                    modifyReservation(modEmail, LocalDate.parse(modDayBirth));
                     break;
                 case 0:
                     System.out.println("\n¡Gracias por usar nuestros servicios!\n");
@@ -374,36 +374,35 @@ public class Main {
     }
 
 
-
-
-    /*
     //Method to consult the reservations
-    public static String consultReservations(String email, String dayBirth) {
+    public static String consultReservations(String email, LocalDate birthDate) {
         StringBuilder result = new StringBuilder();
         boolean found = false;
 
-        for (List<String> reservation : reservations) {
-            if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
-                found = true;
+        for (Lodging lodging : lodgings) {
+            for (Reservation reservation : lodging.getReservations()) {
+                if (reservation.getEmail().equalsIgnoreCase(email) && reservation.getBirthDay().equals(birthDate)) {
+                    found = true;
 
-                String lodgingName = reservation.get(6);
-                String lodgingCategory = getLodgingCategory(lodgingName);
+                    result.append("\n*---------------- Detalles de la Reservación ----------------*\n")
+                          .append("Nombre: ").append(reservation.getName()).append(" ").append(reservation.getLastname()).append("\n")
+                          .append("Correo: ").append(reservation.getEmail()).append("\n")
+                          .append("Alojamiento: ").append(lodging.getName()).append("\n")
+                          .append("Categoría: ").append(lodging.getCategory()).append("\n")
+                          .append("Fecha de llegada: ").append(reservation.getStartDate()).append("\n")
+                          .append("Fecha de salida: ").append(reservation.getEndDate()).append("\n");
 
-                result.append("\n*---------------- Detalles de la Reservación ----------------*\n")
-                        .append("Nombre: ").append(reservation.get(0)).append(" ").append(reservation.get(1)).append("\n")
-                        .append("Correo: ").append(reservation.get(2)).append("\n")
-                        .append("Alojamiento: ").append(lodgingName).append("\n")
-                        .append("Categoría: ").append(lodgingCategory).append("\n")
-                        .append("Fecha de llegada: ").append(reservation.get(7)).append("\n")
-                        .append("Fecha de salida: ").append(reservation.get(8)).append("\n");
+                    if (lodging instanceof IRoomReservable) {
+                        result.append("Habitaciones reservadas: \n");
+                        for (Room room : reservation.getRooms()) {
+                            result.append("  - ").append(room.getType()).append("\n");
+                        }
+                    }
 
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    result.append("Habitaciones reservadas: ").append(reservation.get(11)).append("\n");
+                    result.append("Hora de llegada: ").append(reservation.getArrivedTime()).append("\n")
+                          .append("Nacionalidad: ").append(reservation.getNationality()).append("\n")
+                          .append("Teléfono: ").append(reservation.getNumberPhone()).append("\n");
                 }
-
-                result.append("Hora de llegada: ").append(reservation.get(5)).append("\n")
-                        .append("Nacionalidad: ").append(reservation.get(3)).append("\n")
-                        .append("Teléfono: ").append(reservation.get(4)).append("\n");
             }
         }
 
@@ -414,91 +413,48 @@ public class Main {
         return result.toString();
     }
 
-    // Auxiliary method for obtaining the category of a lodging by name
-    private static String getLodgingCategory(String lodgingName) {
-        for (List<String> lodging : lodgings) {
-            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                return lodging.get(2); // Índice de la categoría
-            }
-        }
-        return "Desconocida"; // Si no se encuentra
-    }
-    */
 
     /* ################################# MODIFY RESERVATION ################################# */
-    /*
-    public static void modifyReservation(String email, String dayBirth) {
+    public static void modifyReservation(String email, LocalDate birthDate) {
         Scanner input = new Scanner(System.in);
         boolean found = false;
 
-        for (List<String> reservation : reservations) {
-            if (reservation.get(2).equalsIgnoreCase(email) && reservation.get(12).equalsIgnoreCase(dayBirth)) {
-                found = true;
+        for (Lodging lodging : lodgings) {
+            for (Reservation reservation : lodging.getReservations()) {
+                if (reservation.getEmail().equalsIgnoreCase(email) && reservation.getBirthDay().equals(birthDate)) {
+                    found = true;
 
-                String lodgingName = reservation.get(6);
-                String lodgingCategory = getLodgingCategory(lodgingName);
+                    System.out.println("\n*---------------- Detalles de la Reservación ----------------*\n");
+                    System.out.println("Alojamiento actual: " + lodging.getName());
+                    System.out.println("Categoría: " + lodging.getCategory());
 
-                System.out.println("\n*---------------- Detalles de la Reservación ----------------*\n");
-                System.out.println("Alojamiento actual: " + lodgingName);
-                System.out.println("Categoría: " + lodgingCategory);
-
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    System.out.println("Habitaciones reservadas: " + reservation.get(11));
-                }
-
-                System.out.println("\n¿Qué deseas modificar?");
-
-                if (lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    System.out.println("1: Cambio de habitación");
-                }
-                System.out.println("2: Cambio de alojamiento");
-
-                int choice = input.nextInt();
-                input.nextLine();
-
-                if (choice == 1 && lodgingCategory.equalsIgnoreCase("Hotel")) {
-                    System.out.println("\nHabitaciones actuales: " + reservation.get(11));
-                    System.out.println("Indica el tipo y la cantidad de habitación(es) que deseas cambiar (ejemplo: 'Habitación Estándar x1'): ");
-                    String oldRoomEntry = input.nextLine();
-
-                    String[] oldRoomDetails = oldRoomEntry.split(" x");
-                    String oldRoomType = oldRoomDetails[0].trim();
-                    int quantityToChange = Integer.parseInt(oldRoomDetails[1]);
-
-                    String currentRooms = reservation.get(11);
-                    int currentCount = getRoomCount(currentRooms, oldRoomType);
-
-                    if (quantityToChange > currentCount) {
-                        System.out.println("Error: No tienes suficientes habitaciones de este tipo reservadas para cambiar.");
-                        return;
-                    }
-
-                    for (List<String> lodging : lodgings) {
-                        if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                            System.out.println("Habitaciones disponibles:");
-                            String[] roomDetails = lodging.get(7).split(";");
-                            for (String room : roomDetails) {
-                                String[] details = room.split("\\|");
-                                System.out.println("- " + details[0] + " (Capacidad: " + details[3] + " adultos, " + details[4] + " niños)");
-                            }
-
-                            System.out.println("Selecciona la nueva habitación (ejemplo: 'Habitación Deluxe'): ");
-                            String newRoomType = input.nextLine();
-
-                            // Update reserved rooms
-                            String updatedRooms = updateRoomEntry(currentRooms, oldRoomType, newRoomType, quantityToChange);
-                            reservation.set(11, updatedRooms);
-
-                            System.out.println("\nHabitaciones actualizadas con éxito.\n Nuevas habitaciones reservadas: " + updatedRooms);
-                            return;
+                    if (lodging instanceof IRoomReservable hotel) {
+                        System.out.println("Habitaciones reservadas: ");
+                        for (Room room : reservation.getRooms()) {
+                            System.out.println("- " + room.getType());
                         }
                     }
-                } else if (choice == 2) {
-                    reservations.remove(reservation);
-                    System.out.println("\nReservación eliminada. Por favor, crea una nueva reservación.");
-                    return;
-                } else {
-                    System.out.println("\nOpción no válida o no aplicable para esta categoría.");
+
+                    System.out.println("\n¿Qué deseas modificar?");
+                    if (lodging instanceof IRoomReservable) {
+                        System.out.println("1: Cambio de habitación");
+                    }
+                    System.out.println("2: Cambio de alojamiento");
+
+                    int choice = input.nextInt();
+                    input.nextLine();
+
+                    if (choice == 1 && lodging instanceof IRoomReservable hotel) {
+                        changeRoom(reservation, lodging, input);
+                        return;
+                    } else if (choice == 2) {
+                        lodging.getReservations().remove(reservation);
+                        System.out.println("\nReservación eliminada. Por favor, crea una nueva reservación.");
+                        return;
+                    } else {
+                        System.out.println("\nOpción no válida o no aplicable para esta categoría.");
+                        return;
+                    }
                 }
             }
         }
@@ -507,48 +463,55 @@ public class Main {
             System.out.println("No se encontró ninguna reservación con los datos proporcionados.");
         }
     }
-
-    // Auxiliary method for counting rooms of a specific type
-    private static int getRoomCount(String currentRooms, String roomType) {
-        currentRooms = currentRooms.replace("[", "").replace("]", "").trim();
-        String[] roomEntries = currentRooms.split(", ");
-        for (String entry : roomEntries) {
-            if (entry.startsWith(roomType)) {
-                String[] parts = entry.split(" x");
-                return Integer.parseInt(parts[1]);
-            }
+    private static void changeRoom(Reservation reservation, Lodging hotel, Scanner input) {
+        System.out.println("\nHabitaciones actuales:");
+        for (Room room : reservation.getRooms()) {
+            System.out.println("- " + room.getType());
         }
-        return 0;
+
+        System.out.println("Indica el tipo de habitación que deseas cambiar (ejemplo: 'Suite'): ");
+        String oldRoomType = input.nextLine();
+
+        List<Room> currentRooms = reservation.getRooms();
+        long count = currentRooms.stream()
+                .filter(room -> room.getType().equalsIgnoreCase(oldRoomType))
+                .count();
+
+        if (count == 0) {
+            System.out.println("No tienes habitaciones del tipo '" + oldRoomType + "' reservadas.");
+            return;
+        }
+
+        System.out.println("Habitaciones disponibles:");
+        Hotel hotell = (Hotel) hotel;
+        List<Room> availableRooms = hotell.getRooms().stream()
+                .filter(room -> room.getType().equalsIgnoreCase(oldRoomType) ||
+                        room.isAvailable(hotel.getReservations(), reservation.getStartDate(), reservation.getEndDate()))
+                .toList();
+
+        for (Room room : availableRooms) {
+            System.out.println("- " + room.getType() + " (Capacidad: " + room.getCapacity() + ", Precio: $" + room.getPricePerNight() + ")");
+        }
+
+        System.out.println("Selecciona el nuevo tipo de habitación: ");
+        String newRoomType = input.nextLine();
+
+        Room newRoom = availableRooms.stream()
+                .filter(room -> room.getType().equalsIgnoreCase(newRoomType))
+                .findFirst()
+                .orElse(null);
+
+        if (newRoom == null) {
+            System.out.println("La habitación seleccionada no está disponible.");
+            return;
+        }
+
+        currentRooms.removeIf(room -> room.getType().equalsIgnoreCase(oldRoomType));
+        currentRooms.add(newRoom);
+
+        System.out.println("Cambio de habitación realizado con éxito.");
+        System.out.println("Nuevas habitaciones reservadas: ");
+        currentRooms.forEach(room -> System.out.println("- " + room.getType()));
     }
-
-
-    // Auxiliary method for updating reserved rooms
-    private static String updateRoomEntry(String currentRooms, String oldRoomType, String newRoomType, int quantityToChange) {
-        StringBuilder updatedRooms = new StringBuilder();
-        currentRooms = currentRooms.replace("[", "").replace("]", "").trim();
-        String[] roomEntries = currentRooms.split(", ");
-
-        for (String entry : roomEntries) {
-            if (entry.startsWith(oldRoomType)) {
-                String[] parts = entry.split(" x");
-                int currentCount = Integer.parseInt(parts[1]);
-                int remainingCount = currentCount - quantityToChange;
-
-                if (remainingCount > 0) {
-                    updatedRooms.append(oldRoomType).append(" x").append(remainingCount).append(", ");
-                }
-                updatedRooms.append(newRoomType).append(" x").append(quantityToChange).append(", ");
-            } else {
-                updatedRooms.append(entry).append(", ");
-            }
-        }
-
-        if (updatedRooms.length() > 0) {
-            updatedRooms.setLength(updatedRooms.length() - 2);
-        }
-
-        return "[" + updatedRooms.toString() + "]";
-    }
-    */
 }
 
