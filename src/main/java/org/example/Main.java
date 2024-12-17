@@ -37,29 +37,35 @@ public class Main {
         do {
             System.out.println("\n¡Bienvenido a Booking Hoteles!");
             System.out.println("1. Buscar hoteles con parámetros");
-            System.out.println("2. Realizar reserva");
-            System.out.println("3. Ver reservas");
-            System.out.println("4. Salir");
+            System.out.println("2. Confirmar disponibilidad");
+            System.out.println("3. Realizar reserva");
+            System.out.println("4. Ver reservas");
+            System.out.println("5. Salir");
             System.out.print("Seleccione una opción: ");
+
             opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer
 
             switch (opcion) {
                 case 1:
                     buscarHotelesConParametros(scanner, hoteles);
                     break;
                 case 2:
-                    realizarReserva(scanner, hoteles, verReserva);
+                    confirmarDisponibilidad(scanner, hoteles);
                     break;
                 case 3:
-                    verReserva.verReservas();
+                    realizarReserva(scanner, hoteles, verReserva);
                     break;
                 case 4:
+                    verReserva.verReservas();
+                    break;
+                case 5:
                     System.out.println("¡Gracias por usar Booking Hoteles!");
                     break;
                 default:
-                    System.out.println("Opción no válida, intente de nuevo.");
+                    System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcion != 4);
+        } while (opcion != 5);
 
         scanner.close();
     }
@@ -165,5 +171,22 @@ public class Main {
             ajuste = 0.15 * precioBase; // Aumento del 15%
         }
         return ajuste;
+    }
+
+    private static void confirmarDisponibilidad(Scanner scanner, Hotel[] hoteles) {
+        System.out.print("Ingrese el nombre del hotel: ");
+        String hotelNombre = scanner.nextLine();
+
+        // Buscar el hotel y confirmar disponibilidad
+        for (Hotel hotel : hoteles) {
+            if (hotel.getNombre().equalsIgnoreCase(hotelNombre)) {
+                System.out.print("Cantidad de habitaciones: ");
+                int cantidad = scanner.nextInt();
+                scanner.nextLine(); // Limpiar el buffer
+                hotel.confirmarDisponibilidad(cantidad); // Llamada al método en Hotel
+                return;
+            }
+        }
+        System.out.println("El hotel ingresado no existe.");
     }
 }

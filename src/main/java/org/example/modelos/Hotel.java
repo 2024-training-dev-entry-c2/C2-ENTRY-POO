@@ -49,4 +49,23 @@ public class Hotel extends Alojamiento {
         }
         return minimo;
     }
+
+    public void confirmarDisponibilidad(int cantidadHabitaciones) {
+        System.out.println("\nHabitaciones disponibles:");
+        boolean disponible = false;
+
+        // Recorre todas las habitaciones para verificar disponibilidad
+        for (Habitacion habitacion : habitaciones) {
+            if (habitacion.tieneDisponibilidad(cantidadHabitaciones)) {
+                disponible = true;
+                habitacion.mostrarDetalles(); // Muestra detalles de la habitación disponible
+            }
+        }
+
+        // Si no hay habitaciones disponibles
+        if (!disponible) {
+            System.out.println("No hay habitaciones disponibles que cumplan con la cantidad solicitada.");
+        }
+    }
+
 }
