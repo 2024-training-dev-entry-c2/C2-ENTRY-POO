@@ -4,15 +4,18 @@ import java.util.List;
 
 public class Activity extends Stay {
   private double pricePerDay;
+  private String hostingName;
 
-  public Activity(String typeOfRoom, String description, double pricePerDay,int capacityAvailability, int quantity) {
+  public Activity(String hostingName, String typeOfRoom, String description, double pricePerDay,int capacityAvailability, int quantity) {
     super(typeOfRoom, description, capacityAvailability, quantity);
     this.pricePerDay = pricePerDay;
+    this.hostingName = hostingName;
   }
 
-  public Activity(String typeOfRoom, String description, double pricePerDay, int capacityAvailability) {
+  public Activity(String hostingName, String typeOfRoom, String description, double pricePerDay, int capacityAvailability) {
     super(typeOfRoom, description, capacityAvailability);
     this.pricePerDay = pricePerDay;
+    this.hostingName = hostingName;
   }
 
   public Activity(double pricePerDay) {
@@ -27,24 +30,21 @@ public class Activity extends Stay {
     this.pricePerDay = pricePerDay;
   }
 
+  public String getHostingName() {
+    return hostingName;
+  }
+
+  public void setHostingName(String hostingName) {
+    this.hostingName = hostingName;
+  }
+
   @Override
   public String printStay() {
-    return "  Tipo de actividad: " + typeOfRoom + "\n" +
+    return "  Hotel: " + hostingName + "\n" +
+           "  Tipo de actividad: " + typeOfRoom + "\n" +
            "  Descripción: " + description + "\n" +
            "  Precio por noche: $" + pricePerDay + "\n" +
            "  Disponibilidad: " + capacityAvailability + "\n" +
            "  Cantidad: " + quantity + "\n";
-  }
-
-  public static double getMinPrice(List<Activity> activities) {
-    double minPrice = Double.MAX_VALUE;
-
-    for (Activity activity : activities) {
-      if (activity.getPricePerDay() < minPrice) {
-        minPrice = activity.getPricePerDay();
-      }
-    }
-
-    return minPrice == Double.MAX_VALUE ? 0.0 : minPrice;
   }
 }

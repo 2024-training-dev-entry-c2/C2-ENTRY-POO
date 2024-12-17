@@ -1,6 +1,15 @@
 package com.example.hotel.inputHandler;
 
+import com.example.hotel.data.BookingData;
+import com.example.hotel.models.Hosting;
+import com.example.hotel.models.HostingWithActivity;
+import com.example.hotel.models.HostingWithRoom;
+import com.example.hotel.models.Room;
+import com.example.hotel.services.HostingService;
+import com.example.hotel.services.RoomService;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public class Menu {
   public int showOptions() {
@@ -44,6 +53,9 @@ public class Menu {
   }
 
   public void makeReservation() {
+    HostingService hostingService = new HostingService();
+  RoomService roomService = new RoomService();
+
     System.out.println("\n============================================================");
     System.out.println("                  RESERVA DE ALOJAMIENTO                    ");
     System.out.println("============================================================");
@@ -69,7 +81,14 @@ public class Menu {
     int numberOfChildren = InputValidator.readInt("Ingrese el número de niños: ");
     int numberOfRooms = InputValidator.readInt("Ingrese el número de habitaciones: ");
 
-    // LOGICA
+    BookingData bookingData = new BookingData();
+    List<Room> rooms = bookingData.createRooms();
+    List<Hosting> hostingWithRooms = bookingData.createHostingWithRoomOrActivity(housing);
+
+    Hosting hosting = hostingService.createDesiredAccommodation(rooms, hostingWithRooms, city, housing, startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+    List<Room> selectedRooms = roomService.confirmRooms(rooms, hosting.getName(), startDate, endDate, numberOfAdults, numberOfChildren, numberOfRooms);
+
+    hostingService.calculatePriceWithRooms(hosting, selectedRooms, startDate, endDate, numberOfRooms);
 
     System.out.println("\n============================================================");
     System.out.println("                DATOS DE LA PERSONA TITULAR                 ");

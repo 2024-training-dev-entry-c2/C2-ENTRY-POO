@@ -1,9 +1,6 @@
 package com.example.hotel.inputHandler;
 
 import com.example.hotel.data.BookingData;
-import com.example.hotel.models.Hosting;
-import com.example.hotel.models.HostingWithActivity;
-import com.example.hotel.models.HostingWithRoom;
 
 import java.util.List;
 import java.util.Scanner;
