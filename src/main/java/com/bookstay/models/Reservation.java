@@ -46,6 +46,17 @@ public class Reservation {
         this.rooms = rooms;
     }
 
+    @Override
+    public String toString() {
+        return "Reserva de: " + name + " " + lastname +
+                "\nEmail: " + email +
+                "\nFecha de llegada: " + startDate +
+                "\nFecha de salida: " + endDate +
+                "\nNúmero de adultos: " + adults +
+                "\nNúmero de niños: " + children +
+                "\nHabitaciones: " + (rooms != null ? rooms.toString() : "N/A");
+    }
+
     public String getName() {
         return name;
     }

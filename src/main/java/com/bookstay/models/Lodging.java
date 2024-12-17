@@ -23,11 +23,19 @@ public abstract class Lodging {
         this.reservations = new ArrayList<>();
     }
 
-    public abstract double calculatePrice(int adults, int children, int days, Object... params);
+
+    public abstract double calculatePrice(int adults, int children, int days);
 
     public abstract boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests);
 
-    public double calculateDiscountOrIncrement(LocalDate startDate, LocalDate endDate){
+    public abstract void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded);
+
+
+    public void addReservation(Reservation reservation) {
+        reservations.add(reservation);
+    }
+
+    public static double calculateDiscountOrIncrement(LocalDate startDate, LocalDate endDate){
         LocalDate range1Start = LocalDate.of(startDate.getYear(), startDate.getMonth(), 5);
         LocalDate range1End = LocalDate.of(startDate.getYear(), startDate.getMonth(), 10);
         LocalDate range2Start = LocalDate.of(startDate.getYear(), startDate.getMonth(), 10);
@@ -51,7 +59,7 @@ public abstract class Lodging {
         return 0;
     }
 
-    private long calculateIntersectionDays(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
+    public static long calculateIntersectionDays(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
         LocalDate maxStart = start1.isAfter(start2) ? start1 : start2;
         LocalDate minEnd = end1.isBefore(end2) ? end1 : end2;
 
@@ -61,15 +69,12 @@ public abstract class Lodging {
         return 0;
     }
 
-    public void addReservation(Reservation reservation) {
-        reservations.add(reservation);
-    }
+
+    // Getters y setters
 
     public List<Reservation> getReservations() {
         return reservations;
     }
-
-    // Getters y setters
     public String getName() {
         return name;
     }

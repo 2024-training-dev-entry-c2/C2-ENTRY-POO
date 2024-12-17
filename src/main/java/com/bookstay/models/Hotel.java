@@ -1,10 +1,11 @@
 package com.bookstay.models;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Hotel extends Lodging{
+public class Hotel extends Lodging implements IRoomReservable{
     private List<Room> rooms;
 
     public Hotel(String name, String city, double rating, String description) {
@@ -18,9 +19,13 @@ public class Hotel extends Lodging{
     }
 
     @Override
-    public double calculatePrice(int adults, int children, int days, Object... params) {
-        if (params.length == 1 && params[0] instanceof Integer) {
-            int requiredRooms = (int) params[0];
+    public double calculatePrice(int adults, int children, int days) {
+        System.out.println("No aplica a este alojamiento.");
+        return 0;
+    }
+
+
+    public double calculatePrice(int adults, int children, int days, int requiredRooms) {
             double lowestPrice = Double.MAX_VALUE;
             for (Room room : rooms) {
                 if (room.getPricePerNight() < lowestPrice) {
@@ -28,18 +33,21 @@ public class Hotel extends Lodging{
                 }
             }
             return lowestPrice * days * requiredRooms;
-        } else if (params.length == 1 && params[0] instanceof List) {
-            List<Room> selectedRooms = (List<Room>) params[0];
-            double totalPrice = 0;
-            for (Room room : selectedRooms) {
-                totalPrice += room.getPricePerNight() * days;
-            }
-            return totalPrice;
-        }
-        throw new IllegalArgumentException("Invalid parameters for calculatePrice");
     }
 
-    @Override
+    public double calculatePrice(int adults, int children, int days, List<Room> selectedRooms) {
+        double totalPrice = 0;
+        for (Room room : selectedRooms) {
+            totalPrice += room.getPricePerNight() * days;
+        }
+        return totalPrice;
+    }
+
+    public boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests){
+        System.out.println("No aplica a este alojamiento.");
+        return false;
+    }
+
     public boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests, int requiredRooms) {
         int roomsNeeded = requiredRooms > 0 ? requiredRooms : (int) Math.ceil((double) guests / rooms.get(0).getCapacity());
         int roomsAvailable = 0;
@@ -58,12 +66,31 @@ public class Hotel extends Lodging{
     }
 
     @Override
+    public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        double pricePerNight = calculatePrice(adults, children, 1, roomsNeeded);
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
+        double baseTotalPrice = calculatePrice(adults, children, (int) days, roomsNeeded);
+        double adjustment = calculateDiscountOrIncrement(startDate, endDate);
+        double totalAdjusted;
+        System.out.println(this.toString());
+        System.out.println("Precio por noche: $" + pricePerNight);
+        System.out.println("Precio base total: $" + baseTotalPrice);
+
+        if(adjustment < 0){
+            System.out.println("Descuento del " + adjustment * 100 + "%");
+        }else if(adjustment > 0){
+            System.out.println("Incremento del " + adjustment * 100 + "%");
+        }
+        totalAdjusted = baseTotalPrice + (baseTotalPrice * adjustment);
+        System.out.println("Precio final: $" + totalAdjusted);
+    }
+
+    @Override
     public String toString() {
-        return "+------------------------------------+" +
-                "       " + name + '\n' +
+        return  name + '\n' +
+                "+------------------------------------+" + '\n' +
                 "Calificación: " + rating +'\n' +
-                "Descripción: " + description + '\n' +
-                "+------------------------------------+"
+                "Descripción: " + description + '\n'
                 ;
     }
 

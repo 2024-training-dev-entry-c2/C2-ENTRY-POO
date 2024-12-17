@@ -1,9 +1,6 @@
 package com.bookstay;
 
-import com.bookstay.models.Apartment;
-import com.bookstay.models.DayResort;
-import com.bookstay.models.FarmStay;
-import com.bookstay.models.Hotel;
+import com.bookstay.models.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -11,7 +8,7 @@ import java.util.*;
 
 public class Main {
     //Global variables
-    static List<Object> lodgings = new ArrayList<>();
+    static List<Lodging> lodgings = new ArrayList<>();
 
     public static void main(String[] args) {
         initializeData();
@@ -159,6 +156,7 @@ public class Main {
                         System.out.println("Escribe el día inicial de la estadía (YYYY-MM-dd): ");
                     }
                     String startDay = input.nextLine();
+                    LocalDate startDate = LocalDate.parse( startDay );
                     String endDay;
                     if(category.equalsIgnoreCase("Día de Sol")){
                         endDay = startDay;
@@ -166,6 +164,8 @@ public class Main {
                         System.out.println("Escribe el día final de la estadía (YYYY-MM-dd): ");
                         endDay = input.nextLine();
                     }
+                    LocalDate endDate = LocalDate.parse( endDay );
+
                     System.out.println("Cantidad de adultos: ");
                     int adults = input.nextInt();
                     input.nextLine();
@@ -182,15 +182,15 @@ public class Main {
                         roomsRequired = 0;
                     }
 
-                    List<List<String>> results = searchLodgings(city, category, startDay, endDay, adults, children, roomsRequired);
+                    List<Lodging> results = searchLodgings(city, category, startDate , endDate, adults, children, roomsRequired);
                     if(results.isEmpty()){
                         System.out.println("\nNo se han encontrado resultados a la búsqueda.");
                         System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
                         break;
                     }
                     System.out.println("\nLos resultados obtenidos en la búsqueda son: \n");
-                    for(List<String> result : results){
-                        printLodgingInformation(result, startDay, endDay, roomsRequired, adults, children);
+                    for(Lodging result : results){
+                        printLodgingInformation(result, startDate, endDate, roomsRequired, adults, children);
                     }
 
                     System.out.println("\n¿Deseas hacer una reservación? (Si - No)");
@@ -200,10 +200,10 @@ public class Main {
                         System.out.println("\n*------------------ Iniciar la Reservación --------------*");
                         System.out.println("Escribe el nombre del alojamiento en que deseas realizar la reserva: ");
                         String lodgingName = input.nextLine();
-                        List<String> availableRooms = confirmLodging(lodgingName, startDay, endDay, adults , children, roomsRequired);
+                        //List<String> availableRooms = confirmLodging(lodgingName, startDay, endDay, adults , children, roomsRequired);
                         List<String> selectedRooms = new ArrayList<>();
 
-                        if (!availableRooms.isEmpty()) {
+                        /*if (!availableRooms.isEmpty()) {
                             System.out.println("\nSelecciona cuántas habitaciones deseas reservar para cada tipo:\n");
                             int countSelectedRooms = 0;
                             for (String room : availableRooms) {
@@ -230,7 +230,7 @@ public class Main {
 
                                 System.out.println("\nNo hay habitaciones disponibles en este hotel.");
                             }
-                        }
+                        }*/
                         System.out.println("\n¿Confirmas la selección? (Si - No): ");
                         String selection = input.nextLine();
                         if(selection.equalsIgnoreCase("Si")){
@@ -250,8 +250,8 @@ public class Main {
                             System.out.println("Hora de llegada (HH:mm): ");
                             String arrivalTime = input.nextLine();
 
-                            String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDay, endDay, adults, children, selectedRooms, dayBirth);
-                            System.out.println(reservationMessage);
+                            //String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDay, endDay, adults, children, selectedRooms, dayBirth);
+                            //System.out.println(reservationMessage);
                         }else{
                             System.out.println("\nProceso de reserva cancelado.");
                             System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
@@ -268,8 +268,8 @@ public class Main {
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
                     String dayBirth = input.nextLine();
 
-                    String reservationInfo = consultReservations(email, dayBirth);
-                    System.out.println(reservationInfo);
+                    //String reservationInfo = consultReservations(email, dayBirth);
+                    //System.out.println(reservationInfo);
                     break;
                 case 3:
                     System.out.println("\n*-------------------- Modificar Reservación ----------------*");
@@ -278,7 +278,7 @@ public class Main {
                     System.out.println("Ingresa tu fecha de nacimiento (YYYY-MM-dd): ");
                     String modDayBirth = input.nextLine();
 
-                    modifyReservation(modEmail, modDayBirth);
+                    //modifyReservation(modEmail, modDayBirth);
                     break;
                 case 0:
                     System.out.println("\n¡Gracias por usar nuestros servicios!\n");
@@ -293,32 +293,21 @@ public class Main {
     }
 
     /* ################################# SEARCH DATA ################################# */
-    public static List<Object> searchLodgings(String city, String category, String startDate, String endDate, int adults, int children, int roomsNeeded) {
-        List<Object> results = new ArrayList<>();
-
+    public static List<Lodging> searchLodgings(String city, String category, LocalDate startDate, LocalDate endDate, int adults, int children, int requiredRooms) {
+        List<Lodging> results = new ArrayList<>();
         int totalPeople = adults + children;
 
-        for (Object lodging : lodgings) {
+        for (Lodging lodging : lodgings) {
             if (lodging instanceof Hotel && category.equalsIgnoreCase("Hotel")) {
                 Hotel hotel = (Hotel) lodging;
-                if (hotel.getCity().equalsIgnoreCase(city) && hotel.isAvailable(startDate, endDate, totalPeople)) {
+                if (hotel.getCity().equalsIgnoreCase(city) &&
+                        hotel.isAvailable(startDate, endDate, totalPeople, requiredRooms)) {
                     results.add(hotel);
                 }
-            } else if (lodging instanceof Apartment && category.equalsIgnoreCase("Apartamento")) {
-                Apartment apartment = (Apartment) lodging;
-                if (apartment.getCity().equalsIgnoreCase(city) && apartment.isAvailable(startDate,endDate,totalPeople)) {
-                    results.add(apartment);
-                }
-            } else if (lodging instanceof FarmStay && category.equalsIgnoreCase("Finca")) {
-                FarmStay farmStay = (FarmStay) lodging;
-                if (farmStay.getCity().equalsIgnoreCase(city) && farmStay.isAvailable(startDate,endDate,totalPeople)) {
-                    results.add(farmStay);
-                }
-            } else if (lodging instanceof DayResort && category.equalsIgnoreCase("Día de sol")) {
-                DayResort dayResort = (DayResort) lodging;
-                if (dayResort.getCity().equalsIgnoreCase(city) && dayResort.isAvailable(startDate, endDate, totalPeople)) {
-                    results.add(dayResort);
-                }
+            } else if (lodging.getCity().equalsIgnoreCase(city) &&
+                    lodging.getCategory().equalsIgnoreCase(category) &&
+                    lodging.isAvailable(startDate, endDate, totalPeople)) {
+                results.add(lodging);
             }
         }
         return results;
@@ -327,40 +316,22 @@ public class Main {
 
 
     // Method to print the information of the lodgings
-    public static void printLodgingInformation(Object lodging, int adults, int children, int roomsNeeded) {
-        double pricePerNight;
-        if (lodging instanceof Hotel) {
-            Hotel hotel = (Hotel) lodging;
-            pricePerNight = hotel.calculatePrice(adults, children, roomsNeeded)
-            hotel.toString();
-            System.out.println("Precio por noche: " + pricePerNight);
-        }else{
-            System.out.println("Precio por noche: " + pricePerNight);
-        }
-        System.out.println("Precio base total: " + baseTotalPrice);
-        if (adjustment > 0) {
-            System.out.println("Ajuste: Incremento de " + adjustment * 100 + "%");
-        } else if (adjustment < 0) {
-            System.out.println("Ajuste: Descuento de " + Math.abs(adjustment * 100) + "%");
-        } else {
-            System.out.println("Ajuste: Sin cambios.");
-        }
-        System.out.println("Precio total: " + adjustedTotalPrice);
+    public static void printLodgingInformation(Lodging lodging, LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
+        lodging.printDetails(startDate, endDate, adults, children, roomsNeeded);
         System.out.println("+------------------------------------+\n");
     }
 
 
 
     // Method for calculating the number of days between two dates
-    public static long calculateDaysBetween(String startDate, String endDate) {
-        LocalDate start = LocalDate.parse(startDate);
-        LocalDate end = LocalDate.parse(endDate);
+    public static int calculateDaysBetween(LocalDate startDate, LocalDate endDate) {
+        long days = ChronoUnit.DAYS.between(startDate, endDate);
 
-        long days = ChronoUnit.DAYS.between(start, end);
-        return (days == 0) ? 1 : days;
+        return (days == 0) ? 1 : (int) days;
     }
 
     /* ################################# CONFIRM DATA ################################# */
+    /*
     public static List<String> confirmLodging(String lodgingName, String startDate, String endDate, int adults, int children, int roomsNeeded) {
         for (List<String> lodging : lodgings) {
             if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
@@ -393,8 +364,9 @@ public class Main {
         }
         return new ArrayList<>();
     }
-
+    */
     /* ################################# MAKE RESERVATION ################################# */
+    /*
     public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime, String lodgingName, String startDate, String endDate, int adults, int children, List<String> selectedRooms, String dayBirth) {
         for (List<String> lodging : lodgings) {
             if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
@@ -457,8 +429,9 @@ public class Main {
         }
         return "Desconocida"; // Si no se encuentra
     }
-
+    */
     /* ################################# MODIFY RESERVATION ################################# */
+    /*
     public static void modifyReservation(String email, String dayBirth) {
         Scanner input = new Scanner(System.in);
         boolean found = false;
@@ -581,4 +554,6 @@ public class Main {
 
         return "[" + updatedRooms.toString() + "]";
     }
+    */
 }
+
