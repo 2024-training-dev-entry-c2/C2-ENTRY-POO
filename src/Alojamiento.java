@@ -23,4 +23,8 @@ public class Alojamiento {
         return habitaciones;
     }
 
+    public void setHabitaciones(ArrayList<Habitacion> habitaciones) {
+        this.habitaciones = habitaciones;
+    }
+
 }
