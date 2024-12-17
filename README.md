@@ -22,14 +22,14 @@
 - **Modificar reserva**: Permite cambiar el tipo o la cantidad de habitaciones reservadas, o cancelar una reserva existente.
 
 ## Tecnologías
-- **Java 17**
+- **Java JDK 17**
 - **Gradle**: Herramienta para la construcción y gestión del proyecto.
 - **Java Collections**: Uso de listas para simular la gestión de datos en memoria.
 
 ## Instalación y Configuración
 1. **Clona el Repositorio:**
    ```bash
-   git clone https://github.com/KJRM20/book-stay.git
+   git clone https://github.com/KJRM20/C2-ENTRY-POO.git
    ```
 2. **Compila y ejecuta el proyecto:**
    - Abre el proyecto en tu IDE y ejecuta la clase principal ```Main```.
@@ -41,7 +41,7 @@
     - Sigue las instrucciones que se presentan en la consola para realizar las operaciones disponibles.
 
 ## Arquitectura y Funcionalidad
-El proyecto está organizado en una estructura simple basada en listas que simulan una base de datos en memoria:
+El proyecto está organizado en una estructura simple basada en POO que simulan una base de datos en memoria:
 ### Datos Simulados
 - **Alojamientos**: 
     - Se almacena información de hoteles, apartamentos, fincas y días de sol.
