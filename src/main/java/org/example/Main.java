@@ -327,7 +327,6 @@ public class Main {
         System.out.println("¡El alojamiento ha sido cambiado con éxito!");
     }
 
-
     private static void cambiarHabitacion(Scanner scanner, Reserva reserva, Hotel hotel) {
         System.out.println("Habitaciones disponibles en el hotel:");
         List<Habitacion> habitaciones = hotel.getHabitaciones();
@@ -368,6 +367,4 @@ public class Main {
         // Cambiar la habitación en la reserva
         reserva.cambiarHabitacion(nuevaHabitacion, reserva.getCantidadHabitaciones());
     }
-
-
 }
