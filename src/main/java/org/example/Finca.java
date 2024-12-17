@@ -11,7 +11,8 @@ public class Finca extends Alojamiento{
         this.cabalgata = cabalgata;
     }
 
-    boolean cabalgata;
+    private boolean cabalgata;
+
     public Finca(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones) {
         super(nombre, ciudad, tipo, calificacion, habitaciones);
     }
