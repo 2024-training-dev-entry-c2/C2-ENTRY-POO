@@ -64,12 +64,12 @@ public class DayResort extends Lodging {
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
         double pricePerNight = calculatePrice(adults, children, 1);
         long days = ChronoUnit.DAYS.between(startDate, endDate);
-        double baseTotalPrice = calculatePrice(adults, children, (int) days);
+        double baseTotalPrice = calculatePrice(adults, children, 1);
         double adjustment = calculateDiscountOrIncrement(startDate, endDate);
         double totalAdjusted;
         System.out.println(this.toString());
-        System.out.println("Precio por persona: $" + pricePerNight);
-        System.out.println("Precio base total: $" + baseTotalPrice);
+        System.out.println("Precio por noche: $" + String.format("%.2f", pricePerNight) );
+        System.out.println("Precio base total: $" + String.format("%.2f", baseTotalPrice));
 
         if(adjustment < 0){
             System.out.println("Descuento del " + adjustment * 100 + "%");
@@ -77,7 +77,7 @@ public class DayResort extends Lodging {
             System.out.println("Incremento del " + adjustment * 100 + "%");
         }
         totalAdjusted = baseTotalPrice + (baseTotalPrice * adjustment);
-        System.out.println("Precio final: $" + totalAdjusted);
+        System.out.println("Precio final: $" + String.format("%.2f", totalAdjusted));
     }
 
     @Override

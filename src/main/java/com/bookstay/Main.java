@@ -341,11 +341,30 @@ public class Main {
                 List<Room> reservedRooms = new ArrayList<>();
 
                 if (lodging instanceof Hotel hotel) {
-                    for (String roomType : selectedRooms) {
-                        hotel.getRooms().stream()
-                                .filter(room -> room.getType().equalsIgnoreCase(roomType))
+                    for (String roomEntry : selectedRooms) {
+                        String[] roomDetails = roomEntry.split(" x");
+                        String roomType = roomDetails[0].trim();
+                        int quantityRequested = Integer.parseInt(roomDetails[1]);
+
+                        Room room = hotel.getRooms().stream()
+                                .filter(r -> r.getType().equalsIgnoreCase(roomType))
                                 .findFirst()
-                                .ifPresent(reservedRooms::add);
+                                .orElse(null);
+
+                        if (room == null) {
+                            return "No se pudo realizar la reserva. No existe el tipo de habitación '" + roomType + "'.";
+                        }
+
+                        int reservedCount = hotel.countReservedRooms(room, hotel.getReservations(), startDate, endDate);
+                        int availableRooms = room.getTotalRooms() - reservedCount;
+
+                        if (availableRooms < quantityRequested) {
+                            return "No se pudo realizar la reserva. No hay suficientes habitaciones disponibles del tipo '" + roomType + "'.";
+                        }
+
+                        for (int i = 0; i < quantityRequested; i++) {
+                            reservedRooms.add(room);
+                        }
                     }
 
                     if (reservedRooms.isEmpty()) {
@@ -355,10 +374,6 @@ public class Main {
 
                 if (lodging instanceof DayResort && !startDate.isEqual(endDate)) {
                     return "Las reservas en un Día de Sol solo se permiten por un día.";
-                }
-
-                if (!lodging.isAvailable(startDate, endDate, totalGuests)) {
-                    return "No se pudo realizar la reserva. La capacidad máxima ha sido alcanzada o las fechas no están disponibles.";
                 }
 
                 Reservation reservation = new Reservation(
@@ -506,7 +521,17 @@ public class Main {
             return;
         }
 
-        currentRooms.removeIf(room -> room.getType().equalsIgnoreCase(oldRoomType));
+        Room roomToReplace = currentRooms.stream()
+                .filter(room -> room.getType().equalsIgnoreCase(oldRoomType))
+                .findFirst()
+                .orElse(null);
+
+        if (roomToReplace == null) {
+            System.out.println("No se encontró una habitación del tipo '" + oldRoomType + "' para cambiar.");
+            return;
+        }
+
+        currentRooms.remove(roomToReplace);
         currentRooms.add(newRoom);
 
         System.out.println("Cambio de habitación realizado con éxito.");

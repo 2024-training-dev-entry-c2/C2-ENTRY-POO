@@ -18,6 +18,21 @@ public class Hotel extends Lodging implements IRoomReservable{
         rooms.add(room);
     }
 
+    public int countReservedRooms(Room room, List<Reservation> reservations, LocalDate startDate, LocalDate endDate) {
+        int reservedCount = 0;
+
+        for (Reservation reservation : reservations) {
+            for (Room reservedRoom : reservation.getRooms()) {
+                if (reservedRoom.getType().equalsIgnoreCase(room.getType()) &&
+                        datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, endDate)) {
+                    reservedCount++;
+                }
+            }
+        }
+        return reservedCount;
+    }
+
+
     @Override
     public double calculatePrice(int adults, int children, int days) {
         System.out.println("No aplica a este alojamiento.");
@@ -108,8 +123,6 @@ public class Hotel extends Lodging implements IRoomReservable{
     }
 
 
-
-
     @Override
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
         double pricePerNight = calculatePrice(adults, children, 1, roomsNeeded);
@@ -118,8 +131,8 @@ public class Hotel extends Lodging implements IRoomReservable{
         double adjustment = calculateDiscountOrIncrement(startDate, endDate);
         double totalAdjusted;
         System.out.println(this.toString());
-        System.out.println("Precio por noche: $" + pricePerNight);
-        System.out.println("Precio base total: $" + baseTotalPrice);
+        System.out.println("Precio por noche: $" + String.format("%.2f", pricePerNight) );
+        System.out.println("Precio base total: $" + String.format("%.2f", baseTotalPrice));
 
         if(adjustment < 0){
             System.out.println("Descuento del " + adjustment * 100 + "%");
@@ -127,7 +140,7 @@ public class Hotel extends Lodging implements IRoomReservable{
             System.out.println("Incremento del " + adjustment * 100 + "%");
         }
         totalAdjusted = baseTotalPrice + (baseTotalPrice * adjustment);
-        System.out.println("Precio final: $" + totalAdjusted);
+        System.out.println("Precio final: $" + String.format("%.2f", totalAdjusted));
     }
 
     @Override
@@ -172,8 +185,26 @@ class Room {
         return reservedCount < totalRooms;
     }
 
+    public boolean isAvailable(List<Reservation> reservations, LocalDate startDate, LocalDate endDate, int quantityNeeded) {
+        int reservedCount = 0;
+        for (Reservation reservation : reservations) {
+            for (Room room : reservation.getRooms()) {
+                if (room.getType().equals(this.type) && datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, endDate)) {
+                    reservedCount++;
+                }
+            }
+        }
+
+        return (totalRooms - reservedCount) >= quantityNeeded;
+    }
+
     private boolean datesOverlap(LocalDate start1, LocalDate end1, LocalDate start2, LocalDate end2) {
         return !start1.isAfter(end2) && !end1.isBefore(start2);
+    }
+
+    @Override
+    public String toString() {
+        return  type + ", $" + pricePerNight;
     }
 
     // Getters

@@ -60,8 +60,8 @@ public class Apartment extends Lodging{
         double adjustment = calculateDiscountOrIncrement(startDate, endDate);
         double totalAdjusted;
         System.out.println(this.toString());
-        System.out.println("Precio por noche: $" + pricePerNight);
-        System.out.println("Precio base total: $" + baseTotalPrice);
+        System.out.println("Precio por noche: $" + String.format("%.2f", pricePerNight) );
+        System.out.println("Precio base total: $" + String.format("%.2f", baseTotalPrice));
 
         if(adjustment < 0){
             System.out.println("Descuento del " + adjustment * 100 + "%");
@@ -69,7 +69,7 @@ public class Apartment extends Lodging{
             System.out.println("Incremento del " + adjustment * 100 + "%");
         }
         totalAdjusted = baseTotalPrice + (baseTotalPrice * adjustment);
-        System.out.println("Precio final: $" + totalAdjusted);
+        System.out.println("Precio final: $" + String.format("%.2f", totalAdjusted));
     }
 
     @Override
