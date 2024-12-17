@@ -18,6 +18,18 @@ public class Main {
         Habitacion habitacion4 = new Habitacion("Habitación Simple", "Habitacion con cama sencilla, tv y cocina", 8, 200000);
         Habitacion habitacion5 = new Habitacion("Habitación Familiar", "Habitacion con cama doble y dos camas sencillas, tv y cocina", 2, 700000);
 
+        // Creación de objetos de tipo Alojamiento
+        Alojamiento hotelTequendama = new Alojamiento("Hotel Tequendama", "Bogota", "Hotel", 4.5, 50000, "Disponibildad de piscina, almuerzo incluido, canchas deportivas, zona de juegos y parqueadero", new ArrayList<>());
+        Alojamiento apartamentoCentral = new Alojamiento("Apartamento Central", "Bogota", "Apartamento", 4.0, 40000, "Disponibilidad de piscina, zona de asados y parqueadero", new ArrayList<>());
+        Alojamiento hotelCaribe = new Alojamiento("Hotel Caribe", "Cartagena", "Hotel", 4.8, 60000, "Disponibilidad de piscina, almuerzo incluido, canchas deportivas, zona de juegos y parqueadero", new ArrayList<>());
+        Alojamiento casaColonial = new Alojamiento("Casa Colonial", "Cartagena", "Finca", 4.2, 35000, "Disponibilidad de piscina, salon de eventos y parqueadero", new ArrayList<>());
+        Alojamiento irotamaResort = new Alojamiento("Irotama Resort", "Santa Marta", "Hotel", 5.0, 350000, "Disponibilidad de piscina, almuerzo incluido, canchas deportivas, spa, zona de juegos, discoteca y parqueadero", new ArrayList<>());
+        Alojamiento apartamentoPlaya = new Alojamiento("Apartamento Playa", "Santa Marta", "Apartamento", 3.5, 150000, "Disponibilidad de playa privada, zona de asados y parqueadero", new ArrayList<>());
+        Alojamiento hotelDecameron = new Alojamiento("Hotel Decameron", "San Andres", "Hotel", 5.0, 500000, "Disponibilidad de piscina, almuerzo incluido, refrigerio para niuños, canchas deportivas, spa, zona de juegos, salon de eventos, discoteca y parqueadero", new ArrayList<>());
+        Alojamiento casaVacacional = new Alojamiento("Casa Vacacional", "San Andres", "Finca", 4.1, 300000, "Mesa de billar, zona de asados y parqueadero", new ArrayList<>());
+        Alojamiento ecoAmazonLodge = new Alojamiento("EcoAmazon Lodge", "Amazonas", "Hotel", 4.7, 350000, "Barra libre de cerveza, acceso dirigido al acuario, almuerzo incluido, spa, zona de juegos, recorrido dirigido por la naturaleza y grupos de avistamiento de aves", new ArrayList<>());
+        Alojamiento fincaAmazonica = new Alojamiento("Finca Amazonica", "Amazonas", "Finca", 3.0, 200000, "Disponibilidad de jacuzzi, zona de asados, senderismo por la zona con vista a la naturaleza", new ArrayList<>());
+
         String[] ciudades = { "Bogota", "Cartagena", "Santa Marta", "San Andres", "Amazonas" };
 
         String[][] alojamientos = {
