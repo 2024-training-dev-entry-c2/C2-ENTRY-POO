@@ -1,13 +1,13 @@
-package src;
+package src.alojamientos;
 
-public class Apartamento extends Alojamiento{
+public class Finca extends Alojamiento {
 
 
-    public Apartamento(String nombre, String ciudad, double calificacion, String tipo) {
+    public Finca(String nombre, String ciudad, double calificacion, String tipo) {
         this.nombre = nombre;
         this.ciudad =ciudad;
         this.calificacion=calificacion;
-        this.tipo="apartamento";
+        this.tipo="finca";
     }
 
     @Override
@@ -22,6 +22,11 @@ public class Apartamento extends Alojamiento{
 
     @Override
     public String mostrarInformacionAlojamiento() {
+        return "";
+    }
+
+    @Override
+    public String mostrarInformacionHabitaciones() {
         return "";
     }
 }

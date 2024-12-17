@@ -1,6 +1,6 @@
-package src;
+package src.alojamientos;
 
-public class DiaDeSol extends Alojamiento{
+public class DiaDeSol extends Alojamiento {
 
 
     public DiaDeSol(String nombre, String ciudad, double calificacion, String tipo) {
@@ -22,6 +22,11 @@ public class DiaDeSol extends Alojamiento{
 
     @Override
     public String mostrarInformacionAlojamiento() {
+        return "";
+    }
+
+    @Override
+    public String mostrarInformacionHabitaciones() {
         return "";
     }
 }

@@ -1,4 +1,4 @@
-package src;
+package src.alojamientos;
 
 public abstract class Alojamiento {
 
@@ -14,7 +14,11 @@ public abstract class Alojamiento {
 
     public abstract String mostrarInformacionAlojamiento();
 
-    //metodos get y set
+    public abstract String mostrarInformacionHabitaciones();
+
+    //metodos concretos
+    //
+    // get y set
     public String getNombre() {
         return nombre;
     }

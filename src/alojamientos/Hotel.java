@@ -1,6 +1,6 @@
-package src;
+package src.alojamientos;
 
-public class Hotel extends Alojamiento{
+public class Hotel extends Alojamiento {
 
     public Hotel(String nombre, String ciudad, double calificacion, String tipo) {
         this.nombre = nombre;
@@ -21,6 +21,11 @@ public class Hotel extends Alojamiento{
 
     @Override
     public String mostrarInformacionAlojamiento() {
+        return "";
+    }
+
+    @Override
+    public String mostrarInformacionHabitaciones() {
         return "";
     }
 }
