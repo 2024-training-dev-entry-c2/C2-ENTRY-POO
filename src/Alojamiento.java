@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Alojamiento {
     public String nombre;
-    public String Ciudad;
+    public String ciudad;
     public String tipo;
     public double calificacion;
     public float precioDiaSol;
@@ -11,7 +11,7 @@ public class Alojamiento {
 
     public Alojamiento(String nombre, String Ciudad, String tipo, double calificacion, float precioDiaSol, String descripcionDiaSol, ArrayList<Habitacion> habitaciones) {
         this.nombre = nombre;
-        this.Ciudad = Ciudad;
+        this.ciudad = Ciudad;
         this.tipo = tipo;
         this.calificacion = calificacion;
         this.precioDiaSol = precioDiaSol;
