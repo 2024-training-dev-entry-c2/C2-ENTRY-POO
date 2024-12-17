@@ -1,4 +1,6 @@
-public class Alojamiento {
+import java.time.LocalDate;
+
+public abstract class Alojamiento {
 
     protected String nombreAlojamiento;
     protected String ciudadDestino;
@@ -87,10 +89,79 @@ public class Alojamiento {
         this.habitaciones = habitaciones;
     }
 
+    // metodo abstracto que debe ser implementado por las clases hijas
+    public abstract void mostrarInfo(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas);
+
+    // metodo para calcular el precio total de la estadía
+    public double calcularPrecioTotal(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas) {
+        // Calculando los días de estadía
+        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
+
+        // Verificando que la estadía tenga al menos un día
+        if (diferenciaEnDias <= 0) {
+            System.out.println("Debe alojarse como mínimo un día");
+            return 0.0;
+        }
+
+        // Usando el precio de la primera habitación
+        double precioBase = habitaciones[0].getPrecioPorNochePorTipoHabitacion();
+        double totalPrecioBase = precioBase * habitacionesSolicitadas * diferenciaEnDias;  // Calculando el valor total de la estadía
+
+        // Calculando descuentos o incrementos basados en las fechas de la estadía
+        double incrementoPrecio = 0.0;
+        double descuentoPrecio = 0.0;
+
+        // Verificando si los días de estadía están dentro de los últimos 5 días del mes
+        if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
+            incrementoPrecio = totalPrecioBase * 0.15;
+            totalPrecioBase += incrementoPrecio;
+        }
+
+        // Verificando si los días de estadía están entre el 10 y el 15 del mes
+        if (diasEntreElDiezYQuince(inicioEstadia, finEstadia)) {
+            incrementoPrecio = totalPrecioBase * 0.10;
+            totalPrecioBase += incrementoPrecio;
+        }
+
+        // Verificando si los días de estadía están entre el 5 y el 10 del mes
+        if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
+            descuentoPrecio = totalPrecioBase * 0.08;
+            totalPrecioBase -= descuentoPrecio;
+        }
+
+        return totalPrecioBase;  // Retornamos el precio final con los descuentos o incrementos aplicados
+    }
+
+    // func para verificar si los ultimos 5 dias de la estadia caen dentro de un mes
+    private static boolean ultimosCincoDiasDelMes(LocalDate inicioEstadia, LocalDate finEstadia) {
+
+        // obteniendo el ultimo dia del mes para la fecha de fin estadia
+        int lastDayOfMonth = finEstadia.lengthOfMonth();
+
+        // verificando si los ultimos 5 dias del mes estan dentro del rango de fechas
+        return (finEstadia.getDayOfMonth() >= lastDayOfMonth - 4 || inicioEstadia.getDayOfMonth() >= lastDayOfMonth - 4 );
+    }
+
+    // func para verificar si los dias de estadia estan entre el 10 al 15 del mes
+    private static boolean diasEntreElDiezYQuince(LocalDate inicioEstadia, LocalDate finEstadia) {
+
+        // verificando si alguna de las fechas cae entre el 10 y el 15 del mes
+        return ((inicioEstadia.getDayOfMonth() <= 15 && inicioEstadia.getDayOfMonth() >= 10) ||
+                (finEstadia.getDayOfMonth() <= 15 && finEstadia.getDayOfMonth() >= 10));
+    }
+
+    // func para verificar si los dias de estadia estan entre del 5 al 10 del mes
+    private static boolean diasEntreElCincoYDiez(LocalDate inicioEstadia, LocalDate finEstadia) {
+
+        // verificando si alguna de las fechas cae entre el 5 y el 10 del mes
+        return ((inicioEstadia.getDayOfMonth() <= 10 && inicioEstadia.getDayOfMonth() >= 5) ||
+                (finEstadia.getDayOfMonth() <= 10 && finEstadia.getDayOfMonth() >= 5));
+    }
+
     // metodo para mostrar la información de las habitaciones disponibles
     public void mostrarHabitacionesDisponibles() {
         for (Habitacion habitacion : habitaciones) {
-            habitacion.mostrarInfo();
+            habitacion.mostrarHabitacionesDisponibles();
         }
     }
 }

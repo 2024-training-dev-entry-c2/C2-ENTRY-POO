@@ -55,69 +55,146 @@ public class Main {
 //    static String[][] reservas = new String[100][6];
 //    static int reservaCount = 0;
 //    static int hotelSeleccionadoPorUsuarioIndex;
-//    static boolean continuarBuscandoAlojamiento = true;
+static boolean continuarBuscandoAlojamiento = true;
 //
-//    public static void main(String[] args) {
-//
-//        System.out.println("¡Bienvenido a Starlight Booking!");
-//        System.out.println("--- * --- * --- * --- * --- * ---");
-//        // Crear un objeto Scanner para leer la entrada del usuario
-//        Scanner scanner = new Scanner(System.in);
-//
-//        do {
-//            // solicito datos al usuario
-//            System.out.println("Ingrese la ciudad destino:");
-//            String ciudad = scanner.nextLine();
-//
-//            System.out.println("Ingrese el tipo de alojamiento que desea (Ejemplo: Hotel, Apartamento, Finca, Dia de Sol):");
-//            String tipo = scanner.nextLine();
-//
-//            // solicito las fechas de inicio y fin de la estadia
-//            System.out.println("Ingrese la fecha de inicio de la estadia (en formato AAAA-MM-DD):");
-//            String fechaInicioString = scanner.nextLine();
-//            LocalDate inicioEstadia = convertirStringADate(fechaInicioString);
-//
-//            System.out.println("Ingrese la fecha de fin de la estadia (en formato AAAA-MM-DD):");
-//            String fechaFinString = scanner.nextLine();
-//            LocalDate finEstadia = convertirStringADate(fechaFinString);
-//
-//            // solicito la cantidad de adultos, ninos y habitaciones
-//            System.out.println("Ingrese la cantidad de adultos que se van a hospedar:");
-//            int adultos = scanner.nextInt();
-//
-//            System.out.println("Ingrese la cantidad de ninos que se van a hospedar:");
-//            int ninos = scanner.nextInt();
-//
-//            System.out.println("Ingrese la cantidad de habitaciones que desea:");
-//            int habitaciones = scanner.nextInt();
-//
-//            scanner.nextLine();
-//
-//            // llamo la func de bucarHotel con los parametros dados por el usuario
-//            buscarAlojamiento(ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
-//
-//        } while (continuarBuscandoAlojamiento);
-//
-//        // se cierra el scanner para evitar problemas con la gestion de los recursos
-//        scanner.close();
-//    }
-//
-//    // func para convertir la fecha de String a Date
-//    private static LocalDate convertirStringADate(String fechaString) {
-//        try {
-//            // formato esperado: "AAAA-MM-DD" "YYYY-MM-DD"
-//            String[] fechaPartes = fechaString.split("-");
-//            int anio = Integer.parseInt(fechaPartes[0]);
-//            int mes = Integer.parseInt(fechaPartes[1]) - 1; // los meses en Java son 0=Enero 11=Diciembre
-//            int dia = Integer.parseInt(fechaPartes[2]);
-//
-//            LocalDate fecha = LocalDate.of(anio, mes, dia);
-//            return fecha;
-//        } catch (Exception e) {
-//            System.out.println("Error al ingresar la fecha. El formato debe ser YYYY-MM-DD.");
-//            return null;
-//        }
-//    }
+    public static void main(String[] args) {
+
+        System.out.println("¡Bienvenido a Starlight Booking!");
+        System.out.println("--- * --- * --- * --- * --- * ---");
+
+        Scanner scanner = new Scanner(System.in);
+
+        Alojamiento[] alojamientos = new Alojamiento[5];
+
+        alojamientos[0] = new Hotel("Starlight Hotel", "Cartagena", 2, 4, true, 4.5, "nadar",
+                new Habitacion[]{
+                new Habitacion("Individual", "Cama individual", 100.0, 5),
+                new Habitacion("Doble", "Cama doble", 120.0, 4),
+                new Habitacion("Doble plus", "Cama King Size, baño privado", 150.0, 5),
+                new Habitacion("Suite", "Cama King Size, baño privado, vistas al mar", 200.0, 3),
+                new Habitacion("Presidencial", "Cama King Size, baño privado con Jacuzzi, vistas al mar", 200.50, 3)
+        });
+        alojamientos[1] = new Apartamento("Cosmos", "Venecia", 2, 4, false, 4.2, "nadar",
+                new Habitacion[]{
+                new Habitacion("Mini", "Cama doble, cocina + mini sala + un baño compartidos", 120.0, 6),
+                new Habitacion("Loft", "Cama doble, espacio abierto + cocina + un baño + sala + barra-comedor compaprtidos", 150.0, 4),
+                new Habitacion("Duplex", "Cama doble, cocina + sala + comedor + un baño compartidos", 170.0, 4),
+                new Habitacion("Tripex", "Cama doble, baño privado, cocina + sala + comedor compartidos", 180.25, 4),
+                new Habitacion("De lujo", "Cama king, baño privado, sala con chimenea + cocina + comedor + mini bar compartidos", 200.0, 4)
+                });
+        alojamientos[2] = new Finca("Blue Moon", "Porto", 2, 4, false, 4.0, "nadar",
+                new Habitacion[]{
+                new Habitacion("Cabaña", "Cama doble, baño privado, cocina + sala + comedor + jardin compartidos", 150.0, 9),
+                new Habitacion("Urbana", "Cama King Size, baño privado, cerca a la ciudad, cocina + sala + comedor compartidos", 175.0, 7),
+                new Habitacion("Rústica", "Cama King Size, baño privado, cocina + sala + comedor + mini granja compartido", 200.50, 7),
+                new Habitacion("Ecológica", "Cama doble, baño privado, cocina + sala + comedor + granja + mini bosque compartidos", 220.0, 7),
+                new Habitacion("Hacienda", "Cama doble, baño privado, cocina + sala + comedor + bosque, salon de eventos compartidos", 270.0, 7)
+                });
+        alojamientos[3] = new Hotel("Dark Sun Hotel", "Munich", 2, 4, true, 4.0, "nadar",
+                new Habitacion[]{
+                new Habitacion("Rubí", "Cama individual", 80.0, 9),
+                new Habitacion("Esmeralda", "Cama doble", 100.0, 7),
+                new Habitacion("Oro", "Cama King Size, baño privado", 150.0, 7),
+                new Habitacion("Plata", "Cama King Size, baño privado, sala de estar", 200.0, 7),
+                new Habitacion("Diamante", "Cama King Size, baño privado con Jacuzzi, sala de estar", 250.0, 7)
+                });
+        alojamientos[4] = new Hotel("Andromeda Hotel", "Cartagena", 2, 4, false, 4.0, "nadar",
+                new Habitacion[]{
+                new Habitacion("Pluton", "Cama individual", 110.0, 5),
+                new Habitacion("Venus", "Cama doble", 120.0, 4),
+                new Habitacion("Marte", "Cama King Size, baño privado", 150.0, 5),
+                new Habitacion("Saturno", "Cama King Size, baño privado, vistas al mar", 200.0, 3),
+                new Habitacion("Jupiter", "Cama King Size, baño privado con Jacuzzi, vistas al mar", 200.50, 3)
+                });
+
+        do {
+            // solicito datos al usuario
+            System.out.println("Ingrese la ciudad destino:");
+            String ciudad = scanner.nextLine();
+
+            System.out.println("Ingrese el tipo de alojamiento que desea (Ejemplo: Hotel, Apartamento, Finca, Dia de Sol):");
+            String tipo = scanner.nextLine();
+
+            System.out.println("Ingrese la fecha de inicio de la estadia (en formato AAAA-MM-DD):");
+            String fechaInicioString = scanner.nextLine();
+            LocalDate inicioEstadia = convertirStringADate(fechaInicioString);
+
+            System.out.println("Ingrese la fecha de fin de la estadia (en formato AAAA-MM-DD):");
+            String fechaFinString = scanner.nextLine();
+            LocalDate finEstadia = convertirStringADate(fechaFinString);
+
+            System.out.println("Ingrese la cantidad de adultos que se van a hospedar:");
+            int adultos = scanner.nextInt();
+
+            System.out.println("Ingrese la cantidad de ninos que se van a hospedar:");
+            int ninos = scanner.nextInt();
+
+            System.out.println("Ingrese la cantidad de habitaciones que desea:");
+            int habitaciones = scanner.nextInt();
+
+            scanner.nextLine();
+
+            buscarAlojamiento(alojamientos, ciudad, tipo, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
+
+        } while (continuarBuscandoAlojamiento);
+        scanner.close();
+    }
+
+    // func para convertir la fecha de String a Date
+    private static LocalDate convertirStringADate(String fechaString) {
+        try {
+            // formato esperado: "AAAA-MM-DD" "YYYY-MM-DD"
+            String[] fechaPartes = fechaString.split("-");
+            int anio = Integer.parseInt(fechaPartes[0]);
+            int mes = Integer.parseInt(fechaPartes[1]) - 1; // los meses en Java son 0=Enero 11=Diciembre
+            int dia = Integer.parseInt(fechaPartes[2]);
+
+            LocalDate fecha = LocalDate.of(anio, mes, dia);
+            return fecha;
+        } catch (Exception e) {
+            System.out.println("Error al ingresar la fecha. El formato debe ser YYYY-MM-DD.");
+            return null;
+        }
+    }
+
+    public static void buscarAlojamiento(Alojamiento[] alojamientos, String ciudad, String tipo, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitaciones) {
+        boolean alojamientoEncontrado = false;
+
+        // calculando los dias de estadia
+        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
+
+        // el alojamiento debe ser de un dia o mas
+        if (diferenciaEnDias <= 0) {
+            System.out.println("Debe alojarse como minimo un dia");
+            return;
+        }
+
+        // Recorremos el arreglo de alojamientos
+        for (int i = 0; i < alojamientos.length; i++) {
+            Alojamiento alojamiento = alojamientos[i];
+
+            int totalHabitacionesDisponibles = 0;
+            for (int j = 0; j < alojamientos[i].getHabitaciones().length; j++) {
+                totalHabitacionesDisponibles += alojamientos[i].getHabitaciones()[j].getHabitacionesDisponibles();
+            }
+
+            // Verificamos si la ciudad y el tipo coinciden con los proporcionados por el usuario
+            if (((tipo.equalsIgnoreCase("Dia de Sol") &&
+                alojamiento.ofreceDiaDeSol) || alojamiento.getClass().getSimpleName().equalsIgnoreCase(tipo)) &&
+                alojamiento.getCiudadDestino().equalsIgnoreCase(ciudad) &&
+                alojamiento.getMaxAdultos() >= adultos &&
+                alojamiento.getMaxNinos() >= ninos &&
+                totalHabitacionesDisponibles >= habitaciones) {
+                    alojamientoEncontrado = true;
+                    alojamiento.mostrarInfo(inicioEstadia, finEstadia, habitaciones);
+                    System.out.println("--------------------------");
+            }
+        }
+
+        if (!alojamientoEncontrado) {
+            System.out.println("No se encontraron alojamientos que coincidan con los criterios proporcionados.");
+        }
+    }
 //
 //    // METODO PARA BUSCAR ALOJAMIENTO SEGUN REQUERIMIENTOS DEL USUARIO
 //    public static void buscarAlojamiento(String ciudad, String tipo, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitaciones) {

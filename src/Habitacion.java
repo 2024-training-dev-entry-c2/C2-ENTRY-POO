@@ -45,7 +45,7 @@ public class Habitacion {
     }
 
     // metodo para mostrar la información de la habitación
-    public void mostrarInfo() {
+    public void mostrarHabitacionesDisponibles() {
         System.out.println("Tipo de habitacion: " + tiposDeHabitaciones + "\nCaracterísticas: " + caracteristicasHabitaciones +
                 "\nPrecio por noche: " + precioPorNochePorTipoHabitacion + "\nNumero de habitaciones disponibles: " + habitacionesDisponibles);
     }
