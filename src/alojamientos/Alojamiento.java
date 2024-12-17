@@ -13,14 +13,14 @@ public abstract class Alojamiento {
     protected Reserva[] reservas;
     protected double precio;
     protected double precioTotal;
-
+    protected int[] cantHabitaciones;
 
     //metodos abstractos
     public abstract double calcularPrecioBase(int numHabitaciones);
 
-    public abstract double calcularDescuentoOAumento(int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion);
+    public abstract double calcularDescuentoOAumento(int diaInicio, int diaFinalizacion);
 
-    public abstract void mostrarInformacionAlojamiento();
+    public abstract void mostrarInformacionAlojamiento(int numHabitacione, int diaInicio, int diaFinalizacion);
 
     public abstract void mostrarInformacionHabitaciones();
 
@@ -94,6 +94,11 @@ public abstract class Alojamiento {
         this.reservas = reservas;
     }
 
+    public int[] getCantHabitaciones() {
+        return cantHabitaciones;
+    }
 
-
+    public void setCantHabitaciones(int[] cantHabitaciones) {
+        this.cantHabitaciones = cantHabitaciones;
+    }
 }

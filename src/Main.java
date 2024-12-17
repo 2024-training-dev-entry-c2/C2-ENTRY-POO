@@ -1,111 +1,112 @@
 package src;
 
+import src.alojamientos.Apartamento;
+import src.alojamientos.DiaDeSol;
+import src.alojamientos.Finca;
+import src.alojamientos.Hotel;
+import src.habitaciones.Habitacion;
+
 import java.time.LocalDate;
 import java.util.Scanner;
 
 public class Main {
 
-    //arreglos para definir los alojamientos
-    static String[] nombreAlojamiento = {
-            // Hoteles
-            "hotel plaza real",
-            "hotel mar y sol",
-            "hotel costa azul",
-            // Apartamentos
-            "apartamento los pinos",
-            "apartamento vista al mar",
-            "apartamento el eden",
-            // Fincas
-            "finca la esperanza",
-            "finca el refugio",
-            "finca san pedro",
-            // Días de Sol
-            "dia de sol playa blanca",
-            "dia de sol paraiso natural",
-            "dia de sol los delfines"
-    };
+    static Hotel[] hoteles = new Hotel[3];
+    static Apartamento[] apartamentos = new Apartamento[3];
+    static Finca[] fincas = new Finca[3];
+    static DiaDeSol[] diasDeSol = new DiaDeSol[3];
 
-    static String[] ciudadAlojamiento = {"cartagena", "cartagena", "santa marta", "santa marta", "cartagena", "santa marta", "cartagena", "cartagena", "santa marta", "cartagena", "santa marta", "cartagena"};
-    static String[] tipoAlojamiento = {"hotel", "hotel", "hotel", "apartamento", "apartamento", "apartamento", "finca", "finca", "finca", "dia de sol", "dia de sol", "dia de sol"};
-    static double[] calificacionAlojamiento = {4.5, 3.8, 4.2, 4.0, 3.5, 4.7, 4.3, 5.0, 3.9, 4.8, 4.1, 3.6};
+    public static void inicializarAlojamientos() {
+        // Crear hoteles
+        hoteles[0] = new Hotel("hotel plaza real", "cartagena", 4.5, "hotel");
+        hoteles[1] = new Hotel("hotel mar y sol", "cartagena", 3.8, "hotel");
+        hoteles[2] = new Hotel("hotel costa azul", "santa marta", 4.2, "hotel");
 
-    static int[][] cantHabitacionesAlojamiento = {
-            // Hoteles: [Sencilla, Doble, Gold, Premium, Suite Presidencial]
-            {17, 22, 33, 10, 7},  // Hotel Plaza Real
-            {12, 18, 25, 8, 5},   // Hotel Mar y Sol
-            {20, 30, 40, 12, 10}, // Hotel Costa Azul
+        // Crear apartamentos
+        apartamentos[0] = new Apartamento("apartamento los pinos", "santa marta", 4.0, "apartamento");
+        apartamentos[1] = new Apartamento("apartamento vista al mar", "cartagena", 3.5, "apartamento");
+        apartamentos[2] = new Apartamento("apartamento el eden", "santa marta", 4.7, "apartamento");
 
-            // Apartamentos: [Sencilla, Doble, Gold, Premium, Penthouse]
-            {1, 1, 1, 1, 0},   // Apartamento Los Pinos
-            {2, 0, 0, 0, 0},    // Apartamento Vista al Mar
-            {0, 1, 1, 1, 3},     // Apartamento El Edén
+        // Crear fincas
+        fincas[0] = new Finca("finca la esperanza", "cartagena", 4.3, "finca");
+        fincas[1] = new Finca("finca el refugio", "cartagena", 5.0, "finca");
+        fincas[2] = new Finca("finca san pedro", "santa marta", 3.9, "finca");
 
-            // Fincas: [Sencilla, Doble, Gold, Premium, Suite]
-            {5, 8, 10, 3, 2},     // Finca La Esperanza
-            {7, 10, 15, 4, 3},    // Finca El Refugio
-            {4, 6, 8, 2, 1},      // Finca San Pedro
+        // Crear días de sol
+        diasDeSol[0] = new DiaDeSol("dia de sol playa blanca", "cartagena", 4.8, "dia de sol", "Actividades acuáticas", "Refrigerio, Almuerzo");
+        diasDeSol[1] = new DiaDeSol("dia de sol paraiso natural", "santa marta", 4.1, "dia de sol", "Natación y recreación", "Desayuno, Almuerzo");
+        diasDeSol[2] = new DiaDeSol("dia de sol los delfines", "cartagena", 3.6, "dia de sol", "Shows y acceso a piscinas", "Refrigerio, Almuerzo");
+    }
 
-            // Días de Sol: [Acceso Básico, Familiar, Gold, Premium, VIP]
-            {30, 40, 50, 25, 20}, // Día de Sol Playa Blanca
-            {20, 30, 35, 15, 10}, // Día de Sol Paraíso Natural
-            {25, 35, 45, 20, 15}  // Día de Sol Los Delfines
-    };
+    public static void asignarHabitaciones() {
+        // Crear habitaciones por tipo de alojamiento
+        Habitacion[] habitacionesHotel = {
+                new Habitacion("sencilla", "Cama individual, aire acondicionado", "Sin extras", 150000),
+                new Habitacion("doble", "Dos camas individuales, aire acondicionado", "Desayuno incluido", 200000),
+                new Habitacion("gold", "Cama king-size, vista al mar", "Desayuno y almuerzo incluidos", 300000),
+                new Habitacion("premium", "Cama king-size, balcón, spa", "Todo incluido", 450000),
+                new Habitacion("suite presidencial", "Dos habitaciones, jacuzzi", "Servicio personalizado 24/7", 700000)
+        };
 
-    static int[] precioAlojamientos = {150000, 100000, 80000, 50000};
+        Habitacion[] habitacionesApartamento = {
+                new Habitacion("sencilla", "Cama individual, ventilador", "Sin extras", 100000),
+                new Habitacion("doble", "Cama matrimonial, cocina pequeña", "Sin extras", 150000),
+                new Habitacion("gold", "Dos habitaciones, sala de estar", "Sin extras", 250000),
+                new Habitacion("premium", "Tres habitaciones, balcón al mar", "Sin extras", 350000),
+                new Habitacion("penthouse", "Terraza privada, jacuzzi", "Sin extras", 500000)
+        };
 
-    //habitaciones
-    static String[][] habitaciones = {
-            // Hoteles
-            {"hotel", "sencilla", "La habitación sencilla tiene una cama individual, aire acondicionado, TV de pantalla plana y baño privado.", "No incluye nada", "150000"},
-            {"hotel", "doble", "La habitación doble tiene dos camas individuales, aire acondicionado, TV de pantalla plana y baño privado.", "Desayuno incluido", "200000"},
-            {"hotel", "gold", "La habitación Gold cuenta con una cama king-size, vista al mar, aire acondicionado, cafetera, TV de pantalla plana y bañera.", "Desayuno y almuerzo incluidos", "300000"},
-            {"hotel", "premium", "La habitación Premium ofrece una cama king-size, balcón privado, acceso al spa, cafetera, minibar y aire acondicionado.", "Todo incluido (desayuno, almuerzo, cena y acceso a piscina)", "450000"},
-            {"hotel", "suite presidencial", "La suite presidencial cuenta con dos habitaciones, sala de estar, cocina equipada, jacuzzi, y vista panorámica.", "Todo incluido y servicio personalizado 24/7", "700000"},
+        Habitacion[] habitacionesFinca = {
+                new Habitacion("sencilla", "Cama individual, ventilador", "Sin extras", 80000),
+                new Habitacion("doble", "Cama matrimonial, jardín", "Sin extras", 120000),
+                new Habitacion("gold", "Dos camas matrimoniales, piscina", "Sin extras", 200000),
+                new Habitacion("premium", "Cama king-size, balcón", "Desayuno incluido", 300000),
+                new Habitacion("suite", "Jacuzzi, vista panorámica", "Actividades al aire libre", 400000)
+        };
 
-            // Apartamentos
-            {"apartamento", "sencilla", "La habitación sencilla tiene una cama individual, ventilador, TV de pantalla plana y baño compartido.", "No incluye nada", "100000"},
-            {"apartamento", "doble", "La habitación doble tiene una cama matrimonial, aire acondicionado, cocina pequeña y balcón.", "No incluye nada", "150000"},
-            {"apartamento", "gold", "El apartamento Gold tiene dos habitaciones, cocina equipada, sala de estar y balcón con vista a la ciudad.", "No incluye nada", "250000"},
-            {"apartamento", "premium", "El apartamento Premium cuenta con tres habitaciones, cocina equipada, sala de estar amplia y balcón con vista al mar.", "No incluye nada", "350000"},
-            {"apartamento", "penthouse", "El Penthouse incluye tres habitaciones, terraza privada, jacuzzi y una vista 360° de la ciudad.", "No incluye nada", "500000"},
+        Habitacion[] habitacionesDiaDeSol = {
+                new Habitacion("acceso básico", "Piscinas y zonas de descanso", "Refrigerio incluido", 50000),
+                new Habitacion("familiar", "Piscina y áreas infantiles", "Almuerzo incluido", 80000),
+                new Habitacion("gold", "Actividades guiadas, relax", "Almuerzo y refrigerio incluidos", 120000),
+                new Habitacion("premium", "Piscina, spa y recreación", "Almuerzo y actividades", 180000),
+                new Habitacion("vip", "Zonas privadas y spa", "Todo incluido", 250000)
+        };
 
-            // Fincas
-            {"finca", "sencilla", "La habitación sencilla tiene una cama individual, ventilador, y baño compartido.", "No incluye nada", "80000"},
-            {"finca", "doble", "La habitación doble tiene una cama matrimonial, ventilador, baño privado y acceso a jardín.", "No incluye nada", "120000"},
-            {"finca", "gold", "La habitación Gold cuenta con dos camas matrimoniales, baño privado y acceso a piscina.", "No incluye nada", "200000"},
-            {"finca", "premium", "La habitación Premium ofrece una cama king-size, sala de estar y balcón con vista a las montañas.", "Desayuno incluido", "300000"},
-            {"finca", "suite", "La suite incluye dos habitaciones, sala de estar, jacuzzi y vista panorámica.", "Desayuno y actividades al aire libre incluidas", "400000"},
+        // Asignar habitaciones a cada tipo de alojamiento
+        for (Hotel hotel : hoteles) {
+            hotel.setHabitaciones(habitacionesHotel);
+        }
+        for (Apartamento apartamento : apartamentos) {
+            apartamento.setHabitaciones(habitacionesApartamento);
+        }
+        for (Finca finca : fincas) {
+            finca.setHabitaciones(habitacionesFinca);
+        }
+        for (DiaDeSol dia : diasDeSol) {
+            dia.setHabitaciones(habitacionesDiaDeSol);
+        }
+    }
 
-            // Días de Sol
-            {"dia de sol", "acceso basico", "Acceso al alojamiento con zonas de descanso y piscinas disponibles.", "Refrigerio incluido", "50000"},
-            {"dia de sol", "familiar", "Acceso al alojamiento con áreas infantiles, piscina y zonas de picnic.", "Almuerzo incluido", "80000"},
-            {"dia de sol", "gold", "Acceso al alojamiento con actividades guiadas, piscina y zonas de relax.", "Almuerzo y refrigerio incluidos", "120000"},
-            {"dia de sol", "premium", "Acceso al alojamiento con todas las actividades disponibles, piscina y spa.", "Almuerzo, refrigerio y actividades recreativas", "180000"},
-            {"dia de sol", "vip", "Acceso exclusivo a zonas privadas, spa, actividades personalizadas y almuerzo gourmet.", "Todo incluido (almuerzo, refrigerio y actividades premium)", "250000"}
-    };
-
-    //Para las reservas
-    static LocalDate[][] fechasDisponibilidad = {
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, //Hotel Plaza Real
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Hotel Mar y Sol
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)},  // Hotel Costa Azul
-
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Apartamento Los Pinos
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Apartamento Vista al Mar
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Apartamento El Edén
-
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Finca La Esperanza
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Finca El Refugio
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Finca San Pedro
-
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Día de Sol Playa Blanca
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, // Día de Sol Paraíso Natural
-            {LocalDate.of(2024, 1, 1), LocalDate.of(2024, 12, 31)}, //Día de Sol Los Delfines
-    };
-
-    static String[][] reservas = new String[99][99];
+    public static void asignarCantHabitaciones() {
+        // Asignar cantidad de habitaciones por tipo de alojamiento
+        for (Hotel hotel : hoteles) {
+            hotel.setCantHabitaciones(new int[]{10, 5, 3, 2, 1}); // [Sencillas, Dobles, Gold, Premium, Suite]
+        }
+        for (Apartamento apartamento : apartamentos) {
+            apartamento.setCantHabitaciones(new int[]{8, 6, 4, 3, 2});
+        }
+        for (Finca finca : fincas) {
+            finca.setCantHabitaciones(new int[]{6, 4, 3, 2, 1});
+        }
+        for (DiaDeSol dia : diasDeSol) {
+            dia.setCantHabitaciones(new int[]{12, 8, 5, 4, 3});
+        }
+    }
 
     public static void main(String[] args) {
+        inicializarAlojamientos();
+        asignarHabitaciones();
+        asignarCantHabitaciones();
         menu();
     }
 
@@ -522,21 +523,8 @@ public class Main {
         int cantNinos = scanner.nextInt();
         scanner.nextLine();
 
-        int tipoHabitacion = 0;
 
-        if (alojamiento.equals("hotel")) {
-            System.out.print("Ingrese el tipo de habitacion que busca (sencilla[0], doble[1], gold[2], premium[3], suite presidencial[4]): ");
-            tipoHabitacion = scanner.nextInt();
-        } else if (alojamiento.equals("apartamento")) {
-            System.out.print("Ingrese el tipo de habitacion que busca (sencilla[0], doble[1], gold[2], premium[3], penthouse[4]): ");
-            tipoHabitacion = scanner.nextInt();
-        } else if (alojamiento.equals("finca")) {
-            System.out.print("Ingrese el tipo de habitacion que busca (sencilla[0], doble[1], gold[2], premium[3], suite[4]): ");
-            tipoHabitacion = scanner.nextInt();
-        } else if (alojamiento.equals("dia de sol")) {
-            System.out.print("Ingrese el tipo de habitacion que busca (sencilla[0], doble[1], gold[2], premium[3], vip[4]): ");
-            tipoHabitacion = scanner.nextInt();
-        }
+
 
         System.out.print("Ingrese el numero de habitaciones que busca: ");
         int numHabitaciones = scanner.nextInt();
@@ -544,21 +532,31 @@ public class Main {
 
         System.out.println("-------------------");
 
-        buscarHoteles(ciudad, alojamiento, mesInicio, diaInicio, mesfinalizacion, diaFinalizacion, cantAdultos, cantNinos, tipoHabitacion, numHabitaciones);
+        buscarHoteles(ciudad, alojamiento, mesInicio, diaInicio, mesfinalizacion, diaFinalizacion, cantAdultos, cantNinos,numHabitaciones);
     }
 
 
-    public static void buscarHoteles(String ciudad, String alojamiento, int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion, int cantAdultos, int cantNinos, int tipoHabitacion, int numHabitaciones) {
+    public static void buscarHoteles(String ciudad, String alojamiento, int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion, int cantAdultos, int cantNinos, int numHabitaciones) {
 
         LocalDate fechaInicio = LocalDate.of(2024, mesInicio, diaInicio);
         LocalDate fechaFin = LocalDate.of(2024, mesFinalizacion, diaFinalizacion);
 
         System.out.println("Buscando alojamientos...");
-        //String[][] alojamientosDisponibles = new String[12][12];
+
         System.out.println("-------------------");
-        if (alojamiento.equals("dia de sol")) {
-            mostrarAlojamientosConDiaDeSol(ciudad, alojamiento, fechaInicio, fechaFin, diaInicio, diaFinalizacion, numHabitaciones);
-            return;
+        if (alojamiento.equals("hotel")) {
+            for (int i = 0; i < hoteles.length; i++) {
+                int[] cantHabitaciones = hoteles[i].getCantHabitaciones();
+                if(ciudad.equals(hoteles[i].getCiudad()) && ((cantHabitaciones[0]>=numHabitaciones) || (cantHabitaciones[1]>=numHabitaciones) || (cantHabitaciones[2]>=numHabitaciones) || (cantHabitaciones[3]>=numHabitaciones) || (cantHabitaciones[4]>=numHabitaciones))){
+                    hoteles[i].mostrarInformacionAlojamiento(, , );
+                }
+            }
+        }else if(alojamiento.equals("apartamento")){
+            for (int i = 0; i < apartamentos.length; i++) {}
+        }else if(alojamiento.equals("finca")){
+            for (int i = 0; i < fincas.length; i++) {}
+        }else if(alojamiento.equals("dia de sol")){
+            for (int i = 0; i < diasDeSol.length; i++) {}
         }
 
 

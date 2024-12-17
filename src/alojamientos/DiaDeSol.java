@@ -17,6 +17,7 @@ public class DiaDeSol extends Alojamiento {
         this.reservas = new Reserva[99];
         this.actividades=actividades;
         this.extras=extras;
+        this.cantHabitaciones = new int[5];
     }
 
     public DiaDeSol() {
@@ -30,7 +31,7 @@ public class DiaDeSol extends Alojamiento {
 
 
     @Override
-    public double calcularDescuentoOAumento(int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion) {
+    public double calcularDescuentoOAumento(int diaInicio, int diaFinalizacion) {
         double descuentoOAumento = 0.0;
 
         // Verificar si se ha calculado el precio base
@@ -58,14 +59,14 @@ public class DiaDeSol extends Alojamiento {
     }
 
     @Override
-    public void mostrarInformacionAlojamiento() {
+    public void mostrarInformacionAlojamiento(int numHabitaciones, int diaInicio, int diaFinalizacion) {
         System.out.println("Nombre: " + this.nombre);
         System.out.println("Tipo: " + this.tipo);
         System.out.println("Actividades: " + this.actividades);
         System.out.println("Incluye: " + this.extras);
-        //System.out.println("Precio: " + preciosTotales[0]);
-        //System.out.println("Precio Aumento o descuento: " + preciosTotales[1]);
-        //System.out.println("-------------------");
+        System.out.println("precio: " + calcularPrecioBase(numHabitaciones));
+        System.out.println("Precio Total: " + calcularDescuentoOAumento(diaInicio,diaFinalizacion));
+        System.out.println("-------------------");
     }
 
     @Override

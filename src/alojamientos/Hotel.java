@@ -14,17 +14,18 @@ public class Hotel extends Alojamiento {
         this.tipo="hotel";
         this.habitaciones = new Habitacion[5];
         this.reservas = new Reserva[99];
+        this.cantHabitaciones = new int[5];
     }
 
     @Override
     public double calcularPrecioBase(int numHabitaciones) {
         this.precio = this.obtenerPrecioHabitacionMasBarata()*numHabitaciones;
-        return 0;
+        return precio;
     }
 
 
     @Override
-    public double calcularDescuentoOAumento(int mesInicio, int diaInicio, int mesFinalizacion, int diaFinalizacion) {
+    public double calcularDescuentoOAumento( int diaInicio, int diaFinalizacion) {
         double descuentoOAumento = 0.0;
 
         // Verificar si se ha calculado el precio base
@@ -53,12 +54,11 @@ public class Hotel extends Alojamiento {
 
 
     @Override
-    public void mostrarInformacionAlojamiento() {
+    public void mostrarInformacionAlojamiento(int numHabitaciones, int diaInicio, int diaFinalizacion){
         System.out.println("Alojamiento: " + this.nombre);
         System.out.println("Calificación: " + this.calificacion);
-        System.out.println("Tipo: " + this.tipo);
-        //System.out.println("Precio por noche: " + preciosTotales[0]);
-        //System.out.println("Precio total (días): " + preciosTotales[1]);
+        System.out.println("precio: " + calcularPrecioBase(numHabitaciones));
+        System.out.println("Precio Total: " + calcularDescuentoOAumento(diaInicio,diaFinalizacion));
         System.out.println("-------------------");
     }
 
