@@ -69,5 +69,8 @@ class Reserva implements Reservable {
         this.fechaFin = nuevaFechaFin;
         System.out.println("Reserva actualizada para " + getAlojamiento().getNombre() + " del " + nuevaFechaInicio + " al " + nuevaFechaFin);
     }
+
+    public void setHabitacion(Habitacion habitacion) {
+    }
 }
 
