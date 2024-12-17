@@ -1,5 +1,6 @@
 package src.alojamientos;
 
+import src.clientes.Cliente;
 import src.habitaciones.Habitacion;
 import src.reservas.Reserva;
 
@@ -68,6 +69,33 @@ public abstract class Alojamiento {
     public void restarHabitaciones(int cantHabitaciones,int tipoHabitacion){
         this.cantHabitaciones[tipoHabitacion]=this.cantHabitaciones[tipoHabitacion]-cantHabitaciones;
     }
+
+    public void recuperarHabitaciones(int cantHabitaciones,int tipoHabitacion){
+        this.cantHabitaciones[tipoHabitacion]=this.cantHabitaciones[tipoHabitacion]+cantHabitaciones;
+    }
+
+    public void encontrarReserva(String email, String fechaNacimiento) {
+        if (reservas == null || reservas.length == 0) {
+            System.out.println("No hay reservas registradas.");
+            return;
+        }
+
+        for (Reserva reserva : reservas) {
+            if (reserva != null) { // Evitar NullPointerException
+                Cliente cliente = reserva.getCliente();
+                if (cliente.getEmail().equals(email) && cliente.getFechaNacimiento().equals(fechaNacimiento)) {
+                    System.out.println("Reserva encontrada:");
+                    reserva.mostrarInfoReserva();
+                    return; 
+                }
+            }
+        }
+
+        System.out.println("No se encontró ninguna reserva con el email y fecha de nacimiento proporcionados.");
+    }
+
+
+
 
     // get y set
     public String getNombre() {
