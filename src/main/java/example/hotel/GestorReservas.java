@@ -23,7 +23,7 @@ public class GestorReservas {
         }
         System.out.println("Seleccione una ciudad:");
         int ciudadIndex = scanner.nextInt() - 1;
-        scanner.nextLine();  // Consumir nueva línea
+        scanner.nextLine(); // Consumir nueva línea
 
         // Validación del índice de ciudad
         if (ciudadIndex < 0 || ciudadIndex >= ciudades.size()) {
@@ -36,7 +36,8 @@ public class GestorReservas {
         System.out.println("Tipos de alojamiento disponibles:");
         ArrayList<String> tiposAlojamiento = new ArrayList<>();
         for (Alojamiento alojamiento : alojamientos) {
-            if (alojamiento.getCiudad().equals(ciudadSeleccionada) && !tiposAlojamiento.contains(alojamiento.getClass().getSimpleName())) {
+            if (alojamiento.getCiudad().equals(ciudadSeleccionada)
+                    && !tiposAlojamiento.contains(alojamiento.getClass().getSimpleName())) {
                 tiposAlojamiento.add(alojamiento.getClass().getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2"));
             }
         }
@@ -45,7 +46,7 @@ public class GestorReservas {
         }
         System.out.println("Seleccione un tipo de alojamiento:");
         int tipoIndex = scanner.nextInt() - 1;
-        scanner.nextLine();  // Consumir nueva línea
+        scanner.nextLine(); // Consumir nueva línea
 
         // Validación del índice de tipo de alojamiento
         if (tipoIndex < 0 || tipoIndex >= tiposAlojamiento.size()) {
@@ -63,7 +64,7 @@ public class GestorReservas {
 
         System.out.println("Ingrese la cantidad de habitaciones:");
         int cantidadHabitaciones = scanner.nextInt();
-        scanner.nextLine();  // Consumir nueva línea
+        scanner.nextLine(); // Consumir nueva línea
 
         System.out.println("Ingrese el día de inicio del hospedaje (DD/MM/YYYY):");
         String fechaInicio = scanner.nextLine();
@@ -73,7 +74,8 @@ public class GestorReservas {
 
         ArrayList<Alojamiento> alojamientosDisponibles = new ArrayList<>();
         for (Alojamiento alojamiento : alojamientos) {
-            if (alojamiento.getCiudad().equalsIgnoreCase(ciudadSeleccionada) && alojamiento.getClass().getSimpleName().replaceAll("([a-z])([A-Z])", "$1 $2").equalsIgnoreCase(tipoSeleccionado)) {
+            if (alojamiento.getCiudad().equalsIgnoreCase(ciudadSeleccionada) && alojamiento.getClass().getSimpleName()
+                    .replaceAll("([a-z])([A-Z])", "$1 $2").equalsIgnoreCase(tipoSeleccionado)) {
                 alojamientosDisponibles.add(alojamiento);
             }
         }
@@ -82,12 +84,13 @@ public class GestorReservas {
         for (int i = 0; i < alojamientosDisponibles.size(); i++) {
             Alojamiento alojamiento = alojamientosDisponibles.get(i);
             double precioPorNoche = calculadorPrecios.calcularPrecioBase(alojamiento);
-            System.out.println((i + 1) + ". " + alojamiento.getNombre() + " - " + alojamiento.getCalificacion() + " estrellas");
+            System.out.println(
+                    (i + 1) + ". " + alojamiento.getNombre() + " - " + alojamiento.getCalificacion() + " estrellas");
             System.out.println("   Precio por noche: " + precioPorNoche + " USD");
         }
         System.out.println("Seleccione un alojamiento:");
         int alojamientoIndex = scanner.nextInt() - 1;
-        scanner.nextLine();  // Consumir nueva línea
+        scanner.nextLine(); // Consumir nueva línea
 
         // Validación del índice de alojamiento
         if (alojamientoIndex < 0 || alojamientoIndex >= alojamientosDisponibles.size()) {
@@ -111,11 +114,13 @@ public class GestorReservas {
             }
         }
         for (int i = 0; i < habitaciones.size(); i++) {
-            System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo() + " - " + habitaciones.get(i).getCaracteristicas() + " - " + habitaciones.get(i).getPrecio() + " USD por noche");
+            System.out.println(
+                    (i + 1) + ". " + habitaciones.get(i).getTipo() + " - " + habitaciones.get(i).getCaracteristicas()
+                            + " - " + habitaciones.get(i).getPrecio() + " USD por noche");
         }
         System.out.println("Seleccione una habitación:");
         int habitacionIndex = scanner.nextInt() - 1;
-        scanner.nextLine();  // Consumir nueva línea
+        scanner.nextLine(); // Consumir nueva línea
 
         // Validación del índice de habitación
         if (habitacionIndex < 0 || habitacionIndex >= habitaciones.size()) {
@@ -127,7 +132,8 @@ public class GestorReservas {
 
         // Calcular precios y mostrar resumen
         double precioTotal = habitacionSeleccionada.getPrecio() * cantidadHabitaciones;
-        double aumentoODescuento = calculadorPrecios.calcularAumentoODescuento(alojamientoSeleccionado, fechaInicio, fechaFin);
+        double aumentoODescuento = calculadorPrecios.calcularAumentoODescuento(alojamientoSeleccionado, fechaInicio,
+                fechaFin);
         double precioFinal = precioTotal + aumentoODescuento;
 
         System.out.println("Resumen de la reserva:");
@@ -156,7 +162,8 @@ public class GestorReservas {
 
             String nombreCompleto = nombre + " " + apellido;
 
-            Reserva nuevaReserva = new Reserva(reservas.size() + 1, alojamientoSeleccionado, habitacionSeleccionada, nombreCompleto, email, fechaNacimiento, fechaInicio, fechaFin);
+            Reserva nuevaReserva = new Reserva(reservas.size() + 1, alojamientoSeleccionado, habitacionSeleccionada,
+                    nombreCompleto, email, fechaNacimiento, fechaInicio, fechaFin);
             reservas.add(nuevaReserva);
 
             System.out.println("¡Gracias! Su reserva ha sido confirmada.");
@@ -165,7 +172,7 @@ public class GestorReservas {
         }
     }
 
-    public void actualizarReserva(ArrayList<Reserva> reservas, Scanner scanner) {
+    public void actualizarReserva(ArrayList<Alojamiento> alojamientos, ArrayList<Reserva> reservas, Scanner scanner) {
         System.out.println("Ingrese su correo electrónico:");
         String email = scanner.nextLine();
 
@@ -181,17 +188,48 @@ public class GestorReservas {
         }
 
         if (reserva != null) {
-            System.out.println("Ingrese la nueva fecha de inicio del hospedaje (DD/MM/YYYY):");
-            String nuevaFechaInicio = scanner.nextLine();
+            System.out.println("Reserva encontrada:");
+            System.out.println("Alojamiento: " + reserva.getAlojamiento().getNombre());
+            System.out.println("Habitación: " + reserva.getHabitacion().getTipo());
+            System.out.println("Fecha de inicio: " + reserva.getFechaInicio());
+            System.out.println("Fecha de fin: " + reserva.getFechaFin());
 
-            System.out.println("Ingrese la nueva fecha de finalización del hospedaje (DD/MM/YYYY):");
-            String nuevaFechaFin = scanner.nextLine();
+            System.out.println("¿Qué desea actualizar?");
+            System.out.println("1. Cambiar habitación");
+            System.out.println("2. Cambiar alojamiento");
+            int opcion = scanner.nextInt();
+            scanner.nextLine(); // Consumir nueva línea
 
-            System.out.println("Ingrese la nueva cantidad de habitaciones:");
-            int nuevaCantidadHabitaciones = scanner.nextInt();
-            scanner.nextLine();  // Consumir nueva línea
+            if (opcion == 1) {
+                // Cambiar habitación
+                ArrayList<Habitacion> habitaciones = reserva.getAlojamiento().getHabitaciones();
+                System.out.println("Habitaciones disponibles:");
+                for (int i = 0; i < habitaciones.size(); i++) {
+                    System.out.println((i + 1) + ". " + habitaciones.get(i).getTipo() + " - "
+                            + habitaciones.get(i).getCaracteristicas() + " - " + habitaciones.get(i).getPrecio()
+                            + " USD por noche");
+                }
+                System.out.println("Seleccione una nueva habitación:");
+                int habitacionIndex = scanner.nextInt() - 1;
+                scanner.nextLine(); // Consumir nueva línea
 
-            reserva.actualizarReserva(nuevaFechaInicio, nuevaFechaFin, nuevaCantidadHabitaciones);
+                // Validación del índice de habitación
+                if (habitacionIndex < 0 || habitacionIndex >= habitaciones.size()) {
+                    System.out.println("Índice de habitación no válido. Intente nuevamente.");
+                    return;
+                }
+
+                Habitacion nuevaHabitacion = habitaciones.get(habitacionIndex);
+                reserva.setHabitacion(nuevaHabitacion);
+                System.out.println("Habitación actualizada exitosamente.");
+            } else if (opcion == 2) {
+                // Cambiar alojamiento
+                reservas.remove(reserva);
+                System.out.println("Reserva eliminada. Por favor, cree una nueva reserva.");
+                realizarReserva(alojamientos, reservas, scanner);
+            } else {
+                System.out.println("Opción no válida. Intente nuevamente.");
+            }
         } else {
             System.out.println("Reserva no encontrada.");
         }
