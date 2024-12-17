@@ -41,7 +41,8 @@ public class Main {
             System.out.println("2. Confirmar disponibilidad");
             System.out.println("3. Realizar reserva");
             System.out.println("4. Ver reservas");
-            System.out.println("5. Salir");
+            System.out.println("5. Actualizar reserva"); // <-- Nueva opción agregada
+            System.out.println("6. Salir");
             System.out.print("Seleccione una opción: ");
 
             opcion = scanner.nextInt();
@@ -61,12 +62,15 @@ public class Main {
                     verReserva.verReservas();
                     break;
                 case 5:
+                    actualizarReserva(scanner, hoteles, verReserva); // <-- Llamada al método
+                    break;
+                case 6:
                     System.out.println("¡Gracias por usar Booking Hoteles!");
                     break;
                 default:
                     System.out.println("Opción no válida. Intente de nuevo.");
             }
-        } while (opcion != 5);
+        } while (opcion != 6);
 
         scanner.close();
     }
