@@ -42,9 +42,18 @@ public class Main {
         ecoAmazonLodge.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1, habitacion2, habitacion3, habitacion4, habitacion5)));
         fincaAmazonica.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1)));
 
-        String[] ciudades = { "Bogota", "Cartagena", "Santa Marta", "San Andres", "Amazonas" };
+        // Creación de un arreglo de objetos de tipo Alojamiento
+        Alojamiento[] alojamientos = { hotelTequendama, apartamentoCentral, hotelCaribe, casaColonial, irotamaResort, apartamentoPlaya, hotelDecameron, casaVacacional, ecoAmazonLodge, fincaAmazonica };
 
-        String[][] alojamientos = {
+        // Creación de arreglo de ciudades en las que se encuentran los alojamientos
+        ArrayList<String> ciudades = new ArrayList<>();
+        for (Alojamiento alojamiento : alojamientos) {
+            if (!ciudades.contains(alojamiento.Ciudad)) {
+                ciudades.add(alojamiento.Ciudad);
+            }
+        };
+
+        String[][] alojamientos_ = {
                 { "Hotel Tequendama", "Bogota", "Hotel", "4.5", "50000" },
                 { "Apartamento Central", "Bogota", "Apartamento", "4.0", "40000" },
                 { "Hotel Caribe", "Cartagena", "Hotel", "4.8", "60000" },
@@ -135,12 +144,11 @@ public class Main {
             opcion = scanner.nextInt();
 
             switch (opcion) {
-                case 1 -> buscarAlojamientos(ciudades, alojamientos, preciosHabitaciones, disponibilidadHabitaciones,
-                        scanner);
-                case 2 -> realizarReserva(alojamientos, preciosHabitaciones, disponibilidadHabitaciones, scanner);
-                case 3 -> reservarDiaDeSol(alojamientos, precioDiaSol, actividadesDiaSol, scanner);
-                case 4 -> verHistorialReservas();
-                case 5 -> cancelarReservacion(disponibilidadHabitaciones, alojamientos); // TODO: Implementar
+                case 1 -> buscarAlojamientos(alojamientos, ciudades, scanner);
+//                case 2 -> realizarReserva(alojamientos, preciosHabitaciones, disponibilidadHabitaciones, scanner);
+//                case 3 -> reservarDiaDeSol(alojamientos, precioDiaSol, actividadesDiaSol, scanner);
+//                case 4 -> verHistorialReservas();
+//                case 5 -> cancelarReservacion(disponibilidadHabitaciones, alojamientos); // TODO: Implementar
                 case 0 -> System.out.println("Gracias por usar Booking Colombia. ¡Hasta pronto!");
                 default -> System.out.println("Opción no válida, intente nuevamente.");
             }
@@ -150,11 +158,10 @@ public class Main {
         scanner.close();
     }
 
-    public static void buscarAlojamientos(String[] ciudades, String[][] alojamientos, float[][] preciosHabitaciones,
-                                          int[][] disponibilidadHabitaciones, Scanner scanner) {
+    public static void buscarAlojamientos(Alojamiento[] alojamientos, ArrayList<String>ciudades, Scanner scanner) {
         System.out.print("Ingrese una ciudad entre las opciones disponibles: ");
         for (String ciudad : ciudades) {
-            System.out.print(ciudad + " | ");
+           System.out.print(ciudad + " | ");
         }
         System.out.println();
 
