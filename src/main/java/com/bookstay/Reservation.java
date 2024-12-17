@@ -1,4 +1,4 @@
-package com.bookstay.models;
+package com.bookstay;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -32,7 +32,7 @@ public class Reservation {
         this.children = children;
     }
 
-    public Reservation(String name, String lastname, LocalDate birthDay, String email, int numberPhone, String nationality, LocalDate startDate, LocalDate endDate, int adults, int children, List<Room> rooms) {
+    public Reservation(String name, String lastname, LocalDate birthDay, String email, int numberPhone, String nationality, LocalDate startDate, LocalDate endDate, LocalTime arrivedTime,int adults, int children, List<Room> rooms) {
         this.name = name;
         this.lastname = lastname;
         this.birthDay = birthDay;
@@ -41,10 +41,12 @@ public class Reservation {
         this.nationality = nationality;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.arrivedTime = arrivedTime;
         this.adults = adults;
         this.children = children;
         this.rooms = rooms;
     }
+
 
     @Override
     public String toString() {

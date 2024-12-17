@@ -1,4 +1,4 @@
-package com.bookstay.models;
+package com.bookstay;
 
 import java.time.LocalDate;
 import java.util.List;

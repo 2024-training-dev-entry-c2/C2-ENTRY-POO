@@ -1,9 +1,7 @@
 package com.bookstay;
 
-import com.bookstay.models.*;
-
 import java.time.LocalDate;
-import java.time.temporal.ChronoUnit;
+import java.time.LocalTime;
 import java.util.*;
 
 public class Main {
@@ -250,8 +248,8 @@ public class Main {
                             System.out.println("Hora de llegada (HH:mm): ");
                             String arrivalTime = input.nextLine();
 
-                            //String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDay, endDay, adults, children, selectedRooms, dayBirth);
-                            //System.out.println(reservationMessage);
+                            String reservationMessage = makeReservation(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDate, endDate, adults, children, selectedRooms, LocalDate.parse(dayBirth));
+                            System.out.println(reservationMessage);
                         }else{
                             System.out.println("\nProceso de reserva cancelado.");
                             System.out.println("Serás redirigido(a) al menú principal. Espera un momento...");
@@ -333,23 +331,52 @@ public class Main {
     }
 
     /* ################################# MAKE RESERVATION ################################# */
-    /*
-    public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime, String lodgingName, String startDate, String endDate, int adults, int children, List<String> selectedRooms, String dayBirth) {
-        for (List<String> lodging : lodgings) {
-            if (lodging.get(0).equalsIgnoreCase(lodgingName)) {
-                StringBuilder reservationData = new StringBuilder(lodging.get(10));
-                for (String room : selectedRooms) {
-                    reservationData.append(firstName).append(",").append(lastName).append(",").append(email).append(",").append(startDate).append(",").append(endDate)
-                            .append(",").append(adults).append(",").append(children).append(",").append(room).append(";");
+    public static String makeReservation(String firstName, String lastName, String email, String nationality, String phoneNumber, String arrivalTime,
+                                         String lodgingName, LocalDate startDate, LocalDate endDate, int adults, int children, List<String> selectedRooms,
+                                         LocalDate birthDate) {
+
+        for (Lodging lodging : lodgings) {
+            if (lodging.getName().equalsIgnoreCase(lodgingName)) {
+                int totalGuests = adults + children;
+                List<Room> reservedRooms = new ArrayList<>();
+
+                if (lodging instanceof Hotel hotel) {
+                    for (String roomType : selectedRooms) {
+                        hotel.getRooms().stream()
+                                .filter(room -> room.getType().equalsIgnoreCase(roomType))
+                                .findFirst()
+                                .ifPresent(reservedRooms::add);
+                    }
+
+                    if (reservedRooms.isEmpty()) {
+                        return "No se pudo realizar la reserva. Las habitaciones seleccionadas no están disponibles.";
+                    }
                 }
-                lodging.set(10, reservationData.toString());
-                reservations.add(Arrays.asList(firstName, lastName, email, nationality, phoneNumber, arrivalTime, lodgingName, startDate, endDate, String.valueOf(adults), String.valueOf(children), selectedRooms.toString(), dayBirth));
-                return "Se ha realizado la reserva con éxito.";
+
+                if (lodging instanceof DayResort && !startDate.isEqual(endDate)) {
+                    return "Las reservas en un Día de Sol solo se permiten por un día.";
+                }
+
+                if (!lodging.isAvailable(startDate, endDate, totalGuests)) {
+                    return "No se pudo realizar la reserva. La capacidad máxima ha sido alcanzada o las fechas no están disponibles.";
+                }
+
+                Reservation reservation = new Reservation(
+                        firstName, lastName, birthDate, email, Integer.parseInt(phoneNumber), nationality,
+                        startDate, endDate, LocalTime.parse(arrivalTime), adults, children, reservedRooms);
+
+                lodging.addReservation(reservation);
+                return "Se ha realizado la reserva con éxito en " + lodging.getName() + ":\n" + reservation;
             }
         }
+
         return "No se pudo realizar la reserva. El alojamiento no está disponible.";
     }
 
+
+
+
+    /*
     //Method to consult the reservations
     public static String consultReservations(String email, String dayBirth) {
         StringBuilder result = new StringBuilder();
@@ -397,6 +424,7 @@ public class Main {
         return "Desconocida"; // Si no se encuentra
     }
     */
+
     /* ################################# MODIFY RESERVATION ################################# */
     /*
     public static void modifyReservation(String email, String dayBirth) {

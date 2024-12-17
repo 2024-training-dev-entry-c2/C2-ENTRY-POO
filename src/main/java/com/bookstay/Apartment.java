@@ -1,48 +1,38 @@
-package com.bookstay.models;
+package com.bookstay;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DayResort extends Lodging {
-    private List<String> activities;
-    private List<String> meals;
-    private double pricePerPerson;
+public class Apartment extends Lodging{
+    private int maxCapacity;
+    private double pricePerNight;
 
-    public DayResort(String name, String city, double rating, String description, double price) {
-        super(name, city, "Día de sol", rating, description);
-        this.activities = new ArrayList<>();
-        this.meals = new ArrayList<>();
-        this.pricePerPerson = price;
-    }
-
-    public void addActivity(String activity){
-        activities.add(activity);
-    }
-
-    public void addMeal(String meal){
-        meals.add(meal);
+    public Apartment(String name, String city, double rating, String description, int maxCapacity, double pricePerNight) {
+        super(name, city, "Apartamento", rating, description);
+        this.maxCapacity = maxCapacity;
+        this.pricePerNight = pricePerNight;
     }
 
     @Override
     public double calculatePrice(int adults, int children, int days) {
-        if (days != 1) {
-            throw new IllegalArgumentException("Un 'Día de Sol' solo puede ser reservado por 1 día.");
-        }
+        int totalPeople = adults + children;
 
-        int totalGuests = adults + children;
-        return totalGuests * pricePerPerson;
+        if (totalPeople > maxCapacity) {
+            throw new IllegalArgumentException("La capacidad máxima del apartamento es de " + maxCapacity + " personas.");
+        }
+        return pricePerNight * days;
     }
 
-
+    @Override
     public boolean isAvailable(LocalDate startDate, LocalDate endDate, int guests) {
-        if (!startDate.isEqual(endDate)) {
+        if (guests > maxCapacity) {
             return false;
         }
 
         for (Reservation reservation : getReservations()) {
-            if (datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, startDate)) {
+            if (datesOverlap(reservation.getStartDate(), reservation.getEndDate(), startDate, endDate)) {
                 return false;
             }
         }
@@ -51,14 +41,16 @@ public class DayResort extends Lodging {
 
     @Override
     public List<String> confirmAvailability(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
-        System.out.println("Descripción: " + description);
-        System.out.println("Actividades: " + activities);
-        System.out.println("Comidas: " + meals);
-        return new ArrayList<>();
+        int totalGuests = adults + children;
+
+        if (!isAvailable(startDate, endDate, totalGuests)) {
+            System.out.println("El apartamento no está disponible para el rango de fechas seleccionado.");
+            return new ArrayList<>();
+        }
+
+        System.out.println("Descripción: " + getDescription());
+        return List.of("Capacidad máxima: " + getMaxCapacity() + " personas.");
     }
-
-
-
 
     @Override
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
@@ -68,7 +60,7 @@ public class DayResort extends Lodging {
         double adjustment = calculateDiscountOrIncrement(startDate, endDate);
         double totalAdjusted;
         System.out.println(this.toString());
-        System.out.println("Precio por persona: $" + pricePerNight);
+        System.out.println("Precio por noche: $" + pricePerNight);
         System.out.println("Precio base total: $" + baseTotalPrice);
 
         if(adjustment < 0){
@@ -85,22 +77,16 @@ public class DayResort extends Lodging {
         return  name + '\n' +
                 "+------------------------------------+" + '\n' +
                 "Calificación: " + rating +'\n' +
-                "Descripción: " + description + '\n' +
-                "Actividades: " + activities.toString() + '\n' +
-                "Meriendas Incluidas: " + meals.toString()
+                "Descripción: " + description + '\n'
                 ;
     }
 
-    // Getters
-    public List<String> getActivities() {
-        return activities;
+    // Getters y setters
+    public int getMaxCapacity() {
+        return maxCapacity;
     }
 
-    public List<String> getMealsIncluded() {
-        return meals;
-    }
-
-    public double getPricePerPerson() {
-        return pricePerPerson;
+    public double getPricePerNight() {
+        return pricePerNight;
     }
 }

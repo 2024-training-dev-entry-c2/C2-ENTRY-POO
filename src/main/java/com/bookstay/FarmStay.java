@@ -1,18 +1,18 @@
-package com.bookstay.models;
+package com.bookstay;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Apartment extends Lodging{
+public class FarmStay extends Lodging{
     private int maxCapacity;
     private double pricePerNight;
 
-    public Apartment(String name, String city, double rating, String description, int maxCapacity, double pricePerNight) {
-        super(name, city, "Apartamento", rating, description);
+    public FarmStay(String name, String city, double rating, String description, int maxCapacity, double price) {
+        super(name, city, "Finca", rating, description);
         this.maxCapacity = maxCapacity;
-        this.pricePerNight = pricePerNight;
+        this.pricePerNight = price;
     }
 
     @Override
@@ -20,8 +20,9 @@ public class Apartment extends Lodging{
         int totalPeople = adults + children;
 
         if (totalPeople > maxCapacity) {
-            throw new IllegalArgumentException("La capacidad máxima del apartamento es de " + maxCapacity + " personas.");
+            throw new IllegalArgumentException("La capacidad máxima de la finca es de " + maxCapacity + " personas.");
         }
+
         return pricePerNight * days;
     }
 
@@ -44,13 +45,14 @@ public class Apartment extends Lodging{
         int totalGuests = adults + children;
 
         if (!isAvailable(startDate, endDate, totalGuests)) {
-            System.out.println("El apartamento no está disponible para el rango de fechas seleccionado.");
+            System.out.println("La finca no está disponible para el rango de fechas seleccionado.");
             return new ArrayList<>();
         }
 
         System.out.println("Descripción: " + getDescription());
         return List.of("Capacidad máxima: " + getMaxCapacity() + " personas.");
     }
+
 
     @Override
     public void printDetails(LocalDate startDate, LocalDate endDate, int adults, int children, int roomsNeeded) {
@@ -74,14 +76,14 @@ public class Apartment extends Lodging{
 
     @Override
     public String toString() {
-        return  name + '\n' +
+        return   name + '\n' +
                 "+------------------------------------+" + '\n' +
                 "Calificación: " + rating +'\n' +
                 "Descripción: " + description + '\n'
                 ;
     }
 
-    // Getters y setters
+    // Getter
     public int getMaxCapacity() {
         return maxCapacity;
     }
