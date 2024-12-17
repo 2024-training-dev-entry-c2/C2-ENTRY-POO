@@ -189,34 +189,89 @@ switch (confirmar) {
             System.out.println("Opción no válida.");
             return;
         } else {
-            System.out.println("Ingrese su nombre para generar la reserva en la habitación " + alojamientoSeleccionado.habitaciones.get(opcionHabitacion).nombre);
-            scanner.nextLine(); // Limpiar buffer
+            System.out.println("Ingrese su nombre para generar la reserva");
             String nombreCliente = scanner.nextLine();
 
-            System.out.println("Ingrese su apellido: " );
-            scanner.nextLine(); // Limpiar buffer
+            System.out.println("Ingrese su apellido: ");
             String apellidoCliente = scanner.nextLine();
 
             System.out.println("Ingrese su email: ");
-            scanner.nextLine(); // Limpiar buffer
             String emailCliente = scanner.nextLine();
 
             System.out.println("Ingrese su nacionalidad: ");
-            scanner.nextLine(); // Limpiar buffer
             String nacionalidadCliente = scanner.nextLine();
+
             System.out.println("Ingrese su telefono: ");
-            scanner.nextLine(); // Limpiar buffer
-            int telefonoCliente = scanner.nextInt();
+            int telefonoCliente = Integer.parseInt(scanner.nextLine());
+
             System.out.println("Ingrese su fecha de nacimiento (yyyy-MM-dd): ");
-            scanner.nextLine(); // Limpiar buffer
             LocalDate fechaNacimientoCliente = LocalDate.parse(scanner.nextLine());
 
             Cliente cliente = new Cliente(nombreCliente, apellidoCliente, emailCliente, nacionalidadCliente, telefonoCliente, fechaNacimientoCliente);
             Reserva reserva = new Reserva(fechaInicio, fechaFin, adultos, ninos, cliente, alojamientoSeleccionado, alojamientoSeleccionado.habitaciones.get(opcionHabitacion));
+            ultimaReserva = reserva.mostrarDetalles();
+            System.out.println("Reserva generada con éxito: ");
+            System.out.println(ultimaReserva);
         }
+
     }
     case 2 -> {
-        // Lógica para reservar Día de sol
+        System.out.print("Para continuar con la reserva por favor ingrese el nombre del alojamiento: ");
+        scanner.nextLine(); // Limpiar buffer
+        String nombreAlojamiento = scanner.nextLine();
+
+        // Buscar el alojamiento seleccionado
+        Alojamiento alojamientoSeleccionado = null;
+        for (Alojamiento alojamiento : alojamientos) {
+            if (alojamiento.nombre.equalsIgnoreCase(nombreAlojamiento)) {
+                alojamientoSeleccionado = alojamiento;
+                break;
+            }
+        }
+
+        if (alojamientoSeleccionado == null) {
+            System.out.println("Alojamiento no encontrado. Vuelva a intentarlo.");
+            return;
+        }
+
+        // Solicitar información del cliente
+        System.out.println("Ingrese su nombre para generar la reserva:");
+        String nombreCliente = scanner.nextLine();
+
+        System.out.println("Ingrese su apellido:");
+        String apellidoCliente = scanner.nextLine();
+
+        System.out.println("Ingrese su email:");
+        String emailCliente = scanner.nextLine();
+
+        System.out.println("Ingrese su nacionalidad:");
+        String nacionalidadCliente = scanner.nextLine();
+
+        System.out.println("Ingrese su telefono:");
+        int telefonoCliente = Integer.parseInt(scanner.nextLine());
+
+        System.out.println("Ingrese su fecha de nacimiento (yyyy-MM-dd):");
+        LocalDate fechaNacimientoCliente = LocalDate.parse(scanner.nextLine());
+
+        System.out.println("Ingrese la fecha de reserva del Día de Sol (yyyy-MM-dd):");
+        LocalDate fechaDiaDeSol = LocalDate.parse(scanner.nextLine());
+
+        // Crear el objeto Cliente
+        Cliente cliente = new Cliente(
+                nombreCliente,
+                apellidoCliente,
+                emailCliente,
+                nacionalidadCliente,
+                telefonoCliente,
+                fechaNacimientoCliente
+        );
+
+        // Crear la reserva de tipo "Día de Sol"
+        Reserva reservaDiaSol = new Reserva(fechaDiaDeSol, adultos, ninos, cliente, alojamientoSeleccionado);
+
+        // Mostrar detalles de la reserva
+        System.out.println("Reserva generada con éxito:");
+        System.out.println(reservaDiaSol.mostrarDetalles());
     }
     case 3 -> {
         System.out.println("No se ha realizado ninguna reserva.");
