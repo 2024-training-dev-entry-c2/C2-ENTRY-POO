@@ -1,5 +1,7 @@
 package com.example.hotel;
 
+import com.example.hotel.inputHandler.Menu;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +13,8 @@ public class Main {
   private static List<List<String>> reservations = new ArrayList<>();
 
   public static void main(String[] args) {
-    menu();
+    Menu menu = new Menu();
+    menu.menu();
   }
 
   // region city
