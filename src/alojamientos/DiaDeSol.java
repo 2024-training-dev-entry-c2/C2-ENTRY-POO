@@ -36,8 +36,8 @@ public class DiaDeSol extends Alojamiento {
     public void mostrarInformacionAlojamiento() {
         System.out.println("Nombre: " + this.nombre);
         System.out.println("Tipo: " + this.tipo);
-        //System.out.println("Actividades: " + this.habitaciones.caract);
-        //System.out.println("Incluye: " + habitaciones[j][3]);
+        System.out.println("Actividades: " + this.actividades);
+        System.out.println("Incluye: " + this.extras);
         //System.out.println("Precio: " + preciosTotales[0]);
         //System.out.println("Precio Aumento o descuento: " + preciosTotales[1]);
         //System.out.println("-------------------");
