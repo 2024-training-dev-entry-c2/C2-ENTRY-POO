@@ -30,6 +30,18 @@ public class Main {
         Alojamiento ecoAmazonLodge = new Alojamiento("EcoAmazon Lodge", "Amazonas", "Hotel", 4.7, 350000, "Barra libre de cerveza, acceso dirigido al acuario, almuerzo incluido, spa, zona de juegos, recorrido dirigido por la naturaleza y grupos de avistamiento de aves", new ArrayList<>());
         Alojamiento fincaAmazonica = new Alojamiento("Finca Amazonica", "Amazonas", "Finca", 3.0, 200000, "Disponibilidad de jacuzzi, zona de asados, senderismo por la zona con vista a la naturaleza", new ArrayList<>());
 
+        // Agregar habitaciones a los alojamientos
+        hotelTequendama.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1, habitacion3, habitacion4, habitacion5)));
+        apartamentoCentral.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion2)));
+        hotelCaribe.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1, habitacion2, habitacion3, habitacion4, habitacion5)));
+        casaColonial.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1)));
+        irotamaResort.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1, habitacion2, habitacion3, habitacion4, habitacion5)));
+        apartamentoPlaya.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion5)));
+        hotelDecameron.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1, habitacion2, habitacion3, habitacion4, habitacion5)));
+        casaVacacional.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion2)));
+        ecoAmazonLodge.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1, habitacion2, habitacion3, habitacion4, habitacion5)));
+        fincaAmazonica.setHabitaciones(new ArrayList<Habitacion>(List.of(habitacion1)));
+
         String[] ciudades = { "Bogota", "Cartagena", "Santa Marta", "San Andres", "Amazonas" };
 
         String[][] alojamientos = {
