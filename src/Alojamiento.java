@@ -10,11 +10,11 @@ public abstract class Alojamiento {
     protected double calificacion;
     protected String actividades;
     protected boolean incluyeAlmuerzo;
-    protected boolean incluyeRefiigerio;
+    protected boolean incluyeRefrigerio;
     protected Habitacion[] habitaciones;
 
 
-    public Alojamiento(String nombreAlojamiento, String ciudadDestino, int maxAdultos, int maxNinos, boolean ofreceDiaDeSol, double calificacion, String actividades, Habitacion[] habitaciones) {
+    public Alojamiento(String nombreAlojamiento, String ciudadDestino, int maxAdultos, int maxNinos, boolean ofreceDiaDeSol, double calificacion, String actividades, boolean incluyeAlmuerzo, boolean incluyeRefrigerio, Habitacion[] habitaciones) {
         this.nombreAlojamiento = nombreAlojamiento;
         this.ciudadDestino = ciudadDestino;
         this.maxAdultos = maxAdultos;
@@ -23,6 +23,9 @@ public abstract class Alojamiento {
         this.calificacion = calificacion;
         this.actividades = actividades;
         this.habitaciones = habitaciones;
+        this.incluyeAlmuerzo = incluyeAlmuerzo;
+        this.incluyeRefrigerio = incluyeRefrigerio;
+
     }
 
     public String getNombreAlojamiento() {
@@ -81,6 +84,22 @@ public abstract class Alojamiento {
         this.actividades = actividades;
     }
 
+    public boolean isIncluyeAlmuerzo() {
+        return incluyeAlmuerzo;
+    }
+
+    public void setIncluyeAlmuerzo(boolean incluyeAlmuerzo) {
+        this.incluyeAlmuerzo = incluyeAlmuerzo;
+    }
+
+    public boolean isIncluyeRefrigerio() {
+        return incluyeRefrigerio;
+    }
+
+    public void setIncluyeRefrigerio(boolean incluyeRefrigerio) {
+        this.incluyeRefrigerio = incluyeRefrigerio;
+    }
+
     public Habitacion[] getHabitaciones() {
         return habitaciones;
     }
@@ -90,7 +109,7 @@ public abstract class Alojamiento {
     }
 
     // metodo abstracto que debe ser implementado por las clases hijas
-    public abstract void mostrarInfo(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas);
+    public abstract void mostrarInfo(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas, int adultos, int ninos, boolean incluyeAlmuerzo, boolean incluyeRefrigerio);
 
     // metodo para calcular el precio total de la estadía
     public double calcularPrecioTotal(LocalDate inicioEstadia, LocalDate finEstadia, int habitacionesSolicitadas) {
@@ -156,6 +175,38 @@ public abstract class Alojamiento {
         // verificando si alguna de las fechas cae entre el 5 y el 10 del mes
         return ((inicioEstadia.getDayOfMonth() <= 10 && inicioEstadia.getDayOfMonth() >= 5) ||
                 (finEstadia.getDayOfMonth() <= 10 && finEstadia.getDayOfMonth() >= 5));
+    }
+
+    public void mostrarInfoActividadesYAdicionales(int adultos, int ninos, boolean incluyeAlmuerzo, boolean incluyeRefrigerio) {
+        // Mostrar actividades si ofrece día de sol
+        if (ofreceDiaDeSol) {
+            System.out.println("Actividades disponibles:");
+            for (String actividad : actividades.split(",")) { // Dividimos por comas
+                System.out.println("- " + actividad.trim());
+            }
+        }
+
+        // Precios de almuerzo y refrigerio adicionales
+        double precioAlmuerzo = 20.0;
+        double precioRefrigerio = 10.0;
+
+        int totalPersonas = adultos + ninos;
+        double precioTotalAlmuerzo = precioAlmuerzo * totalPersonas;
+        double precioTotalRefrigerio = precioRefrigerio * totalPersonas;
+
+        if (incluyeAlmuerzo) {
+            System.out.println("Incluye almuerzo.");
+            System.out.println("Si desea incluir el almuerzo, el valor por persona es: $" + precioAlmuerzo +
+                    "\nEn total por " + totalPersonas + " persona(s) es: $" + precioTotalAlmuerzo);
+            System.out.println("** El valor por almuerzo NO está incluido en el precio total. Debe pagarlo en el establecimiento. **");
+        }
+
+        if (incluyeRefrigerio) {
+            System.out.println("Incluye refrigerio.");
+            System.out.println("Si desea incluir el refrigerio, el valor por persona es: $" + precioRefrigerio +
+                    "\nEn total por " + totalPersonas + " persona(s) es: $" + precioTotalRefrigerio);
+            System.out.println("** El valor por refrigerio NO está incluido en el precio total. Debe pagarlo en el establecimiento. **");
+        }
     }
 
     // metodo para mostrar la información de las habitaciones disponibles

@@ -54,7 +54,7 @@ public class Main {
 //    static String[] nacimientosReservas = new String[100];
 //    static String[][] reservas = new String[100][6];
 //    static int reservaCount = 0;
-//    static int hotelSeleccionadoPorUsuarioIndex;
+ static int hotelSeleccionadoPorUsuarioIndex;
 static boolean continuarBuscandoAlojamiento = true;
 //
     public static void main(String[] args) {
@@ -66,7 +66,7 @@ static boolean continuarBuscandoAlojamiento = true;
 
         Alojamiento[] alojamientos = new Alojamiento[5];
 
-        alojamientos[0] = new Hotel("Starlight Hotel", "Cartagena", 2, 4, true, 4.5, "nadar",
+        alojamientos[0] = new Hotel("Starlight Hotel", "Cartagena", 2, 4, true, 4.5, "nadar", true, true,
                 new Habitacion[]{
                 new Habitacion("Individual", "Cama individual", 100.0, 5),
                 new Habitacion("Doble", "Cama doble", 120.0, 4),
@@ -74,7 +74,7 @@ static boolean continuarBuscandoAlojamiento = true;
                 new Habitacion("Suite", "Cama King Size, baño privado, vistas al mar", 200.0, 3),
                 new Habitacion("Presidencial", "Cama King Size, baño privado con Jacuzzi, vistas al mar", 200.50, 3)
         });
-        alojamientos[1] = new Apartamento("Cosmos", "Venecia", 2, 4, false, 4.2, "nadar",
+        alojamientos[1] = new Apartamento("Cosmos", "Venecia", 2, 4, false, 4.2, "", false, false,
                 new Habitacion[]{
                 new Habitacion("Mini", "Cama doble, cocina + mini sala + un baño compartidos", 120.0, 6),
                 new Habitacion("Loft", "Cama doble, espacio abierto + cocina + un baño + sala + barra-comedor compaprtidos", 150.0, 4),
@@ -82,7 +82,7 @@ static boolean continuarBuscandoAlojamiento = true;
                 new Habitacion("Tripex", "Cama doble, baño privado, cocina + sala + comedor compartidos", 180.25, 4),
                 new Habitacion("De lujo", "Cama king, baño privado, sala con chimenea + cocina + comedor + mini bar compartidos", 200.0, 4)
                 });
-        alojamientos[2] = new Finca("Blue Moon", "Porto", 2, 4, false, 4.0, "nadar",
+        alojamientos[2] = new Finca("Blue Moon", "Porto", 2, 4, false, 4.0, "", false, false,
                 new Habitacion[]{
                 new Habitacion("Cabaña", "Cama doble, baño privado, cocina + sala + comedor + jardin compartidos", 150.0, 9),
                 new Habitacion("Urbana", "Cama King Size, baño privado, cerca a la ciudad, cocina + sala + comedor compartidos", 175.0, 7),
@@ -90,7 +90,7 @@ static boolean continuarBuscandoAlojamiento = true;
                 new Habitacion("Ecológica", "Cama doble, baño privado, cocina + sala + comedor + granja + mini bosque compartidos", 220.0, 7),
                 new Habitacion("Hacienda", "Cama doble, baño privado, cocina + sala + comedor + bosque, salon de eventos compartidos", 270.0, 7)
                 });
-        alojamientos[3] = new Hotel("Dark Sun Hotel", "Munich", 2, 4, true, 4.0, "nadar",
+        alojamientos[3] = new Hotel("Dark Sun Hotel", "Munich", 2, 4, true, 4.0, "nadar", true, false,
                 new Habitacion[]{
                 new Habitacion("Rubí", "Cama individual", 80.0, 9),
                 new Habitacion("Esmeralda", "Cama doble", 100.0, 7),
@@ -98,7 +98,7 @@ static boolean continuarBuscandoAlojamiento = true;
                 new Habitacion("Plata", "Cama King Size, baño privado, sala de estar", 200.0, 7),
                 new Habitacion("Diamante", "Cama King Size, baño privado con Jacuzzi, sala de estar", 250.0, 7)
                 });
-        alojamientos[4] = new Hotel("Andromeda Hotel", "Cartagena", 2, 4, false, 4.0, "nadar",
+        alojamientos[4] = new Hotel("Andromeda Hotel", "Cartagena", 2, 4, false, 4.0, "", false, false,
                 new Habitacion[]{
                 new Habitacion("Pluton", "Cama individual", 110.0, 5),
                 new Habitacion("Venus", "Cama doble", 120.0, 4),
@@ -186,7 +186,7 @@ static boolean continuarBuscandoAlojamiento = true;
                 alojamiento.getMaxNinos() >= ninos &&
                 totalHabitacionesDisponibles >= habitaciones) {
                     alojamientoEncontrado = true;
-                    alojamiento.mostrarInfo(inicioEstadia, finEstadia, habitaciones);
+                    alojamiento.mostrarInfo(inicioEstadia, finEstadia, habitaciones, adultos, ninos, alojamiento.incluyeRefrigerio, alojamiento.incluyeAlmuerzo);
                     System.out.println("--------------------------");
             }
         }
@@ -194,296 +194,144 @@ static boolean continuarBuscandoAlojamiento = true;
         if (!alojamientoEncontrado) {
             System.out.println("No se encontraron alojamientos que coincidan con los criterios proporcionados.");
         }
+
+        if (alojamientoEncontrado) {
+            // solicito al usuario seleccionar un alojamiento
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Seleccione el alojamiento que desea (ingrese el nombre del alojamiento):");
+            String hotelSeleccionadoPorUsuario = scanner.nextLine();
+
+            // confirmar las habitaciones para el alojamiento seleccionado
+            confirmarHabitaciones(alojamientos, hotelSeleccionadoPorUsuario, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
+
+            // Llamar al metodo para hacer la reserva
+            System.out.println("Para proceder con la reserva, ingrese los siguientes datos:");
+            // declaro las variables de datos del usuario que ingresara en el metodo
+            String nombreUsuario = "", apellidoUsuario = "", correoUsuario = "", nacionalidadUsuario = "", horaLlegadaUsuario = "", nacimientoUsuario = "";
+            int telefonoUsuario = 0;
+
+            // confirmo si el usuario desea continuar con la reserva
+            System.out.println("¿Desea continuar con la reserva? (Por favor digite Si o No)");
+            String respuesta = scanner.nextLine();
+
+            if (respuesta.equalsIgnoreCase("Si")) {
+                // pido al usuario ingresar nuevamente cuantas habitaciones quiere reservar
+                System.out.println("Ingrese nuevamente el número de habitaciones que desea reservar");
+                int cantidadHabitaciones = scanner.nextInt();
+                scanner.nextLine();
+
+                // muestro los tipos de habitaciones disponibles segun el alojamiento que habia escogido el usuario
+                System.out.println("Tipos de habitaciones disponibles:");
+                for (int i = 0; i < alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones().length; i++) {
+                    System.out.println((i + 1) + ". " + alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones()[i].getTiposDeHabitaciones());
+                }
+//                alojamientos[hotelSeleccionadoPorUsuarioIndex].mostrarHabitacionesDisponibles();
+
+
+                // almaceno la cantidad de habitaciones que el usuario ingreso
+                String[] habitacionesSeleccionadas = new String[cantidadHabitaciones];
+
+                // el usuario debe seleccionar el tipo de habitacion por cada habitacion que quiera
+                for (int i = 0; i < cantidadHabitaciones; i++) {
+                    System.out.println("Seleccione el tipo de habitación #" + (i + 1) + ":");
+                    int habitacionSeleccionada = scanner.nextInt();
+                    scanner.nextLine();
+
+                    // validando la seleccion. solo hay 5 tipos
+                    if (habitacionSeleccionada < 1 || habitacionSeleccionada > alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones().length) {
+                        System.out.println("Opción no válida. Intente de nuevo.");
+                        i--;
+                        continue;
+                    }
+
+                    int habitacionseleccionadaIndex = habitacionSeleccionada - 1;
+                    // almaceno la seleccion del usuario
+                    habitacionesSeleccionadas[i] = alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones()[habitacionseleccionadaIndex].getTiposDeHabitaciones();
+
+                    // actualizo las habitaciones que quedan disponibles
+                    alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones()[habitacionseleccionadaIndex].habitacionesDisponibles -= 1;
+                    System.out.println("Habitaciones disponibles actualizadas: " + alojamientos[hotelSeleccionadoPorUsuarioIndex].getHabitaciones()[habitacionseleccionadaIndex].habitacionesDisponibles);
+                }
+
+                // solicito los datos de usuario
+                System.out.println("Ingrese su nombre:");
+                nombreUsuario = scanner.nextLine();
+
+                System.out.println("Ingrese su apellido:");
+                apellidoUsuario = scanner.nextLine();
+
+                System.out.println("Ingrese su correo:");
+                correoUsuario = scanner.nextLine();
+
+                System.out.println("Ingrese su fecha de nacimiento con el formatio AAAA-MM-DD:");
+                nacimientoUsuario = scanner.nextLine();
+
+                System.out.println("Ingrese su nacionalidad:");
+                nacionalidadUsuario = scanner.nextLine();
+
+                System.out.println("Ingrese su teléfono:");
+                telefonoUsuario = scanner.nextInt();
+                scanner.nextLine();
+
+                System.out.println("Ingrese la hora de llegada (HH:mm):");
+                horaLlegadaUsuario = scanner.nextLine();
+
+                 //reservarAlojamiento(nombreUsuario, apellidoUsuario, correoUsuario, nacionalidadUsuario, telefonoUsuario, horaLlegadaUsuario, habitacionesSeleccionadas, nacimientoUsuario);
+
+            } else {
+            System.out.println("La reserva no se realizó.");
+            }
+        } else {
+            System.out.println("No se encontraron alojamientos que coincidan con su busqueda. Intente nuevamente");
+        }
     }
-//
-//    // METODO PARA BUSCAR ALOJAMIENTO SEGUN REQUERIMIENTOS DEL USUARIO
-//    public static void buscarAlojamiento(String ciudad, String tipo, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitaciones) {
-//
-//        boolean alojamientoEncontrado = false;
-//
-//        // calculando los dias de estadia
-//        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
-//
-//        // el alojamiento debe ser de un dia o mas
-//        if (diferenciaEnDias <= 0) {
-//            System.out.println("Debe alojarse como minimo un dia");
-//            return;
-//        }
-//
-//        // recorro el arreglo de hoteles para relacionarlo con los demas arreglos por su posicion y comparo los datos con los proporcionados por el usuario
-//        for (int i = 0; i < nombreDelAlojamiento.length; i++) {
-//
-//            int totalHabitacionesDisponibles = 0;
-//            for (int j = 0; j < habitacionesDisponibles[i].length; j++) {
-//                totalHabitacionesDisponibles += habitacionesDisponibles[i][j];
-//            }
-//
-//            if (((tipo.equalsIgnoreCase("Dia de Sol") &&
-//                    ofreceDiaDeSol[i]) || tipoDeAlojamiento[i].equalsIgnoreCase(tipo)) &&
-//                    ciudadDestino[i].equalsIgnoreCase(ciudad) &&
-//                    maximoAdultos[i] >= adultos &&
-//                    maximoNinos[i] >= ninos &&
-//                    totalHabitacionesDisponibles >= habitaciones) {
-//                alojamientoEncontrado = true;
-//
-//                // usando el precio de la habitación más simple
-//                double precioBase = precioPorNochePorTipoHabitacion[i][0];
-//                double totalPrecioBase = precioBase * habitaciones * diferenciaEnDias;  // calculo del valor total de la estadia
-//
-//                double incrementoPrecio = 0.0;
-//                double descuentoPrecio = 0.0;
-//
-//                // verifico si los dias de estadia estan dentro de los ultimos 5 dias del mes llamando la func ultimosCincoDiasDelMes
-//                if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
-//                    incrementoPrecio = totalPrecioBase * 0.15;
-//                    totalPrecioBase += incrementoPrecio;
-//                }
-//
-//                // verifico si los dias de estadia comprenden el 10 al 15 del mes llamando la func diasEntreElDiezYQuince
-//                if (diasEntreElDiezYQuince(inicioEstadia, finEstadia)) {
-//                    incrementoPrecio = totalPrecioBase * 0.10;
-//                    totalPrecioBase += incrementoPrecio;
-//                }
-//
-//                // verifico si los dias de la estadia comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
-//                if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
-//                    descuentoPrecio = totalPrecioBase * 0.08;
-//                    totalPrecioBase -= descuentoPrecio;
-//                }
-//
-//                // muestro en consola la info para el usuario
-//                System.out.println("Alojamiento encontrado:");
-//                System.out.println("Alojamiento: " + nombreDelAlojamiento[i]);
-//                System.out.println("Calificacion de: " + calificacionDelHotel[i] + " estrellas");
-//                System.out.println("Precio base por noche: $" + precioBase);
-//                System.out.println("Precio total base por " + diferenciaEnDias + " dia(s) y " + habitaciones + " habitacion(es): $" + totalPrecioBase);
-//
-//                // muestra actividades disponibles si ofrece Dia de Sol
-//                if (ofreceDiaDeSol[i]) {
-//                    System.out.println("Actividades disponibles:");
-//                    for (String actividad : actividades[i]) {
-//                        System.out.println("- " + actividad);
-//                    }
-//                }
-//
-//                // precios de almuerzo y refrigerio adicionales
-//                double precioAlmuerzo = 20.0;
-//                double precioRefrigerio = 10.0;
-//
-//                int totalPersonas = adultos + ninos;
-//
-//                double precioTotalAlmuerzo = precioAlmuerzo * totalPersonas;
-//                double precioTotalRefrigerio = precioRefrigerio * totalPersonas;
-//
-//                if (incluyeAlmuerzo[i]) {
-//                    System.out.println("Incluye almuerzo.");
-//                    System.out.println("Si desea incluir el almuerzo, el valor por persona es: $" + precioAlmuerzo +
-//                            "En total por " + totalPersonas + " persona(s) es $" + precioTotalAlmuerzo);
-//                    System.out.println("** El valor por almuerzo NO esta incluido en el precio total. Debe pagarlo en el establecimiento. **");
-//                }
-//
-//                if(incluyeRefrigerio[i]) {
-//                    System.out.println("Incluye refrigerio.");
-//                    System.out.println("Si desea incluir el refrigerio, el valor por persona es: $" + precioRefrigerio +
-//                            "En total por " + totalPersonas + " persona(s) es $" + precioTotalRefrigerio);
-//                    System.out.println("** El valor por refrigerio NO esta incluido en el precio total. Debe pagarlo en el establecimiento. **");
-//                }
-//                System.out.println("--------------------------");
-//            }
-//        }
-//
-//        if (alojamientoEncontrado) {
-//            // solicito al usuario seleccionar un alojamiento
-//            Scanner scanner = new Scanner(System.in);
-//            System.out.println("Seleccione el alojamiento que desea (ingrese el nombre del alojamiento):");
-//            String hotelSeleccionadoPorUsuario = scanner.nextLine();
-//
-//            // confirmar las habitaciones para el alojamiento seleccionado
-//            confirmarHabitaciones(hotelSeleccionadoPorUsuario, inicioEstadia, finEstadia, adultos, ninos, habitaciones);
-//
-//            // Llamar al metodo para hacer la reserva
-//            System.out.println("Para proceder con la reserva, ingrese los siguientes datos:");
-//            // declaro las variables de datos del usuario que ingresara en el metodo
-//            String nombreUsuario = "", apellidoUsuario = "", correoUsuario = "", nacionalidadUsuario = "", horaLlegadaUsuario = "", nacimientoUsuario = "";
-//            int telefonoUsuario = 0;
-//
-//            // confirmo si el usuario desea continuar con la reserva
-//            System.out.println("¿Desea continuar con la reserva? (Por favor digite Si o No)");
-//            String respuesta = scanner.nextLine();
-//
-//            if (respuesta.equalsIgnoreCase("Si")) {
-//                // pido al usuario ingresar nuevamente cuantas habitaciones quiere reservar
-//                System.out.println("Ingrese nuevamente el número de habitaciones que desea reservar");
-//                int cantidadHabitaciones = scanner.nextInt();
-//                scanner.nextLine();
-//
-//                // muestro los tipos de habitaciones disponibles segun el alojamiento que habia escogido el usuario
-//                System.out.println("Tipos de habitaciones disponibles:");
-//                for (int i = 0; i < tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length; i++) {
-//                    System.out.println((i + 1) + ". " + tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][i]);
-//                }
-//
-//                // almaceno la cantidad de habitaciones que el usuario ingreso
-//                String[] habitacionesSeleccionadas = new String[cantidadHabitaciones];
-//
-//                // el usuario debe seleccionar el tipo de habitacion por cada habitacion que quiera
-//                for (int i = 0; i < cantidadHabitaciones; i++) {
-//                    System.out.println("Seleccione el tipo de habitación #" + (i + 1) + ":");
-//                    int habitacionSeleccionada = scanner.nextInt();
-//                    scanner.nextLine();
-//
-//                    // validando la seleccion. solo hay 5 tipos
-//                    if (habitacionSeleccionada < 1 || habitacionSeleccionada > tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex].length) {
-//                        System.out.println("Opción no válida. Intente de nuevo.");
-//                        i--;
-//                        continue;
-//                    }
-//
-//                    int habitacionseleccionadaIndex = habitacionSeleccionada - 1;
-//                    // almaceno la seleccion del usuario
-//                    habitacionesSeleccionadas[i] = tiposDeHabitaciones[hotelSeleccionadoPorUsuarioIndex][habitacionseleccionadaIndex];
-//
-//                    // actualizo las habitaciones que quedan disponibles
-//                    habitacionesDisponibles[hotelSeleccionadoPorUsuarioIndex][habitacionseleccionadaIndex] -= 1;
-//                    System.out.println("Habitaciones disponibles actualizadas: " + habitacionesDisponibles[hotelSeleccionadoPorUsuarioIndex][habitacionseleccionadaIndex]);
-//                }
-//
-//                // solicito los datos de usuario
-//                System.out.println("Ingrese su nombre:");
-//                nombreUsuario = scanner.nextLine();
-//
-//                System.out.println("Ingrese su apellido:");
-//                apellidoUsuario = scanner.nextLine();
-//
-//                System.out.println("Ingrese su correo:");
-//                correoUsuario = scanner.nextLine();
-//
-//                System.out.println("Ingrese su fecha de nacimiento con el formatio AAAA-MM-DD:");
-//                nacimientoUsuario = scanner.nextLine();
-//
-//                System.out.println("Ingrese su nacionalidad:");
-//                nacionalidadUsuario = scanner.nextLine();
-//
-//                System.out.println("Ingrese su teléfono:");
-//                telefonoUsuario = scanner.nextInt();
-//                scanner.nextLine();
-//
-//                System.out.println("Ingrese la hora de llegada (HH:mm):");
-//                horaLlegadaUsuario = scanner.nextLine();
-//
-//                reservarAlojamiento(nombreUsuario, apellidoUsuario, correoUsuario, nacionalidadUsuario, telefonoUsuario, horaLlegadaUsuario, habitacionesSeleccionadas, nacimientoUsuario);
-//
-//            } else {
-//            System.out.println("La reserva no se realizó.");
-//            }
-//        } else {
-//            System.out.println("No se encontraron alojamientos que coincidan con su busqueda. Intente nuevamente");
-//        }
-//    }
-//
-//    // func para verificar si los ultimos 5 dias de la estadia caen dentro de un mes
-//    private static boolean ultimosCincoDiasDelMes(LocalDate inicioEstadia, LocalDate finEstadia) {
-//
-//        // obteniendo el ultimo dia del mes para la fecha de fin estadia
-//        int lastDayOfMonth = finEstadia.lengthOfMonth();
-//
-//        // verificando si los ultimos 5 dias del mes estan dentro del rango de fechas
-//        return (finEstadia.getDayOfMonth() >= lastDayOfMonth - 4 || inicioEstadia.getDayOfMonth() >= lastDayOfMonth - 4 );
-//    }
-//
-//    // func para verificar si los dias de estadia estan entre el 10 al 15 del mes
-//    private static boolean diasEntreElDiezYQuince(LocalDate inicioEstadia, LocalDate finEstadia) {
-//
-//        // verificando si alguna de las fechas cae entre el 10 y el 15 del mes
-//        return ((inicioEstadia.getDayOfMonth() <= 15 && inicioEstadia.getDayOfMonth() >= 10) ||
-//                (finEstadia.getDayOfMonth() <= 15 && finEstadia.getDayOfMonth() >= 10));
-//    }
-//
-//    // func para verificar si los dias de estadia estan entre del 5 al 10 del mes
-//    private static boolean diasEntreElCincoYDiez(LocalDate inicioEstadia, LocalDate finEstadia) {
-//
-//        // verificando si alguna de las fechas cae entre el 5 y el 10 del mes
-//        return ((inicioEstadia.getDayOfMonth() <= 10 && inicioEstadia.getDayOfMonth() >= 5) ||
-//                (finEstadia.getDayOfMonth() <= 10 && finEstadia.getDayOfMonth() >= 5));
-//    }
-//
-//    // METODO PARA CONFIRMAR HABITACIONES
-//    public static void confirmarHabitaciones(String nombreHotel, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitacionesSolicitadas) {
-//        boolean alojamientoEncontrado = false;
-//
-//        // busco el indice del hotel seleccionado por el usuario
-//        int hotelIndex = -1;
-//        for (int i = 0; i < nombreDelAlojamiento.length; i++) {
-//            if (nombreDelAlojamiento[i].equalsIgnoreCase(nombreHotel)) {
-//                hotelIndex = i;
-//                alojamientoEncontrado = true;
-//                break;
-//            }
-//        }
-//        if (!alojamientoEncontrado) {
-//            System.out.println("El hotel seleccionado no se encuentra disponible.");
-//            return;
-//        }
-//
-//        hotelSeleccionadoPorUsuarioIndex = hotelIndex;
-//
-//        // verifico la disponibilidad de habitaciones para las fechas seleccionadas
-//        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
-//
-//        if (diferenciaEnDias <= 0) {
-//            System.out.println("La estadia debe ser de al menos un día.");
-//            return;
-//        }
-//
-//        int totalHabitacionesDisponibles = 0;
-//        for (int j = 0; j < habitacionesDisponibles[hotelIndex].length; j++) {
-//            totalHabitacionesDisponibles += habitacionesDisponibles[hotelIndex][j];
-//
-//            // Verificamos si hay suficientes habitaciones disponibles
-//            if (totalHabitacionesDisponibles < habitacionesSolicitadas) {
-//                System.out.println("No hay suficientes habitaciones disponibles para la cantidad solicitada.");
-//                return;
-//            }
-//        }
-//
-//        // Si hay habitaciones disponibles, mostramos los tipos de habitación, características y precios
-//        System.out.println("Tipos de habitaciones disponibles en " + nombreDelAlojamiento[hotelIndex] + ":");
-//        for (int i = 0; i < tiposDeHabitaciones[hotelIndex].length; i++) {
-//
-//            // usando el precio de la habitacion dependiendo del tipo
-//            double precioBasePorHabitacion = precioPorNochePorTipoHabitacion[hotelIndex][i] * diferenciaEnDias; // calculo del valor total de la estadia
-//
-//            double incrementoPrecio = 0;
-//            double descuentoPrecio = 0;
-//            // verifico si los dias de estadia estan dentro de los ultimos 5 dias del mes llamando la func ultimosCincoDiasDelMes
-//            if (ultimosCincoDiasDelMes(inicioEstadia, finEstadia)) {
-//                incrementoPrecio = precioBasePorHabitacion * 0.15;
-//                precioBasePorHabitacion += incrementoPrecio;
-//            }
-//
-//            // verifico si los dias de estadia comprenden el 10 al 15 del mes llamando la func diasEntreElDiezYQuince
-//            if (diasEntreElDiezYQuince(inicioEstadia, finEstadia)) {
-//                incrementoPrecio = precioBasePorHabitacion * 0.10;
-//                precioBasePorHabitacion += incrementoPrecio;
-//            }
-//
-//            // verifico si los dias de la estadia comprenden del 5 al 10 del mes llamando la func diasEntreElCincoYDiez
-//            if (diasEntreElCincoYDiez(inicioEstadia, finEstadia)) {
-//                descuentoPrecio = precioBasePorHabitacion * 0.08;
-//                precioBasePorHabitacion -= descuentoPrecio;
-//            }
-//
-//            System.out.println("\nTipo de habitación: " + tiposDeHabitaciones[hotelIndex][i]);
-//            System.out.println("Caracteristicas: " + caracteristicasHabitaciones[hotelIndex][i]);
-//            if (habitacionesSolicitadas > 1) {
-//                System.out.println("Precio de " + habitacionesSolicitadas +" habitaciones por " + diferenciaEnDias + " dia(s): $" + precioBasePorHabitacion * habitacionesSolicitadas);
-//            } else {
-//                System.out.println("Precio de una habitacion por " + diferenciaEnDias + " dia(s): $" + precioBasePorHabitacion);
-//            }
-//
-//        }
-//
-//    }
+
+
+    // METODO PARA CONFIRMAR HABITACIONES
+    public static void confirmarHabitaciones(Alojamiento[] alojamientos, String nombreHotel, LocalDate inicioEstadia, LocalDate finEstadia, int adultos, int ninos, int habitacionesSolicitadas) {
+        boolean alojamientoEncontrado = false;
+
+        // busco el indice del hotel seleccionado por el usuario
+        int hotelIndex = -1;
+        for (int i = 0; i < alojamientos.length; i++) {
+            if (alojamientos[i].getNombreAlojamiento().equalsIgnoreCase(nombreHotel)) {
+                hotelIndex = i;
+                alojamientoEncontrado = true;
+                break;
+            }
+        }
+        if (!alojamientoEncontrado) {
+            System.out.println("El hotel seleccionado no se encuentra disponible.");
+            return;
+        }
+
+        hotelSeleccionadoPorUsuarioIndex = hotelIndex;
+
+        // verifico la disponibilidad de habitaciones para las fechas seleccionadas
+        long diferenciaEnDias = finEstadia.toEpochDay() - inicioEstadia.toEpochDay();
+
+        if (diferenciaEnDias <= 0) {
+            System.out.println("La estadia debe ser de al menos un día.");
+            return;
+        }
+
+        int totalHabitacionesDisponibles = 0;
+        for (int j = 0; j < alojamientos[hotelIndex].getHabitaciones().length; j++) {
+            totalHabitacionesDisponibles += alojamientos[hotelIndex].getHabitaciones()[j].getHabitacionesDisponibles();
+            // Verificamos si hay suficientes habitaciones disponibles
+            if (totalHabitacionesDisponibles < habitacionesSolicitadas) {
+                System.out.println("No hay suficientes habitaciones disponibles para la cantidad solicitada.");
+                return;
+            }
+        }
+
+
+        // Si hay habitaciones disponibles, mostramos los tipos de habitación, características y precios
+        System.out.println("Tipos de habitaciones disponibles en " + alojamientos[hotelIndex].getNombreAlojamiento() + ":");
+
+            alojamientos[hotelSeleccionadoPorUsuarioIndex].mostrarHabitacionesDisponibles();
+
+    }
 //
 //    // METODO PARA GUARDAR DATOS DEL USUARIO Y HACER LA RESERVA
 //    public static void reservarAlojamiento(String nombreUsuario, String apellidoUsuario, String correoUsuario, String nacionalidadUsuario, int telefonoUsuario, String horaLlegadaUsuario, String[] habitacionesSeleccionadas, String nacimientoUsuario) {
