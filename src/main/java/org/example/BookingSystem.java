@@ -151,7 +151,7 @@ class BookingSystem {
                     }
                     break;
                 case 8:
-                    Reserva reserva = new Reserva(nombre, email, fechaNacimiento, alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)), alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)).getHabitaciones().get(habitacionSeleccionada));
+                    Reserva reserva = new Reserva(nombre, email, fechaNacimiento, alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)), alojamientos.get(alojamientosFiltrados.get(seleccionAlojamiento)).getHabitaciones().get(habitacionSeleccionada),telefono);
                     if (reserva.confirmar(hora, cantidadHabitaciones, alojamientosFiltrados.get(seleccionAlojamiento))) {
                         reservas.add(reserva);
                         System.out.println("Reserva realizada con éxito: \n" + reserva.toString());
@@ -251,7 +251,7 @@ class BookingSystem {
 
         if (opcion == 1) {
             Alojamiento alojamiento = reservaEncontrada.getAlojamiento();
-            alojamiento.mostrarHabitacionCambio();
+            alojamiento.mostrarHabitaciones();
             System.out.println("Seleccione la nueva habitación:");
             int nuevaHabitacionSeleccionada = scanner.nextInt() - 1;
 

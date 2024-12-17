@@ -1,5 +1,6 @@
 package org.example;
 
-public interface Reservable {
+public interface IReservable {
     boolean reservar();
 }
+

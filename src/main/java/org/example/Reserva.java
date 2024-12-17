@@ -3,7 +3,10 @@ package org.example;
 public class Reserva {
     private String nombreCliente;
     private String emailCliente;
-
+    private int telefono;
+    private Alojamiento alojamiento;
+    private Habitacion habitacion;
+    private String fechaNacimiento;
 
     public String getNacionalidad() {
         return nacionalidad;
@@ -39,10 +42,7 @@ public class Reserva {
         return habitacion;
     }
 
-    private int telefono;
-    private Alojamiento alojamiento;
-    private Habitacion habitacion;
-    private String fechaNacimiento;
+
 
     public Reserva(String nombreCliente, String emailCliente, String fechaN, Alojamiento alojamiento, Habitacion habitacion) {
         this.nombreCliente = nombreCliente;
@@ -50,6 +50,14 @@ public class Reserva {
         this.alojamiento = alojamiento;
         this.habitacion = habitacion;
         this.fechaNacimiento = fechaN;
+    }
+    public Reserva(String nombreCliente, String emailCliente, String fechaN, Alojamiento alojamiento, Habitacion habitacion, int telefono) {
+        this.nombreCliente = nombreCliente;
+        this.emailCliente = emailCliente;
+        this.alojamiento = alojamiento;
+        this.habitacion = habitacion;
+        this.fechaNacimiento = fechaN;
+        this.telefono=telefono;
     }
 
     public void mostrarReserva(int horaLlegada, int cantidadHabitaciones, int index) {
