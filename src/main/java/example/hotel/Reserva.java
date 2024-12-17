@@ -1,6 +1,6 @@
 package example.hotel;
 
-class Reserva implements Reservable {
+public class Reserva implements Reservable {
     private int id;
     private Alojamiento alojamiento;
     private Habitacion habitacion;
@@ -71,6 +71,6 @@ class Reserva implements Reservable {
     }
 
     public void setHabitacion(Habitacion habitacion) {
+        this.habitacion = habitacion;
     }
 }
-
