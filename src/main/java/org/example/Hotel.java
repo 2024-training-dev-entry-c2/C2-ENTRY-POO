@@ -11,7 +11,7 @@ public class Hotel extends Alojamiento {
         this.buffet = buffet;
     }
 
-    boolean buffet;
+    public boolean buffet;
 
     public Hotel(String nombre, String ciudad, String tipo, double calificacion, List<Habitacion> habitaciones) {
         super(nombre, ciudad, tipo, calificacion, habitaciones);
