@@ -69,7 +69,6 @@ public class Main {
 
             switch (opcion) {
                 case 1 -> buscarAlojamientos(alojamientos, ciudades, scanner);
-//                case 2 -> realizarReserva(alojamientos, preciosHabitaciones, disponibilidadHabitaciones, scanner);
 //                case 3 -> reservarDiaDeSol(alojamientos, precioDiaSol, actividadesDiaSol, scanner);
 //                case 4 -> verHistorialReservas();
 //                case 5 -> cancelarReservacion(disponibilidadHabitaciones, alojamientos); // TODO: Implementar
@@ -237,73 +236,6 @@ switch (confirmar) {
             case 4 -> "Habitación Familiar";
             default -> "Habitación Desconocida";
         };
-    }
-
-    public static void realizarReserva(String[][] alojamientos, float[][] preciosHabitaciones,
-                                       int[][] disponibilidadHabitaciones, Scanner scanner) {
-        System.out.print("Ingrese el nombre del hotel: ");
-        scanner.nextLine(); // Limpiar buffer
-        String nombreHotel = scanner.nextLine();
-
-        int indiceHotel = buscarIndiceHotel(nombreHotel, alojamientos);
-        if (indiceHotel == -1) {
-            System.out.println("Hotel no encontrado.");
-            return;
-        }
-
-        System.out.print("Ingrese el tipo de habitación (1-5): ");
-        int tipoHabitacion = scanner.nextInt() - 1;
-
-        if (tipoHabitacion < 0 || tipoHabitacion >= preciosHabitaciones[indiceHotel].length) {
-            System.out.println("Tipo de habitación no válido.");
-            return;
-        }
-
-        if (disponibilidadHabitaciones[indiceHotel][tipoHabitacion] <= 0) {
-            System.out.println("No hay disponibilidad para este tipo de habitación.");
-            return;
-        }
-
-        disponibilidadHabitaciones[indiceHotel][tipoHabitacion]--;
-
-        System.out.print("Ingrese su nombre: ");
-        scanner.nextLine(); // Limpiar buffer
-        String nombre = scanner.nextLine();
-
-        System.out.print("Ingrese la fecha de inicio de la reserva (yyyy-MM-dd): ");
-        LocalDate fechaInicio = LocalDate.parse(scanner.nextLine());
-
-        System.out.print("Ingrese la fecha de finalización de la reserva (yyyy-MM-dd): ");
-        LocalDate fechaFin = LocalDate.parse(scanner.nextLine());
-
-        long noches = ChronoUnit.DAYS.between(fechaInicio, fechaFin);
-        if (noches <= 0) {
-            System.out.println("Fechas no válidas. La fecha de fin debe ser posterior a la de inicio.");
-            return;
-        }
-
-        float precioBase = preciosHabitaciones[indiceHotel][tipoHabitacion];
-        float precioTotal = precioBase * noches;
-        float ajuste = calcularAjuste(precioTotal, fechaInicio, fechaFin);
-
-        ultimaReserva = String.format(
-                "Reserva a nombre de %s en %s \nTipo de habitación: %s, \nDel %s al %s. (%d noches) \nPrecio total: $%.2f (Ajuste aplicado: $%.2f)",
-                nombre, nombreHotel, obtenerDescripcionHabitacion(tipoHabitacion), fechaInicio, fechaFin, noches,
-                precioTotal + ajuste, ajuste);
-
-        System.out.println("\n" + ultimaReserva);
-
-        System.out.print("\n¿Desea confirmar esta reserva? (1: Sí / 2: No): ");
-
-        int confirmar = scanner.nextInt();
-
-        if (confirmar == 1) {
-            confirmarReservacion();
-
-        } else {
-            System.out.println("La reserva no se ha guardado, vuelva a intentarlo.");
-        }
-
     }
 
     public static int buscarIndiceHotel(String nombreHotel, String[][] alojamientos) {
