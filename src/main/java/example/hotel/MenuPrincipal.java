@@ -28,7 +28,7 @@ public class MenuPrincipal {
                     gestorReservas.realizarReserva(alojamientos, reservas, scanner);
                     break;
                 case 2:
-                    gestorReservas.actualizarReserva(reservas, scanner);
+                    gestorReservas.actualizarReserva(alojamientos, reservas, scanner);
                     break;
                 case 3:
                     gestorReservas.cancelarReserva(reservas, scanner);
