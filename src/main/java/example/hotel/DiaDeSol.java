@@ -24,4 +24,9 @@ public class DiaDeSol extends Alojamiento {
             System.out.println("- " + actividad);
         }
     }
+
+    @Override
+    public ArrayList<Habitacion> getHabitaciones() {
+        return null; 
+    }
 }

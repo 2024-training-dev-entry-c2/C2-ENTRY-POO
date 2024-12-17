@@ -20,4 +20,9 @@ public class Apartamento extends Alojamiento {
             habitacion.mostrarDetalles();
         }
     }
+
+    @Override
+    public ArrayList<Habitacion> getHabitaciones() {
+        return habitaciones;
+    }
 }
